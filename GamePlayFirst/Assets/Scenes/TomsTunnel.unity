@@ -519,7 +519,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 50
-  startingSpeed: 10
+  minSpeed: 10
+  startingSpeed: 20
+  currentSpeed: 0
+  lateralSpeed: 0
+  accelSpeed: 5
+  decelSpeed: 2
+  brakeForce: 0
 --- !u!1 &1649812834
 GameObject:
   m_ObjectHideFlags: 0
