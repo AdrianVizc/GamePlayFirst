@@ -525,7 +525,7 @@ MonoBehaviour:
   lateralSpeed: 0
   accelSpeed: 5
   decelSpeed: 2
-  brakeForce: 0
+  brakeForce: 5
 --- !u!1 &1649812834
 GameObject:
   m_ObjectHideFlags: 0

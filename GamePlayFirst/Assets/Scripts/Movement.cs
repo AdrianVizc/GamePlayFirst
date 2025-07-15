@@ -94,7 +94,10 @@ public class Movement : MonoBehaviour
         }
         else if (isBraking)
         {
-
+            if (currentSpeed > minSpeed)
+            {
+                currentSpeed -= brakeForce * Time.fixedDeltaTime;
+            }
         }
         else
         {
@@ -103,6 +106,8 @@ public class Movement : MonoBehaviour
                 currentSpeed -= decelSpeed * Time.fixedDeltaTime;
             }
         }
+
+        currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
 
         rb.velocity = mainCamera.transform.forward * currentSpeed;
     }
