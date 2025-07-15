@@ -7,7 +7,7 @@ public class PersistentManager : MonoBehaviour
 {
     public static PersistentManager Instance; //Code to make script into a singleton
 
-    [SerializeField] private bool skipAnimation;
+    [SerializeField] private bool skipStartupAnimation;
 
     [Space]
 
@@ -38,7 +38,7 @@ public class PersistentManager : MonoBehaviour
 
     void Start()
     {
-        if (skipAnimation)
+        if (skipStartupAnimation)
         {
             PlayBeginningAnimation();
             return;

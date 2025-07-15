@@ -285,10 +285,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a84f5623518baff48bcdb1cf8b7a5db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skipAnimation: 0
+  skipStartupAnimation: 0
   intPrefs: []
   floatPrefs: []
-  boolPrefs: []
+  boolPrefs:
+  - prefName: isGamePaused
+    DefaultValue: 0
   stringPrefs: []
 --- !u!1 &650169711
 GameObject:
