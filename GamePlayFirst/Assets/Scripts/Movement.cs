@@ -16,12 +16,9 @@ public class Movement : MonoBehaviour
     [SerializeField] private float brakeForce;
     private Rigidbody rb;
     private Camera mainCamera;
-    private Vector3 moveDirection;
-    private float horizontalInput;
-    private float verticalInput;
-    private bool isAccelerating;
-    private bool isBraking;
-    private bool isTurning;
+    [SerializeField] private bool isAccelerating;
+    [SerializeField] private bool isBraking;
+    [SerializeField] private bool isTurning;
 
     // Start is called before the first frame update
     void Start()
@@ -67,24 +64,18 @@ public class Movement : MonoBehaviour
             isBraking = false;
         }
 
-        //if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
-        //{
-        //    isTurning = true;
-        //}
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            isTurning = true;
+        }
+        else
+        {
+            isTurning = false;
+        }
     }
     private void Move()
     {
-        //moveDirection = mainCamera.transform.forward * verticalInput + mainCamera.transform.right * horizontalInput;
-        //moveDirection = new Vector3(moveDirection.x, 0, moveDirection.z);
-
-        //rb.velocity
-
-        //Vector3 forwardForce = mainCamera.transform.forward * currentSpeed;
-
-        //if (rb.velocity.magnitude < maxSpeed)
-        //{
-        //    rb.AddForce(forwardForce, ForceMode.Acceleration);
-        //}
+        //Forward Movement Logic
         if (isAccelerating)
         {
             if (currentSpeed < maxSpeed)
@@ -110,5 +101,19 @@ public class Movement : MonoBehaviour
         currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
 
         rb.velocity = mainCamera.transform.forward * currentSpeed;
+
+        //Turning Logic
+        if (isTurning)
+        {
+            float horizontalInput = Input.GetAxis("Horizontal");
+            if (Mathf.Abs(horizontalInput) > 0.1f)
+            {
+                float turnAmount = horizontalInput * lateralSpeed * Time.fixedDeltaTime;
+                transform.Rotate(0f, turnAmount, 0f);
+                Debug.DrawRay(transform.position, transform.forward * 5f, Color.red);
+            }
+            Vector3 turnForce = mainCamera.transform.right * horizontalInput * lateralSpeed;
+            rb.AddForce(turnForce, ForceMode.Acceleration);
+        }
     }
 }
