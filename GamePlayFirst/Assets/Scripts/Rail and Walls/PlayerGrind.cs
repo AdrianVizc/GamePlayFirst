@@ -14,7 +14,7 @@ public class PlayerGrind : MonoBehaviour
     [SerializeField] private float lerpSpeed = 10f; // How fast player rotates along rail
     private float timeForFullSpline;
     private float elapsedTime;
-    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private float jumpForce = 7.5f;
 
     [Header("Scripts")]
     [SerializeField] private Rail currentRailScript;
