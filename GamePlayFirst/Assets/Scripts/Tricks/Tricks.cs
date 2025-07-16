@@ -18,6 +18,9 @@ public class Tricks : MonoBehaviour
     private float comboMaxTime = 0.5f;
     private KeyCode? lastKeyPressed = null;
 
+    [SerializeField] private PlayerGrind playerGrind;
+    private bool onRail;
+
     // Note: There will be a small delay on FrontFlip and BackFlip because W and S are potential starters for combos while D and A are not. There is a small
     // window of time to check if there is consecutive inputs or just a singular input
     void Start()
@@ -36,50 +39,55 @@ public class Tricks : MonoBehaviour
 
     void Update()
     {
-        foreach (KeyCode key in new[] { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D })
-    {
-        if (Input.GetKeyDown(key))
-        {
-            if (currentNode.children.TryGetValue(key, out ComboNode nextNode))
+        onRail = playerGrind.onRail;
+        if (onRail)
+        { 
+            foreach (KeyCode key in new[] { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D })
             {
-                currentNode = nextNode;
-                lastKeyPressed = key;
-                comboTimer = comboMaxTime;
-
-                if (nextNode.animationTrigger != null && nextNode.children.Count == 0)
+                if (Input.GetKeyDown(key))
                 {
-                    // Triggers immediately b/c no further branches possible (i.e A and D)
-                    animator.SetTrigger(nextNode.animationTrigger);
-                    Debug.Log("Played animation: " + nextNode.animationTrigger);
+                    if (currentNode.children.TryGetValue(key, out ComboNode nextNode))
+                    {
+                        currentNode = nextNode;
+                        lastKeyPressed = key;
+                        comboTimer = comboMaxTime;
+
+                        if (nextNode.animationTrigger != null && nextNode.children.Count == 0)
+                        {
+                            // Triggers immediately b/c no further branches possible (i.e A and D)
+                            animator.SetTrigger(nextNode.animationTrigger);
+                            Debug.Log("Played animation: " + nextNode.animationTrigger);
+                            ResetCombo();
+                        }
+                        // Else wait for more input or timeout
+                    }
+                    else
+                    {
+                        // Invalid combo path — reset
+                        ResetCombo();
+                    }
+
+                    break; // Only handle one key per frame
+                }
+            }
+
+            // Handle timeout fallback for delayed triggers (e.g., W was a valid single-key combo, but could be part of W W W)
+            if (comboTimer > 0)
+            {
+                comboTimer -= Time.deltaTime;
+
+                if (comboTimer <= 0)
+                {
+                    if (currentNode.animationTrigger != null)
+                    {
+                        animator.SetTrigger(currentNode.animationTrigger);
+                        Debug.Log("Played animation: " + currentNode.animationTrigger); ;
+                    }
                     ResetCombo();
                 }
-                // Else wait for more input or timeout
             }
-            else
-            {
-                // Invalid combo path — reset
-                ResetCombo();
-            }
-
-            break; // Only handle one key per frame
         }
-    }
-
-    // Handle timeout fallback for delayed triggers (e.g., W was a valid single-key combo, but could be part of W W W)
-    if (comboTimer > 0)
-    {
-        comboTimer -= Time.deltaTime;
-
-        if (comboTimer <= 0)
-        {
-            if (currentNode.animationTrigger != null)
-            {
-                animator.SetTrigger(currentNode.animationTrigger);
-                Debug.Log("Played animation: " + currentNode.animationTrigger); ;
-            }
-            ResetCombo();
-        }
-    }
+        
     }
     // Adds combos to the trie
     private void AddCombo(List<KeyCode> sequence, string animationTrigger)
