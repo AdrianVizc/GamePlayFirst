@@ -19,6 +19,8 @@ public class Movement : MonoBehaviour
     [SerializeField] private bool isAccelerating;
     [SerializeField] private bool isBraking;
     [SerializeField] private bool isTurning;
+    private Vector3 initialForward;
+    private float maxDot = 0.707f; //Currently: 45 degrees
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +28,7 @@ public class Movement : MonoBehaviour
         rb = this.GetComponent<Rigidbody>();
         mainCamera = Camera.main;
         currentSpeed = startingSpeed;
+        initialForward = transform.forward;
         rb.velocity = mainCamera.transform.forward * currentSpeed;
     }
 
@@ -53,7 +56,6 @@ public class Movement : MonoBehaviour
         {
             isAccelerating = false;
         }
-
 
         if (Input.GetKey(KeyCode.S))
         {
@@ -109,7 +111,21 @@ public class Movement : MonoBehaviour
             if (Mathf.Abs(horizontalInput) > 0.1f)
             {
                 float turnAmount = horizontalInput * lateralSpeed * Time.fixedDeltaTime;
-                transform.Rotate(0f, turnAmount, 0f);
+
+                //Get the vector for where the player is trying to turn (with respect to the current orientation)
+                Quaternion nextRotation = Quaternion.Euler(0f, turnAmount, 0f) * transform.rotation;
+                Vector3 nextForward = nextRotation * Vector3.forward; //Get the forward vector for that direction
+                nextForward.y = 0; //We don't care about any vertical components
+                nextForward.Normalize(); //Normalize prior to dot product operations
+
+                float dotProduct = Vector3.Dot(initialForward, nextForward);
+
+                //If within our specified range, allow the turn (rotation) to happen
+                if (dotProduct >= maxDot) 
+                {
+                    transform.rotation = Quaternion.Slerp(transform.rotation, nextRotation, lateralSpeed * Time.fixedDeltaTime);
+                }
+                //transform.Rotate(0f, turnAmount, 0f);
                 Debug.DrawRay(transform.position, transform.forward * 5f, Color.red);
             }
             Vector3 turnForce = mainCamera.transform.right * horizontalInput * lateralSpeed;
