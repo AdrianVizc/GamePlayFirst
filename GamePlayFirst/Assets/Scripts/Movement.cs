@@ -14,13 +14,17 @@ public class Movement : MonoBehaviour
     [SerializeField] private float accelSpeed;
     [SerializeField] private float decelSpeed;
     [SerializeField] private float brakeForce;
+    [SerializeField] private float jumpForce;
     private Rigidbody rb;
     private Camera mainCamera;
     [SerializeField] private bool isAccelerating;
     [SerializeField] private bool isBraking;
     [SerializeField] private bool isTurning;
+    [SerializeField] private bool isGrounded;
     private Vector3 initialForward;
-    private float maxDot = 0.707f; //Currently: 45 degrees
+    [SerializeField] private float maxDot = 0.707f; //Currently: 45 degrees
+    [SerializeField] private float playerHeight;
+    [SerializeField] private LayerMask groundLayer;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +44,7 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        GroundCheck();
         GetInput();
         Move();
     }
@@ -74,6 +79,11 @@ public class Movement : MonoBehaviour
         {
             isTurning = false;
         }
+
+        if (Input.GetKey(KeyCode.Space) && isGrounded)
+        {
+            Jump();
+        }
     }
     private void Move()
     {
@@ -102,7 +112,19 @@ public class Movement : MonoBehaviour
 
         currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
 
-        rb.velocity = mainCamera.transform.forward * currentSpeed;
+        //rb.velocity = mainCamera.transform.forward * currentSpeed;
+
+        //Determining the forward direction & calculating velocity
+        Vector3 forward = mainCamera.transform.forward;
+        forward.y = 0;
+        forward.Normalize();
+
+        //This is so we preserve the vertical velocity component instead of overriding it each frame.
+        //Doing rb.velocity = mainCamera.transform.forward * currentSpeed technically will override & reset the y velocity to 0 every frame.
+        //Which will mess with the gravity when jumping (making it feel very floaty)
+        Vector3 newVelocity = forward * currentSpeed;
+        newVelocity.y = rb.velocity.y; 
+        rb.velocity = newVelocity;
 
         //Turning Logic
         if (isTurning)
@@ -131,5 +153,19 @@ public class Movement : MonoBehaviour
             Vector3 turnForce = mainCamera.transform.right * horizontalInput * lateralSpeed;
             rb.AddForce(turnForce, ForceMode.Acceleration);
         }
+    }
+
+    private void Jump()
+    {
+        if (isGrounded)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        }
+    }
+
+    private void GroundCheck()
+    {
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, groundLayer);
     }
 }
