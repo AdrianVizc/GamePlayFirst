@@ -7,12 +7,13 @@ using UnityEngine.Splines;
 
 public class PlayerGrind : MonoBehaviour
 {
+    [HideInInspector] public bool onRail;
+
     [Header("Rail Settings")]
     [SerializeField] private float grindSpeed = 10f;
     [SerializeField] float heightOffset; // How high player sits above rail
     [SerializeField] private float lerpSpeed = 10f; // How fast player rotates along rail
     [SerializeField] private float jumpForce = 7.5f;
-    private bool onRail;
     private float timeForFullSpline;
     private float elapsedTime;
     private Rail currentRailScript;
