@@ -9,25 +9,35 @@ public class PlayerGrind : MonoBehaviour
 {
     [Header("Variables")]
     public bool onRail;
-    [SerializeField] private float grindSpeed;
+    [SerializeField] private float grindSpeed = 10f;
     [SerializeField] float heightOffset; // How high player sits above rail
     [SerializeField] private float lerpSpeed = 10f; // How fast player rotates along rail
     private float timeForFullSpline;
     private float elapsedTime;
+    [SerializeField] private float jumpForce = 10f;
 
     [Header("Scripts")]
     [SerializeField] private Rail currentRailScript;
 
+    Rigidbody rb;
+    private bool isJumping;
+
     private void Start()
     {
+        rb = GetComponent<Rigidbody>();
         timeForFullSpline = 0;
         elapsedTime = 0;
+        isJumping = false;
     }
 
     private void Update()
     {
         if (onRail)
         {
+            if(Input.GetKey(KeyCode.Space))
+            {
+                isJumping = true;
+            }
             MovePlayerAlongRail();
         }
     }
@@ -39,6 +49,12 @@ public class PlayerGrind : MonoBehaviour
             float progress = elapsedTime / timeForFullSpline;
 
             // If we’re past the ends of the spline, get off the rail
+            if(isJumping)
+            {
+                isJumping = false;
+                JumpOff();
+                return;
+            }
             if (progress < -1 || progress > 1)
             {
                 ThrowOffRail();
@@ -123,10 +139,21 @@ public class PlayerGrind : MonoBehaviour
 
     void ThrowOffRail()
     {
+        transform.position += Vector3.ProjectOnPlane(transform.forward, Vector3.up) * 1f; // Move player forward slightly
+        EndRail();
+    }
+
+    private void JumpOff()
+    {
+        EndRail();
+        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+    }
+
+    private void EndRail()
+    {
         onRail = false;
         currentRailScript = null;
-
-        Rigidbody rb = GetComponent<Rigidbody>();
 
         // Project forward onto horizontal plane for stable exit rotation
         Vector3 flatForward = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
@@ -149,8 +176,8 @@ public class PlayerGrind : MonoBehaviour
 
         GetComponent<Movement>().enabled = true;
 
-        // Optional: unfreeze rotation after a short delay if needed
-        // StartCoroutine(UnfreezeRotation(rb, 0.5f));
+        // unfreeze rotation after a short delay
+        //StartCoroutine(UnfreezeRotation(rb, 0.1f));
     }
 
     private IEnumerator UnfreezeRotation(Rigidbody rb, float delay)
