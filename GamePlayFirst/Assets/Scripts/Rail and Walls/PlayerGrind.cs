@@ -7,17 +7,19 @@ using UnityEngine.Splines;
 
 public class PlayerGrind : MonoBehaviour
 {
-    [Header("Variables")]
-    public bool onRail;
+    [Header("Rail Settings")]
     [SerializeField] private float grindSpeed = 10f;
     [SerializeField] float heightOffset; // How high player sits above rail
     [SerializeField] private float lerpSpeed = 10f; // How fast player rotates along rail
+    [SerializeField] private float jumpForce = 7.5f;
+    private bool onRail;
     private float timeForFullSpline;
     private float elapsedTime;
-    [SerializeField] private float jumpForce = 7.5f;
+    private Rail currentRailScript;
 
-    [Header("Scripts")]
-    [SerializeField] private Rail currentRailScript;
+    [Header("Jump Settings")]
+    private float angleLimitThreshold = 20f;
+
 
     Rigidbody rb;
     private bool isJumping;
@@ -34,7 +36,7 @@ public class PlayerGrind : MonoBehaviour
     {
         if (onRail)
         {
-            if(Input.GetKey(KeyCode.Space))
+            if(Input.GetKeyDown(KeyCode.Space) && !IsRailTooVertical())
             {
                 isJumping = true;
             }
@@ -146,8 +148,11 @@ public class PlayerGrind : MonoBehaviour
     private void JumpOff()
     {
         EndRail();
+
         rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+
+        transform.rotation = Quaternion.identity;
     }
 
     private void EndRail()
@@ -178,6 +183,22 @@ public class PlayerGrind : MonoBehaviour
 
         // unfreeze rotation after a short delay
         //StartCoroutine(UnfreezeRotation(rb, 0.1f));
+    }
+    private bool IsRailTooVertical()
+    {
+        if (currentRailScript == null || timeForFullSpline == 0) return true;
+
+        float progress = elapsedTime / timeForFullSpline;
+        float3 pos, tangent, up;
+        SplineUtility.Evaluate(currentRailScript.railSpline.Spline, progress, out pos, out tangent, out up);
+
+        Vector3 worldTangent = currentRailScript.LocalToWorldConversion(pos + tangent) - currentRailScript.LocalToWorldConversion(pos);
+        worldTangent.Normalize();
+
+        float angle = Vector3.Angle(worldTangent, Vector3.up);
+
+        // If the angle is close to 0 or 180, it's very vertical
+        return angle < (0 + angleLimitThreshold) || angle > (180 - angleLimitThreshold);
     }
 
     private IEnumerator UnfreezeRotation(Rigidbody rb, float delay)
