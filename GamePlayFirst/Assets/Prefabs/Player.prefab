@@ -223,14 +223,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ba1fffc53ae2dd41a2a09b95ca6d677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 50
   minSpeed: 10
+  maxSpeed: 50
   startingSpeed: 20
   currentSpeed: 0
-  lateralSpeed: 0
   accelSpeed: 5
   decelSpeed: 2
   brakeForce: 5
+  jumpForce: 5
+  isAccelerating: 0
+  isBraking: 0
+  lateralSpeed: 75
+  isTurning: 0
+  maxDot: 0.707
+  playerHeight: 2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  isGrounded: 0
 --- !u!114 &1994217144134824
 MonoBehaviour:
   m_ObjectHideFlags: 0

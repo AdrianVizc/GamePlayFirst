@@ -4,27 +4,33 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    //Keyboard Controls only for now
-
-    [SerializeField] private float maxSpeed;
+    //NOTE: Keyboard Controls only for now
+    [Header("Forward Speed")]
     [SerializeField] private float minSpeed;
+    [SerializeField] private float maxSpeed;
     [SerializeField] private float startingSpeed;
     [SerializeField] private float currentSpeed;
-    [SerializeField] private float lateralSpeed;
     [SerializeField] private float accelSpeed;
     [SerializeField] private float decelSpeed;
     [SerializeField] private float brakeForce;
     [SerializeField] private float jumpForce;
-    private Rigidbody rb;
-    private Camera mainCamera;
     [SerializeField] private bool isAccelerating;
     [SerializeField] private bool isBraking;
+
+    [Header("Turn Speed")]
+    [SerializeField] private float lateralSpeed;
     [SerializeField] private bool isTurning;
-    [SerializeField] private bool isGrounded;
-    private Vector3 initialForward;
     [SerializeField] private float maxDot = 0.707f; //Currently: 45 degrees
+    private Vector3 initialForward;
+
+    [Header("Jumping")]
     [SerializeField] private float playerHeight;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private bool isGrounded;
+
+    [Header("Other Components")]
+    private Rigidbody rb;
+    private Camera mainCamera;
 
     // Start is called before the first frame update
     void Start()
