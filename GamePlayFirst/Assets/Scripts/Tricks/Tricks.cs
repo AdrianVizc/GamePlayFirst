@@ -19,7 +19,9 @@ public class Tricks : MonoBehaviour
     private KeyCode? lastKeyPressed = null;
 
     [SerializeField] private PlayerGrind playerGrind;
+    [SerializeField] private PlayerWall wall;
     private bool onRail;
+    private bool isWallRunning;
 
     // Note: There will be a small delay on FrontFlip and BackFlip because W and S are potential starters for combos while D and A are not. There is a small
     // window of time to check if there is consecutive inputs or just a singular input
@@ -40,8 +42,10 @@ public class Tricks : MonoBehaviour
     void Update()
     {
         onRail = playerGrind.onRail;
-        if (onRail)
-        { 
+        isWallRunning = wall.isWallRunning;
+
+        if (onRail || isWallRunning)
+        {
             foreach (KeyCode key in new[] { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D })
             {
                 if (Input.GetKeyDown(key))
