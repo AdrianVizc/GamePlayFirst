@@ -26,7 +26,7 @@ public class Movement : MonoBehaviour
     [Header("Jumping")]
     [SerializeField] private float playerHeight;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private bool isGrounded;
+    [SerializeField] public bool isGrounded;
 
     [Header("Other Components")]
     private Rigidbody rb;

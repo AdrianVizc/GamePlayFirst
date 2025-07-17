@@ -6,9 +6,9 @@ using UnityEngine.Splines;
 
 public class Rail : MonoBehaviour
 {
-    public bool normalDir; // Dictates which direction you go down spline (0 to 1 or 1 to 0)
-    public SplineContainer railSpline;
-    public float totalSplineLength;
+    [HideInInspector] public bool normalDir; // Dictates which direction you go down spline (0 to 1 or 1 to 0)
+    [HideInInspector] public SplineContainer railSpline;
+    [HideInInspector] public float totalSplineLength;
 
     private void Start()
     {
