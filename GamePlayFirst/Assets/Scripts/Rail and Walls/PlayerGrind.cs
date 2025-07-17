@@ -144,6 +144,8 @@ public class PlayerGrind : MonoBehaviour
     {
         transform.position += Vector3.ProjectOnPlane(transform.forward, Vector3.up) * 1f; // Move player forward slightly
         EndRail();
+
+        transform.rotation = Quaternion.identity;
     }
 
     private void JumpOff()

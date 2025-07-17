@@ -36,6 +36,7 @@ public class Movement : MonoBehaviour
     void Start()
     {
         rb = this.GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
         mainCamera = Camera.main;
         currentSpeed = startingSpeed;
         initialForward = transform.forward;
