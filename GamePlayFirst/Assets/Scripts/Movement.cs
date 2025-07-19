@@ -20,8 +20,12 @@ public class Movement : MonoBehaviour
     [Header("Turn Speed")]
     [SerializeField] private float lateralSpeed;
     [SerializeField] private bool isTurning;
-    [SerializeField] private float maxDot = 0.707f; //Currently: 45 degrees
-    private Vector3 initialForward;
+    [SerializeField] private float maxTurnAngle;
+    [SerializeField] private float maxDot;
+    //private Vector3 initialForward;
+    private Vector3 adaptiveForward;
+    [SerializeField] private float forwardAdjustSpeed = 2f;
+    [SerializeField] private float turnAssistStrength = 1.5f;
 
     [Header("Jumping")]
     [SerializeField] private float playerHeight;
@@ -39,8 +43,9 @@ public class Movement : MonoBehaviour
         rb.freezeRotation = true;
         mainCamera = Camera.main;
         currentSpeed = startingSpeed;
-        initialForward = transform.forward;
+        adaptiveForward = transform.forward;
         rb.velocity = mainCamera.transform.forward * currentSpeed;
+        maxDot = Mathf.Cos(maxTurnAngle * Mathf.Deg2Rad);
     }
 
     // Update is called once per frame
@@ -53,13 +58,12 @@ public class Movement : MonoBehaviour
     {
         GroundCheck();
         GetInput();
+        //UpdateAdaptiveForward();
         Move();
     }
 
     private void GetInput()
     {
-        //horizontalInput = Input.GetAxis("Horizontal");
-        //verticalInput = Input.GetAxis("Vertical");
         if (Input.GetKey(KeyCode.W))
         {
             isAccelerating = true;
@@ -129,7 +133,7 @@ public class Movement : MonoBehaviour
         //This is so we preserve the vertical velocity component instead of overriding it each frame.
         //Doing rb.velocity = mainCamera.transform.forward * currentSpeed technically will override & reset the y velocity to 0 every frame.
         //Which will mess with the gravity when jumping (making it feel very floaty)
-        Vector3 newVelocity = forward * currentSpeed;
+        Vector3 newVelocity = transform.forward * currentSpeed;
         newVelocity.y = rb.velocity.y; 
         rb.velocity = newVelocity;
 
@@ -147,18 +151,24 @@ public class Movement : MonoBehaviour
                 nextForward.y = 0; //We don't care about any vertical components
                 nextForward.Normalize(); //Normalize prior to dot product operations
 
-                float dotProduct = Vector3.Dot(initialForward, nextForward);
+                float dotProduct = Vector3.Dot(adaptiveForward, nextForward);
+                float driftAmount = Mathf.Clamp01(1f - dotProduct);
 
                 //If within our specified range, allow the turn (rotation) to happen
-                if (dotProduct >= maxDot) 
+                if (dotProduct >= maxDot)
                 {
                     transform.rotation = Quaternion.Slerp(transform.rotation, nextRotation, lateralSpeed * Time.fixedDeltaTime);
                 }
-                //transform.Rotate(0f, turnAmount, 0f);
-                Debug.DrawRay(transform.position, transform.forward * 5f, Color.red);
+                else
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(adaptiveForward);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, driftAmount * forwardAdjustSpeed * Time.fixedDeltaTime);
+                }
             }
             Vector3 turnForce = mainCamera.transform.right * horizontalInput * lateralSpeed;
             rb.AddForce(turnForce, ForceMode.Acceleration);
+
+            Debug.DrawRay(transform.position, adaptiveForward * 20f, Color.red);
         }
     }
 
@@ -174,5 +184,10 @@ public class Movement : MonoBehaviour
     private void GroundCheck()
     {
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, groundLayer);
+    }
+
+    public void UpdateForwardDirection(Vector3 newForward)
+    {
+        adaptiveForward = newForward;
     }
 }
