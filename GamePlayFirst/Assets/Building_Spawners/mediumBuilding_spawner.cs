@@ -15,6 +15,11 @@ public class mediumBuilding_Spawner : MonoBehaviour
     public int floors = 2;
     public bool flip = false;
 
+    [Header("Building Scale")]
+    public float x = 1;
+    public float y = 1;
+    public float z = 1;
+
     [Space(10)]
     public bool spawnBuilding;
 
@@ -101,6 +106,9 @@ public class mediumBuilding_Spawner : MonoBehaviour
         {
             Instantiate(randomRoofPrefab, nextPos, Quaternion.identity, buildingParent.transform);
         }
+
+        // Scale end result
+        buildingParent.transform.localScale = new Vector3(x, y, z);
     }
 
     float GetHeight(GameObject obj)
