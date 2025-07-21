@@ -24,8 +24,11 @@ public class Movement : MonoBehaviour
     [SerializeField] private float maxDot;
     //private Vector3 initialForward;
     private Vector3 adaptiveForward;
-    [SerializeField] private float forwardAdjustSpeed = 2f;
-    [SerializeField] private float turnAssistStrength = 1.5f;
+    private bool isCorrecting = false;
+    private float steerBackStrength = 0f;
+    [SerializeField] private float steerBackMaxStrength = 1f;
+    [SerializeField] private float steerBackRampUpSpeed = 1f;
+    [SerializeField] private float steerBackDecaySpeed = 0.5f;
 
     [Header("Jumping")]
     [SerializeField] private float playerHeight;
@@ -82,15 +85,6 @@ public class Movement : MonoBehaviour
             isBraking = false;
         }
 
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
-        {
-            isTurning = true;
-        }
-        else
-        {
-            isTurning = false;
-        }
-
         if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
             Jump();
@@ -123,53 +117,64 @@ public class Movement : MonoBehaviour
 
         currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
 
-        //rb.velocity = mainCamera.transform.forward * currentSpeed;
+        //Turn Logic
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float turnAmount = horizontalInput * lateralSpeed * Time.fixedDeltaTime;
 
-        //Determining the forward direction & calculating velocity
-        Vector3 forward = mainCamera.transform.forward;
+        //Predict where the player wants to turn based on their input
+        Quaternion intendedRotation = Quaternion.Euler(0f, turnAmount, 0f) * transform.rotation;
+        Vector3 intendedForward = intendedRotation * Vector3.forward;
+        intendedForward.y = 0;
+        intendedForward.Normalize();
+
+        //Check if the turn is "valid" or allowed
+        float dotProduct = Vector3.Dot(adaptiveForward, intendedForward);
+        bool isOutOfBounds = dotProduct < maxDot;
+
+        //Logic for steering back on course if trying to turn out of bounds
+        if (isOutOfBounds)
+        {
+            isCorrecting = true;
+            steerBackStrength += steerBackRampUpSpeed * Time.fixedDeltaTime;
+            steerBackStrength = Mathf.Clamp(steerBackStrength, 0f, steerBackMaxStrength);
+        }
+        else
+        {
+            steerBackStrength -= steerBackDecaySpeed * Time.fixedDeltaTime;
+            if (steerBackStrength <= 0.01f)
+            {
+                steerBackStrength = 0f;
+                isCorrecting = false;
+            }
+        }
+
+        //Applying Rotations
+        Quaternion finalRotation;
+
+        if (isCorrecting && steerBackStrength > 0f)
+        {
+            Quaternion correctionRotation = Quaternion.LookRotation(adaptiveForward);
+            finalRotation = Quaternion.Slerp(intendedRotation, correctionRotation, steerBackStrength);
+        }
+        else
+        {
+            finalRotation = intendedRotation;
+        }
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, lateralSpeed * Time.fixedDeltaTime);
+
+        //Applying Forward Movement
+        Vector3 forward = transform.forward;
         forward.y = 0;
         forward.Normalize();
 
-        //This is so we preserve the vertical velocity component instead of overriding it each frame.
-        //Doing rb.velocity = mainCamera.transform.forward * currentSpeed technically will override & reset the y velocity to 0 every frame.
-        //Which will mess with the gravity when jumping (making it feel very floaty)
-        Vector3 newVelocity = transform.forward * currentSpeed;
-        newVelocity.y = rb.velocity.y; 
+        Vector3 newVelocity = forward * currentSpeed;
+        newVelocity.y = rb.velocity.y; //preserve important y components, namely gravity
         rb.velocity = newVelocity;
 
-        //Turning Logic
-        if (isTurning)
-        {
-            float horizontalInput = Input.GetAxis("Horizontal");
-            if (Mathf.Abs(horizontalInput) > 0.1f)
-            {
-                float turnAmount = horizontalInput * lateralSpeed * Time.fixedDeltaTime;
-
-                //Get the vector for where the player is trying to turn (with respect to the current orientation)
-                Quaternion nextRotation = Quaternion.Euler(0f, turnAmount, 0f) * transform.rotation;
-                Vector3 nextForward = nextRotation * Vector3.forward; //Get the forward vector for that direction
-                nextForward.y = 0; //We don't care about any vertical components
-                nextForward.Normalize(); //Normalize prior to dot product operations
-
-                float dotProduct = Vector3.Dot(adaptiveForward, nextForward);
-                float driftAmount = Mathf.Clamp01(1f - dotProduct);
-
-                //If within our specified range, allow the turn (rotation) to happen
-                if (dotProduct >= maxDot)
-                {
-                    transform.rotation = Quaternion.Slerp(transform.rotation, nextRotation, lateralSpeed * Time.fixedDeltaTime);
-                }
-                else
-                {
-                    Quaternion targetRotation = Quaternion.LookRotation(adaptiveForward);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, driftAmount * forwardAdjustSpeed * Time.fixedDeltaTime);
-                }
-            }
-            Vector3 turnForce = mainCamera.transform.right * horizontalInput * lateralSpeed;
-            rb.AddForce(turnForce, ForceMode.Acceleration);
-
-            Debug.DrawRay(transform.position, adaptiveForward * 20f, Color.red);
-        }
+        //Apply Lateral Force
+        Vector3 turnForce = mainCamera.transform.right * horizontalInput * lateralSpeed;
+        rb.AddForce(turnForce, ForceMode.Acceleration);
     }
 
     private void Jump()
