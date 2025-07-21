@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class AudioMenu : Menu
 {
-    //NOTE from Slash: The TMP text that displays the value is apparently an input field as well. This script currently does not handle the input
-
     /*[Space]
 
     [SerializeField] AudioMixer audioMixer;
@@ -23,13 +21,6 @@ public class AudioMenu : Menu
     [SerializeField] private TMP_InputField ambienceSliderValueText;
     [SerializeField] private Slider UISlider;
     [SerializeField] private TMP_InputField UISliderValueText;
-
-
-    public override void ReturnToPrevious()
-    {
-        UIManager.instance.SettingsMenu.ClearArrows();
-        base.ReturnToPrevious();
-    }
 
     private void Awake()
     {

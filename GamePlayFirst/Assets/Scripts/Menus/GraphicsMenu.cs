@@ -3,10 +3,11 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static PersistentManager;
 
 public class GraphicsMenu : Menu
 {
-    /*public static SettingsGraphics instance;
+    public static GraphicsMenu Instance;
 
     [Space]
 
@@ -15,31 +16,19 @@ public class GraphicsMenu : Menu
     [SerializeField] private TMP_Dropdown antiAliasingDropdown;
     [SerializeField] private TMP_Text vsyncText;
     [SerializeField] private Slider vsyncSlider;
-    [SerializeField] private TMP_Text hudText;
-    [SerializeField] private Slider hudSlider;
-    [SerializeField] private Slider bloomSlider;
-    [SerializeField] TMP_InputField bloomSliderValueText;
-    [SerializeField] private Slider showControlsSlider;
-    [SerializeField] private TMP_Text showControlsText;
-    [SerializeField] GameObject controlsGameObj;
-
-    //[Space]
-
-    //[SerializeField] private List<GameObject> hudUIGameObjects;
-
-    public override void ReturnToPrevious()
-    {
-        UIManager.instance.SettingsMenu.ClearArrows();
-        base.ReturnToPrevious();
-    }
+    //[SerializeField] private TMP_Text hudText;
+    //[SerializeField] private Slider hudSlider;
+    //[SerializeField] private Slider showControlsSlider;
+    //[SerializeField] private TMP_Text showControlsText;
+    //[SerializeField] GameObject controlsGameObj;
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
-        else if (instance != this)
+        else if (Instance != this)
         {
             Destroy(gameObject);
 
@@ -52,33 +41,30 @@ public class GraphicsMenu : Menu
         PopulateResolutionDropDown();
 
         LoadResolution();
-        LoadView();
+        LoadScreenMode();
         LoadAntiAliasing();
         LoadVsync();
-        LoadHUD();
-        LoadBloom();
-        LoadControls();
+        //LoadControls();
     }
 
     private void Update()
     {
-        SetHudText();
         SetVsyncText();
-        SetControlsText();
+        //SetControlsText();
     }
 
     #region Resolution
 
     private void LoadResolution() //Updates the value when the player opens the game
     {
-        resolutionDropdown.value = PersistentManager.instance.currentResolutionNumber;
+        resolutionDropdown.value = PersistentManager.Instance.resolutionNumber;
     }
 
     private void PopulateResolutionDropDown() //Fills the dropdown with the Resolutions serialized field in PersistentManager. Add more options in that serialized field to add more dropdown options
     {
         var resolutionNames = new List<string>();
 
-        foreach (FixedResolution resolution in PersistentManager.instance.Resolutions)
+        foreach (FixedResolution resolution in PersistentManager.Instance.resolutions)
         {
             resolutionNames.Add(resolution.resolutionName);
         }
@@ -87,27 +73,13 @@ public class GraphicsMenu : Menu
         resolutionDropdown.AddOptions(resolutionNames);
     }
 
-    public void SwitchResolution() //Functiion when playing moves the slider
-    {
-        PersistentManager.instance.SwitchResolutionNumber(resolutionDropdown.value);
-
-        //In PersistentManager, SwitchResolutionNumber(int val) switches currentViewMode to Windowed if the value of the entered setting is not the native screen resolution
-        //This section keeps the UI updated with it
-        if (PersistentManager.instance.currentViewMode == FullScreenMode.Windowed)
-        {
-            windowDropdown.value = 1;
-        }
-    }
-
     #endregion
 
     #region ViewMode
 
-    private void LoadView() //Updates the value when the player opens the game
+    private void LoadScreenMode() //Updates the value when the player opens the game
     {
-        FullScreenMode mode = PersistentManager.instance.currentViewMode;
-
-
+        FullScreenMode mode = PersistentManager.Instance.screenMode;
 
         if (mode == FullScreenMode.Windowed)
         {
@@ -119,9 +91,9 @@ public class GraphicsMenu : Menu
         }
     }
 
-    public void SwitchView(int val) //Currently this is only because the only options are fullscreen or windowed
+    public void SwitchScreenMode(int val) //Function to connect to Dropdown
     {
-        PersistentManager.instance.SwitchViewMode(val);
+        PersistentManager.Instance.SwitchScreenMode(val);
     }
 
     #endregion
@@ -130,10 +102,10 @@ public class GraphicsMenu : Menu
 
     private void LoadAntiAliasing() //Updates the value when the player opens the game
     {
-        antiAliasingDropdown.value = AAToSliderValue(ES3.Load("antiAliasing", PersistentManager.instance.GetIntPref("antiAliasing").GetDefaultValue()));
+        AntiAliasingDropdown.value = AAToSliderValue(ES3.Load("AntiAliasing", PersistentManager.Instance.GetIntPref("AntiAliasing").GetDefaultValue()));
     }
 
-    private int AAToSliderValue(int val) //PersistentManager antiAliasing value is will only be 0, 2, 4, 8. Need to convert this for slider values 0, 1, 2, 3
+    private int AAToSliderValue(int val) //PersistentManager AntiAliasing value is will only be 0, 2, 4, 8. Need to convert this for slider values 0, 1, 2, 3
     {
         if (val == 2)
         {
@@ -153,9 +125,9 @@ public class GraphicsMenu : Menu
 
     public void SwitchAA(int val) //Method for dropdown
     {
-        PersistentManager.instance.SetupAntiAliasingSetting(SliderToAAValue(val));
+        PersistentManager.Instance.SetupAntiAliasingSetting(SliderToAAValue(val));
 
-        var temp = PersistentManager.instance.GetIntPref("antiAliasing"); //Saves value to PersistentManager
+        var temp = PersistentManager.Instance.GetIntPref("AntiAliasing"); //Saves value to PersistentManager
 
         temp.SetValue(SliderToAAValue(val));
         temp.Save();
@@ -182,7 +154,7 @@ public class GraphicsMenu : Menu
 
     private void LoadVsync() //Updates the slider value when the player opens the game
     {
-        vsyncSlider.value = ES3.Load("VsyncToggle", PersistentManager.instance.GetIntPref("VsyncToggle").GetDefaultValue());
+        vsyncSlider.value = ES3.Load("VsyncToggle", PersistentManager.Instance.GetIntPref("VsyncToggle").GetDefaultValue());
     }
 
     private void SetVsyncText() //Constantly update the text to = the slider value
@@ -199,101 +171,21 @@ public class GraphicsMenu : Menu
 
     public void ToggleVsync(float val) //For Slider interaction when the player clicks the game object
     {
-        PersistentManager.instance.SetupVsyncSetting((int)val);
+        PersistentManager.Instance.SetupVsyncSetting((int)val);
 
-        var temp = PersistentManager.instance.GetIntPref("VsyncToggle"); //Saves value to PersistentManager
-
-        temp.SetValue((int)val);
-        temp.Save();
-    }
-
-    #endregion
-
-    #region HudUI
-
-    private void LoadHUD() //Updates the slider value when the player opens the game
-    {
-        hudSlider.value = ES3.Load("HUDToggle", PersistentManager.instance.GetIntPref("HUDToggle").GetDefaultValue());
-
-        controlsGameObj.SetActive(hudSlider.value == 1);
-    }
-
-    private void SetHudText() //Constantly update the text to = the slider value
-    {
-        if (hudSlider.value == 0)
-        {
-            hudText.text = "Off";
-        }
-        else
-        {
-            hudText.text = "On";
-        }
-    }
-
-    //This might change because it might need to be in the PersistentManager because this script is initially inactive
-    public void ToggleHUD(float val) //Function when player turns HUD on and off
-    {
-        var temp = PersistentManager.instance.GetIntPref("HUDToggle"); //Saves value to PersistentManager
+        var temp = PersistentManager.Instance.GetIntPref("VsyncToggle"); //Saves value to PersistentManager
 
         temp.SetValue((int)val);
         temp.Save();
-
-        controlsGameObj.SetActive(hudSlider.value == 1);
     }
 
     #endregion
 
-
-    #region Bloom
-
-    private void LoadBloom()
-    {
-        bloomSlider.value = PersistentManager.instance.GetFloatPref("bloom").Value;
-        SetBloomText();
-    }
-
-    public void SaveBloomSlderValue(float val)
-    {
-        float roundedValue = Mathf.Round(val * 100f) / 100f; //Value at 2 decimal
-
-        var temp = PersistentManager.instance.GetFloatPref("bloom");
-
-        temp.SetValue(roundedValue);
-        temp.Save();
-
-        PostProcessingManager.instance.SetBloomVal(roundedValue);
-
-        SetBloomText();
-    }
-
-    private void SetBloomText()
-    {
-        bloomSliderValueText.text = PersistentManager.instance.GetFloatPref("bloom").Value.ToString();
-    }
-
-    public void ManualEditBloomValue(string val)
-    {
-        float value = float.Parse(val);
-
-        value = Mathf.Clamp(value, 0f, 100f);
-        var temp = PersistentManager.instance.GetFloatPref("bloom");
-        temp.SetValue(value);
-        temp.Save();
-
-        PostProcessingManager.instance.SetBloomVal(value);
-
-        LoadBloom();
-        SetBloomText();
-    }
-
-
-    #endregion
-
-    #region ShowControls
+    /*#region ShowControls
 
     private void LoadControls() //Updates the slider value when the player opens the game
     {
-        showControlsSlider.value = ES3.Load("ShowControlsToggle", PersistentManager.instance.GetIntPref("ShowControlsToggle").GetDefaultValue());
+        showControlsSlider.value = ES3.Load("ShowControlsToggle", PersistentManager.Instance.GetIntPref("ShowControlsToggle").GetDefaultValue());
     }
 
     private void SetControlsText() //Constantly update the text to = the slider value
@@ -310,12 +202,12 @@ public class GraphicsMenu : Menu
 
     public void ToggleControls(float val) //For Slider interaction when the player clicks the game object
     {
-        var temp = PersistentManager.instance.GetIntPref("ShowControlsToggle"); //Saves value to PersistentManager
+        var temp = PersistentManager.Instance.GetIntPref("ShowControlsToggle"); //Saves value to PersistentManager
 
         temp.SetValue((int)val);
         temp.Save();
     }
 
-    #endregion
-    */
+    #endregion*/
+    
 }
