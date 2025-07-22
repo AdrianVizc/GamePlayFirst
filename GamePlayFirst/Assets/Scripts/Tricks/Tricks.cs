@@ -7,7 +7,7 @@ public class ComboNode
 {
     public Dictionary<KeyCode, ComboNode> children = new Dictionary<KeyCode, ComboNode>();
     public string animationTrigger = null; 
-    public int points = 0;
+    public float points = 0;
 }
 
 public class Tricks : MonoBehaviour
@@ -119,7 +119,7 @@ public class Tricks : MonoBehaviour
             node = node.children[key];
         }
         node.animationTrigger = animationTrigger;
-        node.points = (int)(sequence.Count * comboAdder);
+        node.points = sequence.Count * comboAdder;
     }
 
     private void ResetCombo()
