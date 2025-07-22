@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ComboNode
 {
     public Dictionary<KeyCode, ComboNode> children = new Dictionary<KeyCode, ComboNode>();
     public string animationTrigger = null; 
+    public int points = 0;
 }
 
 public class Tricks : MonoBehaviour
@@ -70,6 +72,7 @@ public class Tricks : MonoBehaviour
                             // Triggers immediately b/c no further branches possible (i.e A and D)
                             animator.SetTrigger(nextNode.animationTrigger);
                             Debug.Log("Played animation: " + nextNode.animationTrigger);
+                            currentTrickScore += nextNode.points;
                             ResetCombo();
                         }
                         // Else wait for more input or timeout
@@ -94,7 +97,8 @@ public class Tricks : MonoBehaviour
                     if (currentNode.animationTrigger != null)
                     {
                         animator.SetTrigger(currentNode.animationTrigger);
-                        Debug.Log("Played animation: " + currentNode.animationTrigger); ;
+                        Debug.Log("Played animation: " + currentNode.animationTrigger); 
+                        currentTrickScore += currentNode.points;
                     }
                     ResetCombo();
                 }
@@ -115,6 +119,7 @@ public class Tricks : MonoBehaviour
             node = node.children[key];
         }
         node.animationTrigger = animationTrigger;
+        node.points = (int)(sequence.Count * comboAdder);
     }
 
     private void ResetCombo()
