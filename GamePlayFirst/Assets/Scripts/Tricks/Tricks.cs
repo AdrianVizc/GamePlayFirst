@@ -14,7 +14,7 @@ public class Tricks : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private float comboAdder = 250f; // Adds +x points for every additional key needed for trick
-    private float currentTrickScore;
+    [HideInInspector] public float currentTrickScore;
 
     private ComboNode root = new ComboNode();
     private ComboNode currentNode;

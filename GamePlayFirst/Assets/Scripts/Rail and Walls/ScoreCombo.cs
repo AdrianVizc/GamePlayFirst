@@ -15,6 +15,7 @@ public class ScoreCombo : MonoBehaviour
     private PlayerGrind rail;
     private PlayerWall wall;
     private Movement movement;
+    private Tricks tricks;
     private float totalTime;
 
     private void Start()
@@ -22,6 +23,7 @@ public class ScoreCombo : MonoBehaviour
         rail = GetComponent<PlayerGrind>();
         wall = GetComponent<PlayerWall>();
         movement = GetComponent<Movement>();
+        tricks = GetComponent<Tricks>();
 
         totalTime = 0f;
         currMultiplier = 1 - multiplier;
@@ -49,6 +51,7 @@ public class ScoreCombo : MonoBehaviour
 
             // Uncomment code for debugging purposes only to see values:
             // Debug.Log("Score: " + score + "\nCurrent Multiplier: " + currMultiplier);
+            // Debug.Log("Combo Score Bonus: " + tricks.currentTrickScore);
         }
     }
 
