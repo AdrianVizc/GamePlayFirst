@@ -102,7 +102,7 @@ public class GraphicsMenu : Menu
 
     private void LoadAntiAliasing() //Updates the value when the player opens the game
     {
-        AntiAliasingDropdown.value = AAToSliderValue(ES3.Load("AntiAliasing", PersistentManager.Instance.GetIntPref("AntiAliasing").GetDefaultValue()));
+        antiAliasingDropdown.value = AAToSliderValue(ES3.Load("AntiAliasing", PersistentManager.Instance.GetIntPref("AntiAliasing").GetDefaultValue()));
     }
 
     private int AAToSliderValue(int val) //PersistentManager AntiAliasing value is will only be 0, 2, 4, 8. Need to convert this for slider values 0, 1, 2, 3
