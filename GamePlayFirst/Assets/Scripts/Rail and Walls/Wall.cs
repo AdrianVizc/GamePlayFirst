@@ -37,6 +37,7 @@ public class PlayerWall : MonoBehaviour
     private Rigidbody rb;
     [HideInInspector] public bool isWallRunning;
     private bool isWallJumping;
+    private bool wallDetected;
 
     private void Start()
     {
@@ -49,6 +50,7 @@ public class PlayerWall : MonoBehaviour
 
         orientation = transform;
         isWallJumping = false;
+        wallDetected = false;
         rb = GetComponent<Rigidbody>();
     }
 
@@ -60,7 +62,7 @@ public class PlayerWall : MonoBehaviour
             return; // Skip wall-run logic briefly after jumping
         }
 
-        if (!isGrounded)
+        if (!isGrounded && wallDetected)
         {
             CheckForWall();
         }
@@ -162,6 +164,7 @@ public class PlayerWall : MonoBehaviour
 
     private void EndWallRun()
     {
+        wallDetected = false;
         isWallJumping = false;
         isWallRunning = false;
         GetComponent<Movement>().enabled = true;
@@ -170,6 +173,14 @@ public class PlayerWall : MonoBehaviour
         StartCoroutine(ChangeFOV(virtualCamera, defaultFOV, 0.3f));
         StartCoroutine(ChangeTilt(virtualCamera, defaultTilt, 0.3f));
 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("wall"))
+        {
+            wallDetected = true;
+        }
     }
 
     IEnumerator ChangeFOV(CinemachineVirtualCamera cam, float endFOV, float duration)

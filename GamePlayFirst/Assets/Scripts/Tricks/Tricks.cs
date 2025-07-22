@@ -11,6 +11,8 @@ public class ComboNode
 public class Tricks : MonoBehaviour
 {
     [SerializeField] private Animator animator;
+    [SerializeField] private float comboAdder = 250f; // Adds +x points for every additional key needed for trick
+    private float currentTrickScore;
 
     private ComboNode root = new ComboNode();
     private ComboNode currentNode;
@@ -18,8 +20,9 @@ public class Tricks : MonoBehaviour
     private float comboMaxTime = 0.5f;
     private KeyCode? lastKeyPressed = null;
 
-    [SerializeField] private PlayerGrind playerGrind;
-    [SerializeField] private PlayerWall wall;
+    private PlayerGrind rail;
+    private PlayerWall wall;
+    private ScoreCombo scoreCombo;
     private bool onRail;
     private bool isWallRunning;
 
@@ -27,6 +30,12 @@ public class Tricks : MonoBehaviour
     // window of time to check if there is consecutive inputs or just a singular input
     void Start()
     {
+        rail = GetComponent<PlayerGrind>();
+        wall = GetComponent<PlayerWall>();
+        scoreCombo = GetComponent<ScoreCombo>();
+
+        currentTrickScore = 0;
+
         currentNode = root;
         // Combos
         AddCombo(new List<KeyCode> { KeyCode.W }, "FrontFlip");
@@ -41,7 +50,7 @@ public class Tricks : MonoBehaviour
 
     void Update()
     {
-        onRail = playerGrind.onRail;
+        onRail = rail.onRail;
         isWallRunning = wall.isWallRunning;
 
         if (onRail || isWallRunning)
@@ -100,7 +109,9 @@ public class Tricks : MonoBehaviour
         foreach (KeyCode key in sequence)
         {
             if (!node.children.ContainsKey(key))
+            {
                 node.children[key] = new ComboNode();
+            }
             node = node.children[key];
         }
         node.animationTrigger = animationTrigger;
@@ -108,6 +119,9 @@ public class Tricks : MonoBehaviour
 
     private void ResetCombo()
     {
+        scoreCombo.score += currentTrickScore;
+        currentTrickScore = 0;
+
         currentNode = root;
         comboTimer = 0f;
     }
