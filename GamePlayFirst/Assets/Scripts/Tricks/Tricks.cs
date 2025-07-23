@@ -40,14 +40,14 @@ public class Tricks : MonoBehaviour
 
         currentNode = root;
         // Combos
-        AddCombo(new List<KeyCode> { KeyCode.W }, "FrontFlip");
-        AddCombo(new List<KeyCode> { KeyCode.S }, "BackFlip");
-        AddCombo(new List<KeyCode> { KeyCode.A }, "BasicTrick1");
-        AddCombo(new List<KeyCode> { KeyCode.D }, "BasicTrick2");
-        AddCombo(new List<KeyCode> { KeyCode.W, KeyCode.W, KeyCode.W }, "SpecialTrick1");
-        AddCombo(new List<KeyCode> { KeyCode.W, KeyCode.A, KeyCode.D, KeyCode.S }, "SpecialTrick2");
-        AddCombo(new List<KeyCode> { KeyCode.S, KeyCode.S, KeyCode.S }, "SpecialTrick3");
-        AddCombo(new List<KeyCode> { KeyCode.W, KeyCode.S, KeyCode.W }, "SpecialTrick4");
+        AddCombo(new List<KeyCode> { KeyCode.UpArrow }, "FrontFlip");
+        AddCombo(new List<KeyCode> { KeyCode.DownArrow }, "BackFlip");
+        AddCombo(new List<KeyCode> { KeyCode.LeftArrow }, "BasicTrick1");
+        AddCombo(new List<KeyCode> { KeyCode.RightArrow }, "BasicTrick2");
+        AddCombo(new List<KeyCode> { KeyCode.UpArrow, KeyCode.UpArrow, KeyCode.UpArrow }, "SpecialTrick1");
+        AddCombo(new List<KeyCode> { KeyCode.UpArrow, KeyCode.LeftArrow, KeyCode.RightArrow, KeyCode.DownArrow }, "SpecialTrick2");
+        AddCombo(new List<KeyCode> { KeyCode.DownArrow, KeyCode.DownArrow, KeyCode.DownArrow }, "SpecialTrick3");
+        AddCombo(new List<KeyCode> { KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.UpArrow }, "SpecialTrick4");
     }
 
     void Update()
@@ -57,7 +57,7 @@ public class Tricks : MonoBehaviour
 
         if (onRail || isWallRunning)
         {
-            foreach (KeyCode key in new[] { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D })
+            foreach (KeyCode key in new[] { KeyCode.UpArrow, KeyCode.LeftArrow, KeyCode.DownArrow, KeyCode.RightArrow })
             {
                 if (Input.GetKeyDown(key))
                 {
