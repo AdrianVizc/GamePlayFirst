@@ -116,8 +116,9 @@ public class PlayerWall : MonoBehaviour
 
     private void CheckForWall()
     {
-        wallRight = Physics.Raycast(transform.position, orientation.right, out rightWallhit, wallCheckDistance);
-        wallLeft = Physics.Raycast(transform.position, -orientation.right, out leftWallhit, wallCheckDistance);
+        float castRadius = 0.3f;
+        wallRight = Physics.SphereCast(transform.position, castRadius, orientation.right, out rightWallhit, wallCheckDistance);
+        wallLeft = Physics.SphereCast(transform.position, castRadius, -orientation.right, out leftWallhit, wallCheckDistance);
 
         wallHit = (wallRight && rightWallhit.collider.CompareTag("wall")) ||
                   (wallLeft && leftWallhit.collider.CompareTag("wall"));
