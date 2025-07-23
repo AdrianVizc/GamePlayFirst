@@ -18,7 +18,7 @@ public class Tricks : MonoBehaviour
 
     private ComboNode root = new ComboNode();
     private ComboNode currentNode;
-    private float comboTimer;
+    [HideInInspector] public float comboTimer;
     private float comboMaxTime = 0.5f;
     private KeyCode? lastKeyPressed = null;
 
@@ -73,6 +73,7 @@ public class Tricks : MonoBehaviour
                             animator.SetTrigger(nextNode.animationTrigger);
                             Debug.Log("Played animation: " + nextNode.animationTrigger);
                             currentTrickScore += nextNode.points;
+                            //Debug.Log(currentTrickScore);
                             ResetCombo();
                         }
                         // Else wait for more input or timeout
@@ -80,6 +81,7 @@ public class Tricks : MonoBehaviour
                     else
                     {
                         // Invalid combo path — reset
+                        currentTrickScore = 0;
                         ResetCombo();
                     }
 
@@ -97,9 +99,11 @@ public class Tricks : MonoBehaviour
                     if (currentNode.animationTrigger != null)
                     {
                         animator.SetTrigger(currentNode.animationTrigger);
-                        Debug.Log("Played animation: " + currentNode.animationTrigger); 
+                        Debug.Log("Played animation: " + currentNode.animationTrigger);
                         currentTrickScore += currentNode.points;
+                        //Debug.Log(currentTrickScore);
                     }
+                    currentTrickScore = 0;
                     ResetCombo();
                 }
             }
