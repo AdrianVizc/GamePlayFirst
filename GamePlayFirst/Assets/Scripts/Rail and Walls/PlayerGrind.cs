@@ -24,6 +24,7 @@ public class PlayerGrind : MonoBehaviour
 
     Rigidbody rb;
     private bool isJumping;
+    private bool isRailTagIgnored;
 
     private void Start()
     {
@@ -31,6 +32,7 @@ public class PlayerGrind : MonoBehaviour
         timeForFullSpline = 0;
         elapsedTime = 0;
         isJumping = false;
+        isRailTagIgnored = false;
     }
 
     private void Update()
@@ -102,6 +104,11 @@ public class PlayerGrind : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if(isRailTagIgnored)
+        {
+            return;
+        }
+
         // When player touches a rail, start grinding
         if (collision.gameObject.CompareTag("rail"))
         {
@@ -150,12 +157,48 @@ public class PlayerGrind : MonoBehaviour
 
     private void JumpOff()
     {
-        EndRail();
+        onRail = false;
+        isJumping = false;
+        currentRailScript = null;
 
-        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
 
-        transform.rotation = Quaternion.identity;
+        // Reset rotation to flat to remove skew from grinding
+        transform.rotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
+
+        // Move slightly up before jumping, to clear the rail
+        transform.position += Vector3.up * 0.5f;
+
+        // Stop any existing movement
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        // Re-enable movement
+        GetComponent<Movement>().enabled = true;
+
+        // Apply vertical jump force only
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+
+        StartCoroutine(IgnoreRailTemporarily());
+        StartCoroutine(ForceUprightRotationForFrames()); // safety net to reapply upward rotation
+    }
+
+    private IEnumerator IgnoreRailTemporarily()
+    {
+        isRailTagIgnored = true;
+        yield return new WaitForSeconds(0.5f); // ignore rail tag for 0.25 sec
+        isRailTagIgnored = false;
+    }
+
+    private IEnumerator ForceUprightRotationForFrames(float duration = 0.1f)
+    {
+        float timer = 0f;
+        while (timer < duration)
+        {
+            transform.rotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
+            timer += Time.deltaTime;
+            yield return null;
+        }
     }
 
     private void EndRail()
