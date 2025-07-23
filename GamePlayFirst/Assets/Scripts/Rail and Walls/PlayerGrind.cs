@@ -101,8 +101,7 @@ public class PlayerGrind : MonoBehaviour
             }
         }
     }
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if(isRailTagIgnored)
         {
@@ -173,14 +172,20 @@ public class PlayerGrind : MonoBehaviour
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
-        // Re-enable movement
-        GetComponent<Movement>().enabled = true;
-
         // Apply vertical jump force only
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+        Vector3 finalJump = transform.up * jumpForce;
+
+        // Optional: add slight push in forward direction too
+        // float forwardBoost = 2f;
+        finalJump += transform.forward;// * forwardBoost;
+
+        rb.AddForce(finalJump, ForceMode.VelocityChange);
 
         StartCoroutine(IgnoreRailTemporarily());
         StartCoroutine(ForceUprightRotationForFrames()); // safety net to reapply upward rotation
+
+        // Re-enable movement
+        GetComponent<Movement>().enabled = true;
     }
 
     private IEnumerator IgnoreRailTemporarily()

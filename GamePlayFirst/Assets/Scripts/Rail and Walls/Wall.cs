@@ -28,9 +28,11 @@ public class PlayerWall : MonoBehaviour
 
     private bool wallLeft;
     private bool wallRight;
+    private bool wallFront;
     private bool wallHit;
     private RaycastHit leftWallhit;
     private RaycastHit rightWallhit;
+    private RaycastHit forwardWallHit;
 
     private bool isGrounded;
     private Transform orientation;
@@ -117,11 +119,16 @@ public class PlayerWall : MonoBehaviour
     private void CheckForWall()
     {
         float castRadius = 0.3f;
+
         wallRight = Physics.SphereCast(transform.position, castRadius, orientation.right, out rightWallhit, wallCheckDistance);
         wallLeft = Physics.SphereCast(transform.position, castRadius, -orientation.right, out leftWallhit, wallCheckDistance);
+        wallFront = Physics.SphereCast(transform.position, castRadius, orientation.forward, out forwardWallHit, wallCheckDistance);
 
-        wallHit = (wallRight && rightWallhit.collider.CompareTag("wall")) ||
-                  (wallLeft && leftWallhit.collider.CompareTag("wall"));
+        bool validWall = (wallRight && rightWallhit.collider.CompareTag("wall")) ||
+                         (wallLeft && leftWallhit.collider.CompareTag("wall")) ||
+                         (wallFront && forwardWallHit.collider.CompareTag("wall"));
+
+        wallHit = validWall;
     }
 
     private void StartWallRun()
@@ -130,17 +137,26 @@ public class PlayerWall : MonoBehaviour
         GetComponent<Movement>().enabled = false;
         rb.useGravity = false;
 
-        Vector3 rawNormal = wallRight ? rightWallhit.normal : leftWallhit.normal;
+        // Grab wall normal
+        Vector3 rawNormal = wallRight ? rightWallhit.normal :
+                            wallLeft ? leftWallhit.normal :
+                            Vector3.back; // fallback in case neither is true
+
         storedWallNormal = new Vector3(rawNormal.x, 0f, rawNormal.z).normalized;
 
         StartCoroutine(ChangeFOV(virtualCamera, FOV, 0.3f));
 
-        if (wallRight)
+        // Use dot product to determine wall side relative to the player's right direction
+        float sideDot = Vector3.Dot(storedWallNormal, transform.right);
+
+        if (sideDot > 0.1f)
         {
+            // Wall is on right side
             StartCoroutine(ChangeTilt(virtualCamera, tilt, 0.3f));
         }
-        else if (wallLeft)
+        else if (sideDot < -0.1f)
         {
+            // Wall is on left side
             StartCoroutine(ChangeTilt(virtualCamera, -tilt, 0.3f));
         }
     }
@@ -149,17 +165,26 @@ public class PlayerWall : MonoBehaviour
     {
         Vector3 wallDir = Vector3.Cross(Vector3.up, storedWallNormal);
 
-        // Ensure wallDir points roughly forward relative to player's current forward
-        if (Vector3.Dot(wallDir, transform.forward) < 0)
+        // Force wall run to always favor positive Z direction
+        Vector3 worldForward = Vector3.forward;
+
+        // Project the world forward onto the wall plane to make sure it's still aligned to the wall
+        Vector3 projectedForward = Vector3.ProjectOnPlane(worldForward, storedWallNormal).normalized;
+
+        // If the projection fails (wall is perpendicular to Z), fall back to default wallDir
+        if (projectedForward.sqrMagnitude < 0.1f)
         {
-            wallDir = -wallDir;
+            projectedForward = wallDir;
         }
 
-        // Rotate player to face along the wall direction
+        // Use forced forward-aligned direction
+        wallDir = projectedForward;
+
+        // Rotate player to face the direction of travel
         Quaternion targetRotation = Quaternion.LookRotation(wallDir.normalized, Vector3.up);
         transform.rotation = targetRotation;
 
-        // Move player along the wall, no vertical slide
+        // Move the player
         rb.velocity = wallDir.normalized * wallRunSpeed;
     }
 
