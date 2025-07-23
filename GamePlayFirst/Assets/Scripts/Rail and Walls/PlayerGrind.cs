@@ -101,7 +101,7 @@ public class PlayerGrind : MonoBehaviour
             }
         }
     }
-    private void OnTriggerEnter(Collider collision)
+    private void OnCollisionEnter(Collision collision)
     {
         if(isRailTagIgnored)
         {
