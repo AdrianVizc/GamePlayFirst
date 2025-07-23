@@ -40,6 +40,7 @@ public class PlayerWall : MonoBehaviour
     [HideInInspector] public bool isWallRunning;
     private bool isWallJumping;
     private bool wallDetected;
+    private bool wallCooldownReady;
 
     private void Start()
     {
@@ -53,6 +54,7 @@ public class PlayerWall : MonoBehaviour
         orientation = transform;
         isWallJumping = false;
         wallDetected = false;
+        wallCooldownReady = true;
         rb = GetComponent<Rigidbody>();
     }
 
@@ -98,16 +100,19 @@ public class PlayerWall : MonoBehaviour
                 // Set new velocity
                 rb.velocity = jumpVelocity;
 
-                StartCoroutine(ChangeFOV(virtualCamera, defaultFOV, 0.3f));
-                StartCoroutine(ChangeTilt(virtualCamera, defaultTilt, 0.3f));
+                EndWallRun(); // handles camera + state reset
 
-                wallJumpTimer = wallJumpCooldown;
-                Invoke(nameof(EndWallRun), jumpTimer);
+                // Immediately hand control back to movement
+                EnableMovement();
+
+                // Block wall re-entry for a short cooldown
+                StartCoroutine(WallCooldownDelay(0.2f));
             }
         }
         else if (isWallRunning && !isWallJumping && (isGrounded || !wallHit))
         {
             EndWallRun();
+            EnableMovement();
         }
     }
 
@@ -190,22 +195,36 @@ public class PlayerWall : MonoBehaviour
 
     private void EndWallRun()
     {
+        wallHit = false;
         wallDetected = false;
         isWallJumping = false;
         isWallRunning = false;
-        GetComponent<Movement>().enabled = true;
         rb.useGravity = true;
 
         StartCoroutine(ChangeFOV(virtualCamera, defaultFOV, 0.3f));
         StartCoroutine(ChangeTilt(virtualCamera, defaultTilt, 0.3f));
+    }
 
+    private void EnableMovement()
+    {
+        if (!GetComponent<Movement>().enabled)
+        {
+            GetComponent<Movement>().enabled = true;
+        }
+
+        wallCooldownReady = true;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (!wallCooldownReady)
+        {
+            return;
+        }
         if (collision.gameObject.CompareTag("wall"))
         {
             wallDetected = true;
+            wallCooldownReady = false;
         }
     }
 
@@ -238,4 +257,11 @@ public class PlayerWall : MonoBehaviour
 
         recomposer.m_Dutch = endTilt;
     }
+    private IEnumerator WallCooldownDelay(float delay)
+    {
+        wallCooldownReady = false;
+        yield return new WaitForSeconds(delay);
+        wallCooldownReady = true;
+    }
+
 }
