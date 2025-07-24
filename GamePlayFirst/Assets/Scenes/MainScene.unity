@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a84f5623518baff48bcdb1cf8b7a5db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skipStartupAnimation: 1
+  skipStartupAnimation: 0
   videoPlayer: {fileID: 2016974231}
   resolutions:
   - width: 1280
@@ -780,7 +780,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: 828841f4b4c5a7346a4a451f81a177eb, type: 2}
   musicSource: {fileID: 721372038}
-  uiSource: {fileID: 342094057}
+  UISource: {fileID: 0}
   environmentSource: {fileID: 377928086}
   musicClips: []
   UIClips: []
@@ -810,7 +810,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2016974230}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: fe3c863c05aa38045ada195ec98fd77c, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 155a0ff7295b3a74787840b04fdd51a0, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 650169713}
