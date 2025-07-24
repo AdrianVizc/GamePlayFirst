@@ -73,6 +73,11 @@ public class GraphicsMenu : Menu
         resolutionDropdown.AddOptions(resolutionNames);
     }
 
+    public void SwitchResolution() //Functiion when playing moves the slider
+    {
+        PersistentManager.Instance.SwitchResolutionNumber(resolutionDropdown.value);
+    }
+
     #endregion
 
     #region ViewMode
@@ -81,13 +86,17 @@ public class GraphicsMenu : Menu
     {
         FullScreenMode mode = PersistentManager.Instance.screenMode;
 
-        if (mode == FullScreenMode.Windowed)
+        if (mode == FullScreenMode.ExclusiveFullScreen)
         {
-            windowDropdown.value = 1; //1 = windowed
+            windowDropdown.value = 0;
+        }
+        else if (mode == FullScreenMode.FullScreenWindow)
+        {
+            windowDropdown.value = 1;
         }
         else
         {
-            windowDropdown.value = 0; //0 = fullscreen
+            windowDropdown.value = 3;
         }
     }
 
