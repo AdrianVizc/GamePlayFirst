@@ -82,6 +82,7 @@ public class PersistentManager : MonoBehaviour
             yield return null;
         }
         videoPlayer.gameObject.SetActive(false);
+
         Startup();
     }
 
@@ -92,17 +93,14 @@ public class PersistentManager : MonoBehaviour
 
         SetupPrefs();
 
-        SetupVsyncSetting(ES3.Load("VsyncToggle", GetIntPref("VsyncToggle").GetDefaultValue()));
+        SetupVsyncSetting(ES3.Load("VsyncToggle", GetIntPref("VsyncToggle").GetDefaultValue())); //This chunk loads previous settings
         SetupAntiAliasingSetting(ES3.Load("AntiAliasing", GetIntPref("AntiAliasing").GetDefaultValue()));
-
         resolutionNumber = ES3.Load("resolutionNumber", GetNativeResolution());
-
         screenMode = ES3.Load("ScreenMode", FullScreenMode.FullScreenWindow);
-
         FinalizeViewSwitch();
     }
 
-    private int GetNativeResolution()
+    private int GetNativeResolution() //Checks if user's native resolution = any of the dropdown settings. If not, defaults to RESOLUTION_ELEMENT
     {
         for (int i = 0; i < resolutions.Length; i++)
         {
@@ -168,14 +166,14 @@ public class PersistentManager : MonoBehaviour
     {
         QualitySettings.vSyncCount = val; //0 is off , 1 is on (On means the game's frames = monitor's refresh rate)
 
-        //Debug.Log("Vsync: " + QualitySettings.vSyncCount); 
+        Debug.Log("Vsync: " + QualitySettings.vSyncCount); 
     }
 
     public void SetupAntiAliasingSetting(int val)
     {
         QualitySettings.antiAliasing = val; //0 is off. 2x, 4x, and 8x, are on with increasing quality
 
-        //Debug.Log("Anti-Aliasing: " + QualitySettings.AntiAliasing);
+        Debug.Log("Anti-Aliasing: " + QualitySettings.antiAliasing);
     }
 
     public void SwitchScreenMode(int val)
@@ -210,7 +208,9 @@ public class PersistentManager : MonoBehaviour
     void FinalizeViewSwitch()
     {
         Screen.fullScreenMode = screenMode;
+        Debug.Log("Display Mode: " + screenMode);
 
-        Screen.SetResolution(resolutions[resolutionNumber].width, resolutions[resolutionNumber].height, screenMode);        
+        Screen.SetResolution(resolutions[resolutionNumber].width, resolutions[resolutionNumber].height, screenMode);
+        Debug.Log("Resolution: " + resolutions[resolutionNumber].width + " x " + resolutions[resolutionNumber].height);
     }
 }
