@@ -130,13 +130,13 @@ public class Movement : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.LeftShift) && canDash && !isGrounded)
+        if (canDash && !isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 ActivateDash(-1);
             }
-            else if (Input.GetKeyDown(KeyCode.D))
+            else if (Input.GetKeyDown(KeyCode.E))
             {
                 ActivateDash(1);
             }
@@ -287,8 +287,8 @@ public class Movement : MonoBehaviour
         isDashing = true;
         dashTimer = dashDuration;
         canDash = false;
-
-        StartCoroutine(SlowMoDash());
+        
+        //StartCoroutine(SlowMoDash());
     }
 
     private IEnumerator SlowMoDash()
