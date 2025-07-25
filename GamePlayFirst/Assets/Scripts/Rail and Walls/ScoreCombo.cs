@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
 public class ScoreCombo : MonoBehaviour
@@ -50,8 +49,8 @@ public class ScoreCombo : MonoBehaviour
             score += (pointValue * currMultiplier);
 
             // Uncomment code for debugging purposes only to see values:
-            // Debug.Log("Score: " + score + "\nCurrent Multiplier: " + currMultiplier);
-            // Debug.Log("Combo Score Bonus: " + tricks.currentTrickScore);
+            Debug.Log("Score: " + score + "\nCurrent Multiplier: " + currMultiplier);
+            Debug.Log("Combo Score Bonus: " + tricks.currentTrickScore);
         }
     }
 

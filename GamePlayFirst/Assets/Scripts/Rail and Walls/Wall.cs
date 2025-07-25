@@ -14,8 +14,8 @@ public class PlayerWall : MonoBehaviour
     [Header("Wall Jumping")]
     [SerializeField] private float wallJumpAwayForce = 6f;
     [SerializeField] private float wallJumpUpForce = 8f;
-    // [SerializeField] private float jumpTimer = 0.75f;
-    // private float wallJumpCooldown;
+    [SerializeField] private float jumpTimer = 0.75f;
+    private float wallJumpCooldown;
     private float wallJumpTimer;
     private Vector3 storedWallNormal;
 
@@ -48,7 +48,7 @@ public class PlayerWall : MonoBehaviour
         defaultFOV = virtualCamera.m_Lens.FieldOfView;
         defaultTilt = virtualCamera.GetComponent<CinemachineRecomposer>().m_Dutch;
 
-        //wallJumpCooldown = 0.2f;
+        wallJumpCooldown = 0.2f;
         wallJumpTimer = 0f;
 
         orientation = transform;
@@ -127,7 +127,10 @@ public class PlayerWall : MonoBehaviour
 
         wallRight = Physics.SphereCast(transform.position, castRadius, orientation.right, out rightWallhit, wallCheckDistance);
         wallLeft = Physics.SphereCast(transform.position, castRadius, -orientation.right, out leftWallhit, wallCheckDistance);
-        wallFront = Physics.SphereCast(transform.position, castRadius, orientation.forward, out forwardWallHit, wallCheckDistance);
+        if(!(wallRight || wallLeft))
+        {
+            wallFront = Physics.SphereCast(transform.position, castRadius, orientation.forward, out forwardWallHit, wallCheckDistance);
+        }
 
         bool validWall = (wallRight && rightWallhit.collider.CompareTag("wall")) ||
                          (wallLeft && leftWallhit.collider.CompareTag("wall")) ||
@@ -142,28 +145,25 @@ public class PlayerWall : MonoBehaviour
         GetComponent<Movement>().enabled = false;
         rb.useGravity = false;
 
-        // Grab wall normal
-        Vector3 rawNormal = wallRight ? rightWallhit.normal :
-                            wallLeft ? leftWallhit.normal :
-                            Vector3.back; // fallback in case neither is true
+        // Grab the correct wall normal
+        Vector3 rawNormal;
+        if (wallRight) rawNormal = rightWallhit.normal;
+        else if (wallLeft) rawNormal = leftWallhit.normal;
+        else if (wallFront) rawNormal = forwardWallHit.normal;
+        else rawNormal = -transform.forward; // fallback
 
         storedWallNormal = new Vector3(rawNormal.x, 0f, rawNormal.z).normalized;
 
         StartCoroutine(ChangeFOV(virtualCamera, FOV, 0.3f));
 
-        // Use dot product to determine wall side relative to the player's right direction
+        // Use side detection to determine camera tilt
         float sideDot = Vector3.Dot(storedWallNormal, transform.right);
-
         if (sideDot > 0.1f)
-        {
-            // Wall is on right side
             StartCoroutine(ChangeTilt(virtualCamera, tilt, 0.3f));
-        }
         else if (sideDot < -0.1f)
-        {
-            // Wall is on left side
             StartCoroutine(ChangeTilt(virtualCamera, -tilt, 0.3f));
-        }
+        else
+            StartCoroutine(ChangeTilt(virtualCamera, 0f, 0.3f)); // wall in front — no tilt
     }
 
     private void DoWallRun()
