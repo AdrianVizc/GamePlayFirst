@@ -206,7 +206,9 @@ MonoBehaviour:
   boolPrefs:
   - prefName: isGamePaused
     DefaultValue: 0
-  stringPrefs: []
+  stringPrefs:
+  - prefName: PlayScene
+    DefaultValue: DomsScene
 --- !u!1 &342094055
 GameObject:
   m_ObjectHideFlags: 0
@@ -780,7 +782,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: 828841f4b4c5a7346a4a451f81a177eb, type: 2}
   musicSource: {fileID: 721372038}
-  UISource: {fileID: 0}
+  UISource: {fileID: 342094057}
   environmentSource: {fileID: 377928086}
   musicClips: []
   UIClips: []
@@ -810,7 +812,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2016974230}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 155a0ff7295b3a74787840b04fdd51a0, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 31a746cbda7a27d4da13c0d8aab0ef0e, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 650169713}
@@ -821,7 +823,7 @@ VideoPlayer:
   m_RenderMode: 1
   m_AspectRatio: 3
   m_DataSource: 0
-  m_TimeUpdateMode: 2
+  m_TimeUpdateMode: 1
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 2
   m_TargetAudioSources:

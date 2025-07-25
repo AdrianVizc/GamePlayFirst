@@ -1,11 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : Menu
 {
     public static PauseMenu Instance; //Code to make script into a singleton
+
+    [SerializeField] public GameObject background;
+
+    private bool isPaused;
 
     private void Awake()
     {
@@ -21,18 +23,47 @@ public class PauseMenu : Menu
         }
     }
 
-    private void Update() //temp for testing
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && PersistentManager.Instance.GetBoolPref("isGamePaused").Value)
+        isPaused = false;
+    }
+
+    private void Update()
+    {
+        PauseGame();
+    }
+
+    protected override void CloseMenus()
+    {
+        background.SetActive(false);
+    }
+
+    private void PauseGame()
+    {
+        Scene thisScene = SceneManager.GetSceneByName(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+
+        if (thisScene.IsValid() && !isPaused && Input.GetKeyDown(KeyCode.Escape))
         {
-            var temp = PersistentManager.Instance.GetBoolPref("isGamePaused");
-            temp.SetValue(false);
+            background.SetActive(true);
+            isPaused = true;
+
+            Time.timeScale = 0f;
         }
-        else if (Input.GetKeyDown(KeyCode.Escape) && !PersistentManager.Instance.GetBoolPref("isGamePaused").Value)
+        else if (thisScene.IsValid() && isPaused && Input.GetKeyDown(KeyCode.Escape))
         {
-            var temp = PersistentManager.Instance.GetBoolPref("isGamePaused");
-            temp.SetValue(true);
+            if(background.activeSelf)
+            {
+                background.SetActive(false);
+            }
+            else
+            {
+                SettingsMenu.Instance.BackButton();
+                background.SetActive(false);
+            }
+
+            isPaused = false;
+
+            Time.timeScale = 1f;
         }
-        Debug.Log(PersistentManager.Instance.GetBoolPref("isGamePaused").Value);
     }
 }
