@@ -22,7 +22,6 @@ public class Movement : MonoBehaviour
     [SerializeField] private bool isTurning;
     [SerializeField] private float maxTurnAngle;
     [SerializeField] private float maxDot;
-    //private Vector3 initialForward;
     private Vector3 adaptiveForward;
     private bool isCorrecting = false;
     private float steerBackStrength = 0f;
@@ -34,6 +33,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float playerHeight;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] public bool isGrounded;
+    [SerializeField] private bool canDoubleJump;
 
     [Header("Other Components")]
     private Rigidbody rb;
@@ -54,14 +54,12 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        GetInput();
     }
 
     private void FixedUpdate()
     {
         GroundCheck();
-        GetInput();
-        //UpdateAdaptiveForward();
         Move();
     }
 
@@ -85,9 +83,16 @@ public class Movement : MonoBehaviour
             isBraking = false;
         }
 
-        if (Input.GetKey(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            Jump();
+            if (isGrounded)
+            {
+                Jump();
+            }
+            else if (canDoubleJump)
+            {
+                DoubleJump();
+            }
         }
     }
     private void Move()
@@ -183,12 +188,25 @@ public class Movement : MonoBehaviour
         {
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+
+            canDoubleJump = true;
+        }
+    }
+
+    private void DoubleJump()
+    {
+        if (!isGrounded)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+
+            canDoubleJump = false;
         }
     }
 
     private void GroundCheck()
     {
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, groundLayer);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.1f, groundLayer);
     }
 
     public void UpdateForwardDirection(Vector3 newForward)
