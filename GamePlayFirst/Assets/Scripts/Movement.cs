@@ -98,25 +98,13 @@ public class Movement : MonoBehaviour
 
     private void GetInput()
     {
-        if (Input.GetKey(KeyCode.W))
-        {
-            isAccelerating = true;
-        }
-        else
-        {
-            isAccelerating = false;
-        }
+        float vertical = Input.GetAxis("Vertical");
+        float horizontal = Input.GetAxis("Horizontal");
 
-        if (Input.GetKey(KeyCode.S))
-        {
-            isBraking = true;
-        }
-        else
-        {
-            isBraking = false;
-        }
+        isAccelerating = vertical > 0.1f;
+        isBraking = vertical < -0.1f;
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button0))
         {
             if (isGrounded)
             {
@@ -132,11 +120,11 @@ public class Movement : MonoBehaviour
 
         if (canDash && !isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.Q) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal < -0.1f))
             {
                 ActivateDash(-1);
             }
-            else if (Input.GetKeyDown(KeyCode.E))
+            else if (Input.GetKeyDown(KeyCode.E) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal > 0.1f))
             {
                 ActivateDash(1);
             }

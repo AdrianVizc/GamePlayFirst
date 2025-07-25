@@ -29,9 +29,9 @@ public class Tricks : MonoBehaviour
     private bool onRail;
     private bool isWallRunning;
     private Dictionary<KeyCode, String> keyDict;
+    private bool leftTriggerPressed = false;
+    private bool rightTriggerPressed = false;
 
-    // Note: There will be a small delay on FrontFlip and BackFlip because W and S are potential starters for combos while D and A are not. There is a small
-    // window of time to check if there is consecutive inputs or just a singular input
     void Start()
     {
         rail = GetComponent<PlayerGrind>();
@@ -42,11 +42,25 @@ public class Tricks : MonoBehaviour
         keyDict[KeyCode.DownArrow] = "BackFlip";
         keyDict[KeyCode.LeftArrow] = "BasicTrick1";
         keyDict[KeyCode.RightArrow] = "BasicTrick2";
+        keyDict[KeyCode.Joystick1Button4] = "BasicTrick1";
+        keyDict[KeyCode.Joystick1Button5] = "BasicTrick2";
+        keyDict[KeyCode.Joystick1Button6] = "FrontFlip";
+        keyDict[KeyCode.Joystick1Button7] = "BackFlip";
+
 
         currentTrickScore = 0;
 
         currentNode = root;
-        // Combos
+        // Controller Combos
+        AddCombo(new List<KeyCode> { KeyCode.Joystick1Button6 }, "FrontFlip");
+        AddCombo(new List<KeyCode> { KeyCode.Joystick1Button7 }, "BackFlip");
+        AddCombo(new List<KeyCode> { KeyCode.Joystick1Button4 }, "BasicTrick1");
+        AddCombo(new List<KeyCode> { KeyCode.Joystick1Button5 }, "BasicTrick2");
+        AddCombo(new List<KeyCode> { KeyCode.Joystick1Button6, KeyCode.Joystick1Button6, KeyCode.Joystick1Button6 }, "SpecialTrick1");
+        AddCombo(new List<KeyCode> { KeyCode.Joystick1Button6, KeyCode.Joystick1Button4, KeyCode.Joystick1Button5, KeyCode.Joystick1Button7 }, "SpecialTrick2");
+        AddCombo(new List<KeyCode> { KeyCode.Joystick1Button7, KeyCode.Joystick1Button7, KeyCode.Joystick1Button7 }, "SpecialTrick3");
+        AddCombo(new List<KeyCode> { KeyCode.Joystick1Button6, KeyCode.Joystick1Button7, KeyCode.Joystick1Button6 }, "SpecialTrick4");
+        // Keyboard Combos
         AddCombo(new List<KeyCode> { KeyCode.UpArrow }, "FrontFlip");
         AddCombo(new List<KeyCode> { KeyCode.DownArrow }, "BackFlip");
         AddCombo(new List<KeyCode> { KeyCode.LeftArrow }, "BasicTrick1");
@@ -59,12 +73,43 @@ public class Tricks : MonoBehaviour
 
     void Update()
     {
+        KeyCode? triggerKey = null;
+
         onRail = rail.onRail;
         isWallRunning = wall.isWallRunning;
 
         if (onRail || isWallRunning)
         {
-            foreach (KeyCode key in new[] { KeyCode.UpArrow, KeyCode.LeftArrow, KeyCode.DownArrow, KeyCode.RightArrow })
+            // Handles LT and RT (they aren't defined as keycodes so have to be dealt with differently)
+            if (Math.Round(Input.GetAxisRaw("RightTrigger")) == 1)
+            {
+                if (rightTriggerPressed == false)
+                {
+                    triggerKey = KeyCode.Joystick1Button7;
+                    TriggerCombo(triggerKey);
+                    rightTriggerPressed = true;
+                }
+            }
+            if (Math.Round(Input.GetAxisRaw("RightTrigger")) == 0)
+            {
+                rightTriggerPressed = false;
+            }
+            if (Math.Round(Input.GetAxisRaw("LeftTrigger")) == -1)
+            {
+                if (leftTriggerPressed == false)
+                {
+                    triggerKey = KeyCode.Joystick1Button6;
+                    TriggerCombo(triggerKey);
+                    leftTriggerPressed = true;
+                }
+            }
+            if (Math.Round(Input.GetAxisRaw("LeftTrigger")) == 0)
+            {
+                leftTriggerPressed = false;
+            }
+            
+            
+            foreach (KeyCode key in new[] { KeyCode.UpArrow, KeyCode.LeftArrow, KeyCode.DownArrow, KeyCode.RightArrow, KeyCode.Joystick1Button4, KeyCode.Joystick1Button5 })
             {
                 if (Input.GetKeyDown(key))
                 {
@@ -112,7 +157,7 @@ public class Tricks : MonoBehaviour
                 }
             }
         }
-        
+
     }
     // Adds combos to the trie
     private void AddCombo(List<KeyCode> sequence, string animationTrigger)
@@ -141,4 +186,32 @@ public class Tricks : MonoBehaviour
         currentNode = root;
         comboTimer = 0f;
     }
+
+    private void TriggerCombo(KeyCode? triggerKey)
+    {
+    
+        if (currentNode.children.TryGetValue(triggerKey.Value, out ComboNode nextNode))
+        {
+            currentNode = nextNode;
+            lastKeyPressed = triggerKey;
+            comboTimer = comboMaxTime;
+            
+            if (nextNode.animationTrigger != null)
+            {
+                animator.SetTrigger(nextNode.animationTrigger);
+                Debug.Log("Played animation: " + nextNode.animationTrigger);
+                currentTrickScore += nextNode.points;
+                if (nextNode.children.Count == 0)
+                {
+                    ResetCombo();
+                }
+            }
+        }
+        else
+        {
+            currentTrickScore = 0;
+            ResetCombo();
+        }
+    }
+    
 }
