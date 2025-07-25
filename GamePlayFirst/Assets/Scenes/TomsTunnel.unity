@@ -972,8 +972,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2417053767473169813, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
+      propertyPath: upForce
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417053767473169813, guid: 7517a6fdf98f9c844a91523105a57ccc,
+        type: 3}
+      propertyPath: dashForce
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417053767473169813, guid: 7517a6fdf98f9c844a91523105a57ccc,
+        type: 3}
       propertyPath: jumpForce
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417053767473169813, guid: 7517a6fdf98f9c844a91523105a57ccc,
+        type: 3}
+      propertyPath: dashDuration
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 2417053767473169813, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
@@ -989,6 +1004,11 @@ PrefabInstance:
         type: 3}
       propertyPath: playerHeight
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417053767473169813, guid: 7517a6fdf98f9c844a91523105a57ccc,
+        type: 3}
+      propertyPath: recoveryDuration
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2417053767473169813, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
@@ -1019,6 +1039,11 @@ PrefabInstance:
         type: 3}
       propertyPath: steerBackRampUpSpeed
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417053767473169813, guid: 7517a6fdf98f9c844a91523105a57ccc,
+        type: 3}
+      propertyPath: recoverySmoothingFactor
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3208888085197836789, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
@@ -1078,12 +1103,12 @@ PrefabInstance:
     - target: {fileID: 5035894612058989691, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000028720944
+      value: 0.000000028720944
       objectReference: {fileID: 0}
     - target: {fileID: 5035894612058989691, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00000000795524
+      value: -0.00000000795524
       objectReference: {fileID: 0}
     - target: {fileID: 6972709684689986655, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
@@ -1093,12 +1118,12 @@ PrefabInstance:
     - target: {fileID: 6972709684689986655, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000028720944
+      value: 0.000000028720944
       objectReference: {fileID: 0}
     - target: {fileID: 6972709684689986655, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00000000795524
+      value: -0.00000000795524
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

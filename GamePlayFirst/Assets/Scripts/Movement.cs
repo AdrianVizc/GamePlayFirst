@@ -35,6 +35,18 @@ public class Movement : MonoBehaviour
     [SerializeField] public bool isGrounded;
     [SerializeField] private bool canDoubleJump;
 
+    [Header("Sideways Dash")]
+    [SerializeField] private bool canDash;
+    [SerializeField] private float dashForce = 5f;
+    [SerializeField] private float upForce = 2f;
+    [SerializeField] private bool isDashing;
+    private float dashTimer = 0f;
+    [SerializeField] private float dashDuration = 0.2f;
+    [SerializeField] private bool isRecovering;
+    private float recoveryTimer = 0f;
+    [SerializeField] private float recoveryDuration = 0.5f;
+    [SerializeField] private float recoverySmoothingFactor = 2f;
+
     [Header("Other Components")]
     private Rigidbody rb;
     private Camera mainCamera;
@@ -60,6 +72,27 @@ public class Movement : MonoBehaviour
     private void FixedUpdate()
     {
         GroundCheck();
+
+        if (isDashing)
+        {
+            dashTimer -= Time.fixedDeltaTime;
+            if (dashTimer <= 0f)
+            {
+                isDashing = false;
+                isRecovering = true;
+                recoveryTimer = recoveryDuration;
+            }
+        }
+
+        if (isRecovering)
+        {
+            recoveryTimer -= Time.fixedDeltaTime;
+            if (recoveryTimer <= 0f)
+            {
+                isRecovering = false;
+            }
+        }
+        
         Move();
     }
 
@@ -88,98 +121,123 @@ public class Movement : MonoBehaviour
             if (isGrounded)
             {
                 Jump();
+                canDoubleJump = true;
+                canDash = true;
             }
             else if (canDoubleJump)
             {
                 DoubleJump();
             }
         }
+
+        if (Input.GetKey(KeyCode.LeftShift) && canDash && !isGrounded)
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                ActivateDash(-1);
+            }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                ActivateDash(1);
+            }
+        }
     }
     private void Move()
     {
-        //Forward Movement Logic
-        if (isAccelerating)
+        if (!isDashing)
         {
-            if (currentSpeed < maxSpeed)
+            //Forward Movement Logic
+            if (isAccelerating)
             {
-                currentSpeed += accelSpeed * Time.fixedDeltaTime;
+                if (currentSpeed < maxSpeed)
+                {
+                    currentSpeed += accelSpeed * Time.fixedDeltaTime;
+                }
             }
-        }
-        else if (isBraking)
-        {
-            if (currentSpeed > minSpeed)
+            else if (isBraking)
             {
-                currentSpeed -= brakeForce * Time.fixedDeltaTime;
+                if (currentSpeed > minSpeed)
+                {
+                    currentSpeed -= brakeForce * Time.fixedDeltaTime;
+                }
             }
-        }
-        else
-        {
-            if (currentSpeed > minSpeed)
+            else
             {
-                currentSpeed -= decelSpeed * Time.fixedDeltaTime;
+                if (currentSpeed > minSpeed)
+                {
+                    currentSpeed -= decelSpeed * Time.fixedDeltaTime;
+                }
             }
-        }
 
-        currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
+            currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
 
-        //Turn Logic
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float turnAmount = horizontalInput * lateralSpeed * Time.fixedDeltaTime;
+            //Turn Logic
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float turnAmount = horizontalInput * lateralSpeed * Time.fixedDeltaTime;
 
-        //Predict where the player wants to turn based on their input
-        Quaternion intendedRotation = Quaternion.Euler(0f, turnAmount, 0f) * transform.rotation;
-        Vector3 intendedForward = intendedRotation * Vector3.forward;
-        intendedForward.y = 0;
-        intendedForward.Normalize();
+            //Predict where the player wants to turn based on their input
+            Quaternion intendedRotation = Quaternion.Euler(0f, turnAmount, 0f) * transform.rotation;
+            Vector3 intendedForward = intendedRotation * Vector3.forward;
+            intendedForward.y = 0;
+            intendedForward.Normalize();
 
-        //Check if the turn is "valid" or allowed
-        float dotProduct = Vector3.Dot(adaptiveForward, intendedForward);
-        bool isOutOfBounds = dotProduct < maxDot;
+            //Check if the turn is "valid" or allowed
+            float dotProduct = Vector3.Dot(adaptiveForward, intendedForward);
+            bool isOutOfBounds = dotProduct < maxDot;
 
-        //Logic for steering back on course if trying to turn out of bounds
-        if (isOutOfBounds)
-        {
-            isCorrecting = true;
-            steerBackStrength += steerBackRampUpSpeed * Time.fixedDeltaTime;
-            steerBackStrength = Mathf.Clamp(steerBackStrength, 0f, steerBackMaxStrength);
-        }
-        else
-        {
-            steerBackStrength -= steerBackDecaySpeed * Time.fixedDeltaTime;
-            if (steerBackStrength <= 0.01f)
+            //Logic for steering back on course if trying to turn out of bounds
+            if (isOutOfBounds)
             {
-                steerBackStrength = 0f;
-                isCorrecting = false;
+                isCorrecting = true;
+                steerBackStrength += steerBackRampUpSpeed * Time.fixedDeltaTime;
+                steerBackStrength = Mathf.Clamp(steerBackStrength, 0f, steerBackMaxStrength);
             }
+            else
+            {
+                steerBackStrength -= steerBackDecaySpeed * Time.fixedDeltaTime;
+                if (steerBackStrength <= 0.01f)
+                {
+                    steerBackStrength = 0f;
+                    isCorrecting = false;
+                }
+            }
+
+            //Applying Rotations
+            Quaternion finalRotation;
+
+            if (isCorrecting && steerBackStrength > 0f)
+            {
+                Quaternion correctionRotation = Quaternion.LookRotation(adaptiveForward);
+                finalRotation = Quaternion.Slerp(intendedRotation, correctionRotation, steerBackStrength);
+            }
+            else
+            {
+                finalRotation = intendedRotation;
+            }
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, lateralSpeed * Time.fixedDeltaTime);
+
+            //Applying Forward Movement
+            Vector3 forward = transform.forward;
+            forward.y = 0;
+            forward.Normalize();
+
+            Vector3 newVelocity = forward * currentSpeed;
+            newVelocity.y = rb.velocity.y; //preserve important y components, namely gravity
+
+            if (isRecovering)
+            {
+                rb.velocity = Vector3.Lerp(rb.velocity, newVelocity, Time.fixedDeltaTime * recoverySmoothingFactor);
+            }
+            else
+            {
+                rb.velocity = newVelocity;
+            }
+
+            //Apply Lateral Force
+            Vector3 turnForce = mainCamera.transform.right * horizontalInput * lateralSpeed;
+            rb.AddForce(turnForce, ForceMode.Acceleration);
         }
-
-        //Applying Rotations
-        Quaternion finalRotation;
-
-        if (isCorrecting && steerBackStrength > 0f)
-        {
-            Quaternion correctionRotation = Quaternion.LookRotation(adaptiveForward);
-            finalRotation = Quaternion.Slerp(intendedRotation, correctionRotation, steerBackStrength);
-        }
-        else
-        {
-            finalRotation = intendedRotation;
-        }
-
-        transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, lateralSpeed * Time.fixedDeltaTime);
-
-        //Applying Forward Movement
-        Vector3 forward = transform.forward;
-        forward.y = 0;
-        forward.Normalize();
-
-        Vector3 newVelocity = forward * currentSpeed;
-        newVelocity.y = rb.velocity.y; //preserve important y components, namely gravity
-        rb.velocity = newVelocity;
-
-        //Apply Lateral Force
-        Vector3 turnForce = mainCamera.transform.right * horizontalInput * lateralSpeed;
-        rb.AddForce(turnForce, ForceMode.Acceleration);
     }
 
     private void Jump()
@@ -212,5 +270,31 @@ public class Movement : MonoBehaviour
     public void UpdateForwardDirection(Vector3 newForward)
     {
         adaptiveForward = newForward;
+    }
+
+    private void ActivateDash(int direction)
+    {
+        Debug.Log("Dashing");
+        Vector3 dashDirection = mainCamera.transform.right * direction; //-1 will make this LEFT, 1 will keep this RIGHT
+        dashDirection.y = 0;
+        dashDirection.Normalize();
+
+        //rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        //rb.AddForce((dashDirection * dashForce) + (Vector3.up * upForce), ForceMode.Impulse);
+        Vector3 dashVelocity = dashDirection * dashForce + Vector3.up * upForce;
+        rb.velocity = rb.velocity * 0.5f + dashVelocity * 0.5f;
+
+        isDashing = true;
+        dashTimer = dashDuration;
+        canDash = false;
+
+        StartCoroutine(SlowMoDash());
+    }
+
+    private IEnumerator SlowMoDash()
+    {
+        Time.timeScale = 0.5f;
+        yield return new WaitForSecondsRealtime(0.2f);
+        Time.timeScale = 1f;
     }
 }
