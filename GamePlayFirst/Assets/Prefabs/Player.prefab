@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 357205357654106904}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.18910751, y: -0.000000006198119, z: 0.0000000011936485, w: 0.9819564}
+  m_LocalRotation: {x: 0.18910751, y: -0.000000008447955, z: 0.0000000016269276, w: 0.9819564}
   m_LocalPosition: {x: 0, y: 2, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -111,6 +111,7 @@ GameObject:
   - component: {fileID: 4000356003508784444}
   - component: {fileID: 5198423549227475531}
   - component: {fileID: 6304998883250272739}
+  - component: {fileID: 8062984617862828382}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -269,6 +270,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   isGrounded: 0
+  canDoubleJump: 0
+  canDash: 0
+  dashForce: 5
+  upForce: 2
+  isDashing: 0
+  dashDuration: 0.2
+  isRecovering: 0
+  recoveryDuration: 0.5
+  recoverySmoothingFactor: 2
 --- !u!114 &1994217144134824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,6 +311,7 @@ MonoBehaviour:
   animator: {fileID: 4000356003508784444}
   comboAdder: 250
   currentTrickScore: 0
+  comboTimer: 0
 --- !u!95 &4000356003508784444
 Animator:
   serializedVersion: 5
@@ -338,7 +349,6 @@ MonoBehaviour:
   wallRunSpeed: 10
   wallJumpAwayForce: 6
   wallJumpUpForce: 8
-  jumpTimer: 0.75
   FOV: 70
   tilt: 5
   isWallRunning: 0
@@ -359,6 +369,21 @@ MonoBehaviour:
   pointValue: 100
   multiplier: 0.25
   scoreTimeInterval: 0.25
+--- !u!114 &8062984617862828382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 701548250464859126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca8905ba1b1274c4ebb2003d1c63e95d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bumpForce: 7.5
+  raycastCheckDistance: 0.5
+  raycastCheckRadius: 0.3
 --- !u!1 &2685739011977674486
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,8 +412,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2685739011977674486}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17366114, y: -0.000000008472468, z: 0.0000000014940396, w: 0.9848055}
-  m_LocalPosition: {x: 0, y: 1.8200002, z: -5}
+  m_LocalRotation: {x: 0.18910751, y: -0.000000008447955, z: 0.0000000016269276, w: 0.9819564}
+  m_LocalPosition: {x: 0, y: 2, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

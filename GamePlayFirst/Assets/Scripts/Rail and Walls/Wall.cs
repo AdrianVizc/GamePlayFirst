@@ -14,8 +14,8 @@ public class PlayerWall : MonoBehaviour
     [Header("Wall Jumping")]
     [SerializeField] private float wallJumpAwayForce = 6f;
     [SerializeField] private float wallJumpUpForce = 8f;
-    [SerializeField] private float jumpTimer = 0.75f;
-    private float wallJumpCooldown;
+    //[SerializeField] private float jumpTimer = 0.75f;
+    //private float wallJumpCooldown;
     private float wallJumpTimer;
     private Vector3 storedWallNormal;
 
@@ -48,7 +48,7 @@ public class PlayerWall : MonoBehaviour
         defaultFOV = virtualCamera.m_Lens.FieldOfView;
         defaultTilt = virtualCamera.GetComponent<CinemachineRecomposer>().m_Dutch;
 
-        wallJumpCooldown = 0.2f;
+        //wallJumpCooldown = 0.2f;
         wallJumpTimer = 0f;
 
         orientation = transform;

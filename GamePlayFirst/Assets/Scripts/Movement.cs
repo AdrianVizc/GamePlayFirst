@@ -9,7 +9,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float minSpeed;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float startingSpeed;
-    [SerializeField] private float currentSpeed;
+    [SerializeField] public float currentSpeed;
     [SerializeField] private float accelSpeed;
     [SerializeField] private float decelSpeed;
     [SerializeField] private float brakeForce;
