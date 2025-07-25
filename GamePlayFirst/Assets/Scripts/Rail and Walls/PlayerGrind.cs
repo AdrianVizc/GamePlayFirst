@@ -132,7 +132,9 @@ public class PlayerGrind : MonoBehaviour
         SplineUtility.Evaluate(currentRailScript.railSpline.Spline, normalizedTime, out pos, out forward, out up);
 
         // Decide which direction along rail to grind based on player facing
-        currentRailScript.CalculateDirection(forward, transform.forward);
+        // Force direction toward world +Z
+        Vector3 worldTangent = currentRailScript.transform.TransformDirection(forward);
+        currentRailScript.normalDir = Vector3.Dot(worldTangent.normalized, Vector3.forward) >= 0f;
 
         // Snap player position and rotation exactly on spline start point
         transform.position = splinePoint + (Vector3.up * heightOffset);
