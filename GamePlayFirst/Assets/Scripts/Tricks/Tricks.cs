@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -27,6 +28,7 @@ public class Tricks : MonoBehaviour
     private ScoreCombo scoreCombo;
     private bool onRail;
     private bool isWallRunning;
+    private Dictionary<KeyCode, String> keyDict;
 
     // Note: There will be a small delay on FrontFlip and BackFlip because W and S are potential starters for combos while D and A are not. There is a small
     // window of time to check if there is consecutive inputs or just a singular input
@@ -35,6 +37,11 @@ public class Tricks : MonoBehaviour
         rail = GetComponent<PlayerGrind>();
         wall = GetComponent<PlayerWall>();
         scoreCombo = GetComponent<ScoreCombo>();
+        keyDict = new Dictionary<KeyCode, String>();
+        keyDict[KeyCode.UpArrow] = "FrontFlip";
+        keyDict[KeyCode.DownArrow] = "BackFlip";
+        keyDict[KeyCode.LeftArrow] = "BasicTrick1";
+        keyDict[KeyCode.RightArrow] = "BasicTrick2";
 
         currentTrickScore = 0;
 
@@ -67,14 +74,17 @@ public class Tricks : MonoBehaviour
                         lastKeyPressed = key;
                         comboTimer = comboMaxTime;
 
-                        if (nextNode.animationTrigger != null && nextNode.children.Count == 0)
+                        if (nextNode.animationTrigger != null)
                         {
                             // Triggers immediately b/c no further branches possible (i.e A and D)
                             animator.SetTrigger(nextNode.animationTrigger);
                             Debug.Log("Played animation: " + nextNode.animationTrigger);
                             currentTrickScore += nextNode.points;
+                            if (nextNode.children.Count == 0)
+                            {
+                                ResetCombo();
+                            }
                             //Debug.Log(currentTrickScore);
-                            ResetCombo();
                         }
                         // Else wait for more input or timeout
                     }
@@ -96,13 +106,7 @@ public class Tricks : MonoBehaviour
 
                 if (comboTimer <= 0)
                 {
-                    if (currentNode.animationTrigger != null)
-                    {
-                        animator.SetTrigger(currentNode.animationTrigger);
-                        Debug.Log("Played animation: " + currentNode.animationTrigger);
-                        currentTrickScore += currentNode.points;
-                        //Debug.Log(currentTrickScore);
-                    }
+                    // Ran out of time for combo
                     currentTrickScore = 0;
                     ResetCombo();
                 }
@@ -120,10 +124,13 @@ public class Tricks : MonoBehaviour
             {
                 node.children[key] = new ComboNode();
             }
+            //Debug.Log($"Added key to combo: {key} : {node.animationTrigger}");
             node = node.children[key];
+            node.animationTrigger = keyDict[key];
         }
         node.animationTrigger = animationTrigger;
         node.points = sequence.Count * comboAdder;
+        //Debug.Log($"Added key to combo: {node} : {node.animationTrigger}");
     }
 
     private void ResetCombo()
