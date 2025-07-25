@@ -45,12 +45,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        LoadVolume();
-    }
-
-    private void LoadVolume() //Used to set audio mixer as the game opens. Otherwise, the AudioMenu script will only change the mixer when you open that menu
+    public void LoadVolume() //Used to set audio mixer as the game opens. Otherwise, the AudioMenu script will only change the mixer when you open that menu
     {
         string[] MIXER_PARAMETERS = { MIXER_MASTER, MIXER_MUSIC, MIXER_UI, MIXER_ENVIRONMENT };
         foreach (string volumeParameter in MIXER_PARAMETERS)

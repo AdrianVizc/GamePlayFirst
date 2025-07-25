@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class Menu : MonoBehaviour
         menusToOpen[val].gameObject.SetActive(true);        
     }
 
-    private void CloseMenus()
+    protected virtual void CloseMenus()
     {
         foreach (Menu menu in menusToClose)
         {
@@ -29,9 +30,11 @@ public class Menu : MonoBehaviour
 
     public void BackButton()
     {
-        if (PersistentManager.Instance.GetBoolPref("isGamePaused").Value) //temp for testing
+        Scene thisScene = SceneManager.GetSceneByName(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+
+        if (thisScene.IsValid())
         {
-            PauseMenu.Instance.gameObject.SetActive(true);
+            PauseMenu.Instance.background.SetActive(true);
         }
         else
         {

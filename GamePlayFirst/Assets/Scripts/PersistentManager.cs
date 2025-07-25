@@ -98,6 +98,7 @@ public class PersistentManager : MonoBehaviour
         resolutionNumber = ES3.Load("resolutionNumber", GetNativeResolution());
         screenMode = ES3.Load("ScreenMode", FullScreenMode.FullScreenWindow);
         FinalizeViewSwitch();
+        AudioManager.instance.LoadVolume();
     }
 
     private int GetNativeResolution() //Checks if user's native resolution = any of the dropdown settings. If not, defaults to RESOLUTION_ELEMENT
@@ -205,12 +206,12 @@ public class PersistentManager : MonoBehaviour
         FinalizeViewSwitch();
     }
 
-    void FinalizeViewSwitch()
+    private void FinalizeViewSwitch()
     {
         Screen.fullScreenMode = screenMode;
         Debug.Log("Display Mode: " + screenMode);
 
         Screen.SetResolution(resolutions[resolutionNumber].width, resolutions[resolutionNumber].height, screenMode);
         Debug.Log("Resolution: " + resolutions[resolutionNumber].width + " x " + resolutions[resolutionNumber].height);
-    }
+    }    
 }
