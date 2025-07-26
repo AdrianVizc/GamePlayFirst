@@ -4,6 +4,7 @@ using Unity.Burst.CompilerServices;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class PlayerGrind : MonoBehaviour
 {
@@ -40,12 +41,30 @@ public class PlayerGrind : MonoBehaviour
     {
         if (onRail)
         {
-            if(Input.GetKeyDown(KeyCode.Space) && !IsRailTooVertical())
+            float horizontal = Input.GetAxis("Horizontal");
+
+            if (Input.GetKeyDown(KeyCode.Space) && !IsRailTooVertical())
             {
                 isJumping = true;
-                movement.canDash = true;
                 movement.canDoubleJump = true;
             }
+            else if (Input.GetKeyDown(KeyCode.Q) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal < -0.1f))
+            {
+                // Move slightly up before jumping, to clear the rail
+                transform.position += Vector3.up * 2f;
+                ThrowOffRail();
+                movement.ActivateDash(-1);
+                StartCoroutine(IgnoreRailTemporarily(1f));
+            }
+            else if (Input.GetKeyDown(KeyCode.E) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal > 0.1f))
+            {
+                // Move slightly up before jumping, to clear the rail
+                transform.position += Vector3.up * 2f;
+                ThrowOffRail();
+                movement.ActivateDash(1);
+                StartCoroutine(IgnoreRailTemporarily(1f));
+            }
+
             MovePlayerAlongRail();
         }
     }
@@ -186,17 +205,17 @@ public class PlayerGrind : MonoBehaviour
 
         rb.AddForce(finalJump, ForceMode.VelocityChange);
 
-        StartCoroutine(IgnoreRailTemporarily());
+        StartCoroutine(IgnoreRailTemporarily(0.5f));
         StartCoroutine(ForceUprightRotationForFrames()); // safety net to reapply upward rotation
 
         // Re-enable movement
         GetComponent<Movement>().enabled = true;
     }
 
-    private IEnumerator IgnoreRailTemporarily()
+    private IEnumerator IgnoreRailTemporarily(float duration)
     {
         isRailTagIgnored = true;
-        yield return new WaitForSeconds(0.5f); // ignore rail tag for 0.25 sec
+        yield return new WaitForSeconds(duration); // ignore rail tag for x sec
         isRailTagIgnored = false;
     }
 

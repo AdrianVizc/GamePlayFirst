@@ -262,7 +262,7 @@ public class Movement : MonoBehaviour
         adaptiveForward = newForward;
     }
 
-    private void ActivateDash(int direction)
+    public void ActivateDash(int direction)
     {
         Debug.Log("Dashing");
         Vector3 dashDirection = mainCamera.transform.right * direction; //-1 will make this LEFT, 1 will keep this RIGHT
