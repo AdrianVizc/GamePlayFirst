@@ -208,7 +208,7 @@ MonoBehaviour:
     DefaultValue: 0
   stringPrefs:
   - prefName: PlayScene
-    DefaultValue: DomsScene
+    DefaultValue: Nick'sPlayground
 --- !u!1 &342094055
 GameObject:
   m_ObjectHideFlags: 0

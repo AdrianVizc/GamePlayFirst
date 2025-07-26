@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScene.unity
     guid: ddc9ac0e5443a7d42be2ffb512a7fa99
   - enabled: 1
-    path: Assets/Scenes/DomsScene.unity
-    guid: e7787ba68dcb6c94cbd45742baacd2e9
+    path: Assets/Scenes/Nick'sPlayground.unity
+    guid: 070e07940b9df5c48803957389ee8012
   m_configObjects: {}
