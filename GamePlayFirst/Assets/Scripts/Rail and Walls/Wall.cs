@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class PlayerWall : MonoBehaviour
 {
@@ -63,6 +64,8 @@ public class PlayerWall : MonoBehaviour
 
     private void Update()
     {
+        float horizontal = Input.GetAxis("Horizontal");
+
         if (wallJumpTimer > 0f)
         {
             wallJumpTimer -= Time.deltaTime;
@@ -113,6 +116,20 @@ public class PlayerWall : MonoBehaviour
 
                 // Block wall re-entry for a short cooldown
                 StartCoroutine(WallCooldownDelay(0.2f));
+            }
+            else if (wallRight && (Input.GetKeyDown(KeyCode.Q) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal < -0.1f)))
+            {
+                EndWallRun();
+                EnableMovement();
+
+                movement.ActivateDash(-1);
+            }
+            else if (wallLeft && (Input.GetKeyDown(KeyCode.E) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal > 0.1f)))
+            {
+                EndWallRun();
+                EnableMovement();
+
+                movement.ActivateDash(1);
             }
         }
         else if (isWallRunning && !isWallJumping && (isGrounded || !wallHit))
