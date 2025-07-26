@@ -87,7 +87,7 @@ public class PlayerWall : MonoBehaviour
             DoWallRun();
 
             // Jump off wall if player presses jump
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetButtonDown("Jump"))
             {
                 movement.canDoubleJump = true;
                 movement.canDash = true;
