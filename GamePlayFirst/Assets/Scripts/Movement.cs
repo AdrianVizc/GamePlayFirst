@@ -106,7 +106,7 @@ public class Movement : MonoBehaviour
         isAccelerating = vertical > 0.1f;
         isBraking = vertical < -0.1f;
 
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button0))
+        if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.Joystick1Button0))
         {
             if (isGrounded)
             {
