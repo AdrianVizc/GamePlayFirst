@@ -41,13 +41,13 @@ public class PlayerGrind : MonoBehaviour
     {
         if (onRail)
         {
+            movement.canDash = true;
             // float horizontal = Input.GetAxis("Horizontal");
 
             if (Input.GetButtonDown("Jump") && !IsRailTooVertical())
             {
                 isJumping = true;
                 movement.canDoubleJump = true;
-                movement.canDash = true;
             }
             // else if (Input.GetKeyDown(KeyCode.Q) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal < -0.1f))
             // {
