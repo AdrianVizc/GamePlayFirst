@@ -43,7 +43,7 @@ public class PlayerGrind : MonoBehaviour
         {
             float horizontal = Input.GetAxis("Horizontal");
 
-            if (Input.GetKeyDown(KeyCode.Space) && !IsRailTooVertical())
+            if (Input.GetButtonDown("Jump") && !IsRailTooVertical())
             {
                 isJumping = true;
                 movement.canDoubleJump = true;
