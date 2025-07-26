@@ -41,29 +41,29 @@ public class PlayerGrind : MonoBehaviour
     {
         if (onRail)
         {
-            float horizontal = Input.GetAxis("Horizontal");
+            // float horizontal = Input.GetAxis("Horizontal");
 
             if (Input.GetButtonDown("Jump") && !IsRailTooVertical())
             {
                 isJumping = true;
                 movement.canDoubleJump = true;
             }
-            else if (Input.GetKeyDown(KeyCode.Q) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal < -0.1f))
-            {
-                // Move slightly up before jumping, to clear the rail
-                transform.position += Vector3.up * 2f;
-                ThrowOffRail();
-                movement.ActivateDash(-1);
-                StartCoroutine(IgnoreRailTemporarily(1f));
-            }
-            else if (Input.GetKeyDown(KeyCode.E) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal > 0.1f))
-            {
-                // Move slightly up before jumping, to clear the rail
-                transform.position += Vector3.up * 2f;
-                ThrowOffRail();
-                movement.ActivateDash(1);
-                StartCoroutine(IgnoreRailTemporarily(1f));
-            }
+            // else if (Input.GetKeyDown(KeyCode.Q) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal < -0.1f))
+            // {
+            //     // Move slightly up before jumping, to clear the rail
+            //     transform.position += Vector3.up * 2f;
+            //     ThrowOffRail();
+            //     movement.ActivateDash(-1);
+            //     StartCoroutine(IgnoreRailTemporarily(1f));
+            // }
+            // else if (Input.GetKeyDown(KeyCode.E) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal > 0.1f))
+            // {
+            //     // Move slightly up before jumping, to clear the rail
+            //     transform.position += Vector3.up * 2f;
+            //     ThrowOffRail();
+            //     movement.ActivateDash(1);
+            //     StartCoroutine(IgnoreRailTemporarily(1f));
+            // }
 
             MovePlayerAlongRail();
         }
