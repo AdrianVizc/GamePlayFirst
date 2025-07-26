@@ -33,10 +33,10 @@ public class Movement : MonoBehaviour
     [SerializeField] private float playerHeight;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] public bool isGrounded;
-    [SerializeField] private bool canDoubleJump;
+    [SerializeField] public bool canDoubleJump;
 
     [Header("Sideways Dash")]
-    [SerializeField] private bool canDash;
+    [SerializeField] public bool canDash;
     [SerializeField] private float dashForce = 5f;
     [SerializeField] private float upForce = 2f;
     [SerializeField] private bool isDashing;
@@ -50,11 +50,13 @@ public class Movement : MonoBehaviour
     [Header("Other Components")]
     private Rigidbody rb;
     private Camera mainCamera;
+    private PlayerGrind rail;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = this.GetComponent<Rigidbody>();
+        rail = GetComponent<PlayerGrind>();
         rb.freezeRotation = true;
         mainCamera = Camera.main;
         currentSpeed = startingSpeed;

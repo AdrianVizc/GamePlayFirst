@@ -42,6 +42,8 @@ public class PlayerWall : MonoBehaviour
     private bool wallDetected;
     private bool wallCooldownReady;
 
+    private Movement movement;
+
     private void Start()
     {
         virtualCamera = GetComponentInChildren<CinemachineVirtualCamera>();
@@ -56,6 +58,7 @@ public class PlayerWall : MonoBehaviour
         wallDetected = false;
         wallCooldownReady = true;
         rb = GetComponent<Rigidbody>();
+        movement = GetComponent<Movement>();
     }
 
     private void Update()
@@ -83,6 +86,9 @@ public class PlayerWall : MonoBehaviour
             // Jump off wall if player presses jump
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                movement.canDoubleJump = true;
+                movement.canDash = true;
+
                 isWallJumping = true;
                 rb.useGravity = true;
 

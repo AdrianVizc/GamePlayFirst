@@ -21,14 +21,15 @@ public class PlayerGrind : MonoBehaviour
     [Header("Jump Settings")]
     private float angleLimitThreshold = 20f;
 
-
     Rigidbody rb;
     private bool isJumping;
     private bool isRailTagIgnored;
+    private Movement movement;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        movement = GetComponent<Movement>();
         timeForFullSpline = 0;
         elapsedTime = 0;
         isJumping = false;
@@ -42,6 +43,8 @@ public class PlayerGrind : MonoBehaviour
             if(Input.GetKeyDown(KeyCode.Space) && !IsRailTooVertical())
             {
                 isJumping = true;
+                movement.canDash = true;
+                movement.canDoubleJump = true;
             }
             MovePlayerAlongRail();
         }
