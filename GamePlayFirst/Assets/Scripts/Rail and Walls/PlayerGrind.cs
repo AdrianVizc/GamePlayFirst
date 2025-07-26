@@ -1,7 +1,9 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Splines;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
@@ -22,13 +24,21 @@ public class PlayerGrind : MonoBehaviour
     [Header("Jump Settings")]
     private float angleLimitThreshold = 20f;
 
+    [Header("Camera Settings")]
+    [SerializeField] private float FOV = 70f;
+
     Rigidbody rb;
     private bool isJumping;
     private bool isRailTagIgnored;
     private Movement movement;
 
+    private CinemachineVirtualCamera virtualCamera;
+    private float defaultFOV;
+
     private void Start()
     {
+        virtualCamera = GetComponentInChildren<CinemachineVirtualCamera>();
+        defaultFOV = virtualCamera.m_Lens.FieldOfView;
         rb = GetComponent<Rigidbody>();
         movement = GetComponent<Movement>();
         timeForFullSpline = 0;
@@ -80,11 +90,13 @@ public class PlayerGrind : MonoBehaviour
             if(isJumping)
             {
                 isJumping = false;
+                StartCoroutine(ChangeFOV(virtualCamera, defaultFOV, 0.3f));
                 JumpOff();
                 return;
             }
             if (progress < -1 || progress > 1)
             {
+                StartCoroutine(ChangeFOV(virtualCamera, defaultFOV, 0.3f));
                 ThrowOffRail();
                 return;
             }
@@ -138,6 +150,8 @@ public class PlayerGrind : MonoBehaviour
             currentRailScript = collision.gameObject.GetComponent<Rail>();
             CalculateAndSetRailPosition();
             GetComponent<Movement>().enabled = false;
+
+            StartCoroutine(ChangeFOV(virtualCamera, FOV, 0.3f));
         }
     }
 
@@ -276,6 +290,17 @@ public class PlayerGrind : MonoBehaviour
 
         // If the angle is close to 0 or 180, it's very vertical
         return angle < (0 + angleLimitThreshold) || angle > (180 - angleLimitThreshold);
+    }
+    IEnumerator ChangeFOV(CinemachineVirtualCamera cam, float endFOV, float duration)
+    {
+        float startFOV = cam.m_Lens.FieldOfView;
+        float time = 0;
+        while (time < duration)
+        {
+            cam.m_Lens.FieldOfView = Mathf.Lerp(startFOV, endFOV, time / duration);
+            yield return null;
+            time += Time.deltaTime;
+        }
     }
 
     private IEnumerator UnfreezeRotation(Rigidbody rb, float delay)
