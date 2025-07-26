@@ -47,6 +47,7 @@ public class PlayerGrind : MonoBehaviour
             {
                 isJumping = true;
                 movement.canDoubleJump = true;
+                movement.canDash = true;
             }
             // else if (Input.GetKeyDown(KeyCode.Q) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal < -0.1f))
             // {
