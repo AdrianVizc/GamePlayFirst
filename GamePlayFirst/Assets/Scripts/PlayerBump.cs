@@ -32,22 +32,8 @@ public class PlayerBump : MonoBehaviour
             isBumping = false;
             zeroVel = false;
             movement.enabled = true;
-            // if (currentSpeed < movement.currentSpeed)
-            // {
-            //     movement.currentSpeed = currentSpeed;
-            // 
-            //     //rb.velocity = newVelocity;
-            // 
-            // }
-            // else
-            // {
-            //     currentSpeed = 0f;
-            //     isBumping = false;
-            //     zeroVel = false;
-            //     movement.enabled = true;
-            // }
         }
-        else if (Physics.SphereCast(transform.position, raycastCheckRadius, transform.forward, out RaycastHit hit, raycastCheckDistance))
+        else if (Physics.SphereCast(transform.position, raycastCheckRadius, transform.forward, out RaycastHit hit, raycastCheckDistance, ~0, QueryTriggerInteraction.Ignore))
         {
             if (hit.collider.CompareTag("rail") || (hit.collider.CompareTag("wall") && !movement.isGrounded))
             {
@@ -66,10 +52,5 @@ public class PlayerBump : MonoBehaviour
         {
             zeroVel = true;
         }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        // Do something
     }
 }
