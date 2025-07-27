@@ -6,8 +6,8 @@ public class PlayerBump : MonoBehaviour
 {
     [Header("Bump Settings")]
     [SerializeField] private float bumpForce = 7.5f;
-    [SerializeField] private float raycastCheckDistance = 0.5f;
-    [SerializeField] private float raycastCheckRadius = 0.3f;
+    private float raycastCheckDistance = 0.25f;
+    private float raycastCheckRadius = 0.3f;
 
     private Rigidbody rb;
     private Movement movement;
@@ -66,5 +66,10 @@ public class PlayerBump : MonoBehaviour
         {
             zeroVel = true;
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Do something
     }
 }
