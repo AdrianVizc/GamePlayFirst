@@ -59,6 +59,7 @@ public class Movement : MonoBehaviour
         rb = this.GetComponent<Rigidbody>();
         rail = GetComponent<PlayerGrind>();
         rb.freezeRotation = true;
+        canDoubleJump = true;
         mainCamera = Camera.main;
         currentSpeed = startingSpeed;
         adaptiveForward = transform.forward;
@@ -113,7 +114,6 @@ public class Movement : MonoBehaviour
             if (isGrounded)
             {
                 Jump();
-                canDoubleJump = true;
                 canDash = true;
             }
             else if (canDoubleJump)
@@ -257,6 +257,10 @@ public class Movement : MonoBehaviour
     private void GroundCheck()
     {
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.1f, groundLayer);
+        if (isGrounded)
+        {
+            canDoubleJump = true;
+        }
     }
 
     public void UpdateForwardDirection(Vector3 newForward)
