@@ -20,6 +20,11 @@ public class AudioMenu : Menu
     [SerializeField] private Slider environmentSlider;
     [SerializeField] private TMP_Text environmentSliderValueText;
 
+    private void OnEnable()
+    {
+        SettingsMenu.Instance.ChangeBackground(1);
+    }
+
     private void Awake()
     {
         Initialize();

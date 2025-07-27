@@ -31,4 +31,9 @@ public class SettingsMenu : Menu
             return;
         }
     }
+
+    public void ChangeBackground(int val)
+    {
+        background.sprite = backgroundSprites[val];
+    }
 }
