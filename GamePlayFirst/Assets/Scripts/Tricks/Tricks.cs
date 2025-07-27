@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,7 +15,6 @@ public class ComboNode
 public class Tricks : MonoBehaviour
 {
     [SerializeField] private Animator animator;
-    [SerializeField] private float comboAdder = 250f; // Adds +x points for every additional key needed for trick
     [HideInInspector] public float currentTrickScore;
 
     private ComboNode root = new ComboNode();
@@ -29,6 +29,14 @@ public class Tricks : MonoBehaviour
     private bool onRail;
     private bool isWallRunning;
     private Dictionary<KeyCode, String> keyDict;
+    [SerializeField] public float FrontFlip = 200f;
+    [SerializeField] public float BackFlip = 200f;
+    [SerializeField] public float BasicTrick1 = 200f;
+    [SerializeField] public float BasicTrick2 = 200f;
+    [SerializeField] public float SpecialTrick1 = 500f;
+    [SerializeField] public float SpecialTrick2 = 500f;
+    [SerializeField] public float SpecialTrick3 = 500f;
+    [SerializeField] public float SpecialTrick4 = 500f;
     private bool leftTriggerPressed = false;
     private bool rightTriggerPressed = false;
 
@@ -37,6 +45,7 @@ public class Tricks : MonoBehaviour
         rail = GetComponent<PlayerGrind>();
         wall = GetComponent<PlayerWall>();
         scoreCombo = GetComponent<ScoreCombo>();
+        // Dictionary for Keycodes to Tricks
         keyDict = new Dictionary<KeyCode, String>();
         keyDict[KeyCode.UpArrow] = "FrontFlip";
         keyDict[KeyCode.DownArrow] = "BackFlip";
@@ -46,7 +55,6 @@ public class Tricks : MonoBehaviour
         keyDict[KeyCode.Joystick1Button5] = "BasicTrick2";
         keyDict[KeyCode.Joystick1Button6] = "FrontFlip";
         keyDict[KeyCode.Joystick1Button7] = "BackFlip";
-
 
         currentTrickScore = 0;
 
@@ -123,7 +131,7 @@ public class Tricks : MonoBehaviour
                         {
                             // Triggers immediately b/c no further branches possible (i.e A and D)
                             animator.SetTrigger(nextNode.animationTrigger);
-                            Debug.Log("Played animation: " + nextNode.animationTrigger);
+                            //Debug.Log("Played animation: " + nextNode.animationTrigger);
                             currentTrickScore += nextNode.points;
                             if (nextNode.children.Count == 0)
                             {
@@ -162,6 +170,8 @@ public class Tricks : MonoBehaviour
     // Adds combos to the trie
     private void AddCombo(List<KeyCode> sequence, string animationTrigger)
     {
+        float prevPoints = 0;
+        FieldInfo publicField;
         ComboNode node = root;
         foreach (KeyCode key in sequence)
         {
@@ -170,11 +180,17 @@ public class Tricks : MonoBehaviour
                 node.children[key] = new ComboNode();
             }
             //Debug.Log($"Added key to combo: {key} : {node.animationTrigger}");
+            prevPoints = node.points;
             node = node.children[key];
             node.animationTrigger = keyDict[key];
+            publicField = GetType().GetField(node.animationTrigger);
+            node.points = prevPoints + (float)publicField.GetValue(this);
+            //Debug.Log($"{node.animationTrigger} : {node.points}");
         }
         node.animationTrigger = animationTrigger;
-        node.points = sequence.Count * comboAdder;
+        publicField = GetType().GetField(animationTrigger);
+        node.points = prevPoints + (float)publicField.GetValue(this);
+        //Debug.Log($"{animationTrigger} : {node.points}");
         //Debug.Log($"Added key to combo: {node} : {node.animationTrigger}");
     }
 
