@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ScoreCombo : MonoBehaviour
 {
+    public static ScoreCombo Instance;
+
     [HideInInspector] public float score; // Player's total score
     [HideInInspector] public float currMultiplier; // Player's current multiplier level (1x, 1.25x, etc.)
 
@@ -26,6 +28,22 @@ public class ScoreCombo : MonoBehaviour
 
         totalTime = 0f;
         currMultiplier = 1 - multiplier;
+    }
+
+    private void Awake()
+    {
+        if (Instance == null) //Code to make script into a singleton
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+
+            return;
+        }
+
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Update()
