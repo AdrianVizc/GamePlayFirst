@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a84f5623518baff48bcdb1cf8b7a5db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skipStartupAnimation: 0
+  skipStartupAnimation: 1
   videoPlayer: {fileID: 2016974231}
   resolutions:
   - width: 1280
@@ -190,10 +190,10 @@ MonoBehaviour:
     height: 2160
     resolutionName: 3840 x 2160
   intPrefs:
-  - prefName: VsyncToggle
-    DefaultValue: 0
   - prefName: AntiAliasing
     DefaultValue: 8
+  - prefName: VsyncToggle
+    DefaultValue: 0
   floatPrefs:
   - prefName: MasterVol
     DefaultValue: 1

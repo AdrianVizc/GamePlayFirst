@@ -7,20 +7,10 @@ public class SliderToggle : MonoBehaviour, IPointerClickHandler
     //For the slider to function as a toggle, the "Interactable" bool in the inspector must be false
 
     [SerializeField] private Slider slider;
-    [SerializeField] private Image handleImage;
 
-    private Color lightGray = new Color(0.8f, 0.8f, 0.8f, 1); //light gray
-
-    private void Update()
+    private void Awake()
     {
-        if (slider.value == 0)
-        {
-            handleImage.color = lightGray;
-        }
-        else
-        {
-            handleImage.color = Color.white;
-        }
+        slider.value = ES3.Load("VsyncToggle", PersistentManager.Instance.GetIntPref("VsyncToggle").GetDefaultValue());
     }
 
     public void OnPointerClick(PointerEventData eventData)

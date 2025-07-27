@@ -15,12 +15,20 @@ public class GraphicsMenu : Menu
     [SerializeField] private TMP_Dropdown windowDropdown;
     [SerializeField] private TMP_Dropdown antiAliasingDropdown;
     [SerializeField] private TMP_Text vsyncText;
-    [SerializeField] private Slider vsyncSlider;
+    //[SerializeField] private Slider vsyncSlider;
     //[SerializeField] private TMP_Text hudText;
     //[SerializeField] private Slider hudSlider;
     //[SerializeField] private Slider showControlsSlider;
     //[SerializeField] private TMP_Text showControlsText;
     //[SerializeField] GameObject controlsGameObj;
+
+    [Space]
+
+    [SerializeField] private Image toggleImageObject;
+    [SerializeField] private Sprite off;
+    [SerializeField] private Sprite on;
+
+    private bool vsyncToggle;
 
     private void Awake()
     {
@@ -45,11 +53,12 @@ public class GraphicsMenu : Menu
         LoadAntiAliasing();
         LoadVsync();
         //LoadControls();
+
+        SettingsMenu.Instance.ChangeBackground(0);
     }
 
     private void Update()
     {
-        SetVsyncText();
         //SetControlsText();
     }
 
@@ -161,26 +170,49 @@ public class GraphicsMenu : Menu
 
     #region Vsync
 
-    private void LoadVsync() //Updates the slider value when the player opens the game
+    private void LoadVsync() 
     {
-        vsyncSlider.value = ES3.Load("VsyncToggle", PersistentManager.Instance.GetIntPref("VsyncToggle").GetDefaultValue());
+        if (ES3.Load("VsyncToggle", PersistentManager.Instance.GetIntPref("VsyncToggle").GetDefaultValue()) == 0)
+        {
+            vsyncToggle = false;
+        }
+        else
+        {
+            vsyncToggle = true;
+        }        
+
+        SetVsyncText();
     }
 
-    private void SetVsyncText() //Constantly update the text to = the slider value
+    private void SetVsyncText()
     {
-        if (vsyncSlider.value == 0)
+        if (vsyncToggle == false)
         {
             vsyncText.text = "Off";
+            toggleImageObject.sprite = off;
         }
         else
         {
             vsyncText.text = "On";
+            toggleImageObject.sprite = on;
         }
     }
 
     public void ToggleVsync(float val) //For Slider interaction when the player clicks the game object
     {
+
         PersistentManager.Instance.SetupVsyncSetting((int)val);
+
+        if ((int)val == 0)
+        {
+            vsyncToggle = false;
+        }
+        else
+        {
+            vsyncToggle = true;
+        }
+
+        SetVsyncText();
 
         var temp = PersistentManager.Instance.GetIntPref("VsyncToggle"); //Saves value to PersistentManager
 
