@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class PlayerWall : MonoBehaviour
 {
@@ -14,8 +15,8 @@ public class PlayerWall : MonoBehaviour
     [Header("Wall Jumping")]
     [SerializeField] private float wallJumpAwayForce = 6f;
     [SerializeField] private float wallJumpUpForce = 8f;
-    [SerializeField] private float jumpTimer = 0.75f;
-    private float wallJumpCooldown;
+    //[SerializeField] private float jumpTimer = 0.75f;
+    //private float wallJumpCooldown;
     private float wallJumpTimer;
     private Vector3 storedWallNormal;
 
@@ -28,9 +29,11 @@ public class PlayerWall : MonoBehaviour
 
     private bool wallLeft;
     private bool wallRight;
+    private bool wallFront;
     private bool wallHit;
     private RaycastHit leftWallhit;
     private RaycastHit rightWallhit;
+    private RaycastHit forwardWallHit;
 
     private bool isGrounded;
     private Transform orientation;
@@ -38,6 +41,9 @@ public class PlayerWall : MonoBehaviour
     [HideInInspector] public bool isWallRunning;
     private bool isWallJumping;
     private bool wallDetected;
+    private bool wallCooldownReady;
+
+    private Movement movement;
 
     private void Start()
     {
@@ -45,17 +51,21 @@ public class PlayerWall : MonoBehaviour
         defaultFOV = virtualCamera.m_Lens.FieldOfView;
         defaultTilt = virtualCamera.GetComponent<CinemachineRecomposer>().m_Dutch;
 
-        wallJumpCooldown = 0.2f;
+        //wallJumpCooldown = 0.2f;
         wallJumpTimer = 0f;
 
         orientation = transform;
         isWallJumping = false;
         wallDetected = false;
+        wallCooldownReady = true;
         rb = GetComponent<Rigidbody>();
+        movement = GetComponent<Movement>();
     }
 
     private void Update()
     {
+        float horizontal = Input.GetAxis("Horizontal");
+
         if (wallJumpTimer > 0f)
         {
             wallJumpTimer -= Time.deltaTime;
@@ -77,8 +87,11 @@ public class PlayerWall : MonoBehaviour
             DoWallRun();
 
             // Jump off wall if player presses jump
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetButtonDown("Jump"))
             {
+                movement.canDoubleJump = true;
+                movement.canDash = true;
+
                 isWallJumping = true;
                 rb.useGravity = true;
 
@@ -96,16 +109,33 @@ public class PlayerWall : MonoBehaviour
                 // Set new velocity
                 rb.velocity = jumpVelocity;
 
-                StartCoroutine(ChangeFOV(virtualCamera, defaultFOV, 0.3f));
-                StartCoroutine(ChangeTilt(virtualCamera, defaultTilt, 0.3f));
+                EndWallRun(); // handles camera + state reset
 
-                wallJumpTimer = wallJumpCooldown;
-                Invoke(nameof(EndWallRun), jumpTimer);
+                // Immediately hand control back to movement
+                EnableMovement();
+
+                // Block wall re-entry for a short cooldown
+                StartCoroutine(WallCooldownDelay(0.2f));
+            }
+            else if (wallRight && (Input.GetKeyDown(KeyCode.Q) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal < -0.1f)))
+            {
+                EndWallRun();
+                EnableMovement();
+
+                movement.ActivateDash(-1);
+            }
+            else if (wallLeft && (Input.GetKeyDown(KeyCode.E) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal > 0.1f)))
+            {
+                EndWallRun();
+                EnableMovement();
+
+                movement.ActivateDash(1);
             }
         }
         else if (isWallRunning && !isWallJumping && (isGrounded || !wallHit))
         {
             EndWallRun();
+            EnableMovement();
         }
     }
 
@@ -116,11 +146,20 @@ public class PlayerWall : MonoBehaviour
 
     private void CheckForWall()
     {
-        wallRight = Physics.Raycast(transform.position, orientation.right, out rightWallhit, wallCheckDistance);
-        wallLeft = Physics.Raycast(transform.position, -orientation.right, out leftWallhit, wallCheckDistance);
+        float castRadius = 0.3f;
 
-        wallHit = (wallRight && rightWallhit.collider.CompareTag("wall")) ||
-                  (wallLeft && leftWallhit.collider.CompareTag("wall"));
+        wallRight = Physics.SphereCast(transform.position, castRadius, orientation.right, out rightWallhit, wallCheckDistance);
+        wallLeft = Physics.SphereCast(transform.position, castRadius, -orientation.right, out leftWallhit, wallCheckDistance);
+        if(!(wallRight || wallLeft))
+        {
+            wallFront = Physics.SphereCast(transform.position, castRadius, orientation.forward, out forwardWallHit, wallCheckDistance);
+        }
+
+        bool validWall = (wallRight && rightWallhit.collider.CompareTag("wall")) ||
+                         (wallLeft && leftWallhit.collider.CompareTag("wall")) ||
+                         (wallFront && forwardWallHit.collider.CompareTag("wall"));
+
+        wallHit = validWall;
     }
 
     private void StartWallRun()
@@ -129,57 +168,86 @@ public class PlayerWall : MonoBehaviour
         GetComponent<Movement>().enabled = false;
         rb.useGravity = false;
 
-        Vector3 rawNormal = wallRight ? rightWallhit.normal : leftWallhit.normal;
+        // Grab the correct wall normal
+        Vector3 rawNormal;
+        if (wallRight) rawNormal = rightWallhit.normal;
+        else if (wallLeft) rawNormal = leftWallhit.normal;
+        else if (wallFront) rawNormal = forwardWallHit.normal;
+        else rawNormal = -transform.forward; // fallback
+
         storedWallNormal = new Vector3(rawNormal.x, 0f, rawNormal.z).normalized;
 
         StartCoroutine(ChangeFOV(virtualCamera, FOV, 0.3f));
 
-        if (wallRight)
-        {
+        // Use side detection to determine camera tilt
+        float sideDot = Vector3.Dot(storedWallNormal, transform.right);
+        if (sideDot > 0.1f)
             StartCoroutine(ChangeTilt(virtualCamera, tilt, 0.3f));
-        }
-        else if (wallLeft)
-        {
+        else if (sideDot < -0.1f)
             StartCoroutine(ChangeTilt(virtualCamera, -tilt, 0.3f));
-        }
+        else
+            StartCoroutine(ChangeTilt(virtualCamera, 0f, 0.3f)); // wall in front — no tilt
     }
 
     private void DoWallRun()
     {
         Vector3 wallDir = Vector3.Cross(Vector3.up, storedWallNormal);
 
-        // Ensure wallDir points roughly forward relative to player's current forward
-        if (Vector3.Dot(wallDir, transform.forward) < 0)
+        // Force wall run to always favor positive Z direction
+        Vector3 worldForward = Vector3.forward;
+
+        // Project the world forward onto the wall plane to make sure it's still aligned to the wall
+        Vector3 projectedForward = Vector3.ProjectOnPlane(worldForward, storedWallNormal).normalized;
+
+        // If the projection fails (wall is perpendicular to Z), fall back to default wallDir
+        if (projectedForward.sqrMagnitude < 0.1f)
         {
-            wallDir = -wallDir;
+            projectedForward = wallDir;
         }
 
-        // Rotate player to face along the wall direction
+        // Use forced forward-aligned direction
+        wallDir = projectedForward;
+
+        // Rotate player to face the direction of travel
         Quaternion targetRotation = Quaternion.LookRotation(wallDir.normalized, Vector3.up);
         transform.rotation = targetRotation;
 
-        // Move player along the wall, no vertical slide
+        // Move the player
         rb.velocity = wallDir.normalized * wallRunSpeed;
     }
 
     private void EndWallRun()
     {
+        wallHit = false;
         wallDetected = false;
         isWallJumping = false;
         isWallRunning = false;
-        GetComponent<Movement>().enabled = true;
         rb.useGravity = true;
 
         StartCoroutine(ChangeFOV(virtualCamera, defaultFOV, 0.3f));
         StartCoroutine(ChangeTilt(virtualCamera, defaultTilt, 0.3f));
+    }
 
+    private void EnableMovement()
+    {
+        if (!GetComponent<Movement>().enabled)
+        {
+            GetComponent<Movement>().enabled = true;
+        }
+
+        wallCooldownReady = true;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (!wallCooldownReady)
+        {
+            return;
+        }
         if (collision.gameObject.CompareTag("wall"))
         {
             wallDetected = true;
+            wallCooldownReady = false;
         }
     }
 
@@ -212,4 +280,11 @@ public class PlayerWall : MonoBehaviour
 
         recomposer.m_Dutch = endTilt;
     }
+    private IEnumerator WallCooldownDelay(float delay)
+    {
+        wallCooldownReady = false;
+        yield return new WaitForSeconds(delay);
+        wallCooldownReady = true;
+    }
+
 }

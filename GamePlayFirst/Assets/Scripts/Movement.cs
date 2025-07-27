@@ -9,7 +9,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float minSpeed;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float startingSpeed;
-    [SerializeField] private float currentSpeed;
+    [SerializeField] public float currentSpeed;
     [SerializeField] private float accelSpeed;
     [SerializeField] private float decelSpeed;
     [SerializeField] private float brakeForce;
@@ -33,10 +33,10 @@ public class Movement : MonoBehaviour
     [SerializeField] private float playerHeight;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] public bool isGrounded;
-    [SerializeField] private bool canDoubleJump;
+    [SerializeField] public bool canDoubleJump;
 
     [Header("Sideways Dash")]
-    [SerializeField] private bool canDash;
+    [SerializeField] public bool canDash;
     [SerializeField] private float dashForce = 5f;
     [SerializeField] private float upForce = 2f;
     [SerializeField] private bool isDashing;
@@ -50,11 +50,13 @@ public class Movement : MonoBehaviour
     [Header("Other Components")]
     private Rigidbody rb;
     private Camera mainCamera;
+    private PlayerGrind rail;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = this.GetComponent<Rigidbody>();
+        rail = GetComponent<PlayerGrind>();
         rb.freezeRotation = true;
         mainCamera = Camera.main;
         currentSpeed = startingSpeed;
@@ -104,7 +106,7 @@ public class Movement : MonoBehaviour
         isAccelerating = vertical > 0.1f;
         isBraking = vertical < -0.1f;
 
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button0))
+        if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.Joystick1Button0))
         {
             if (isGrounded)
             {
@@ -260,7 +262,7 @@ public class Movement : MonoBehaviour
         adaptiveForward = newForward;
     }
 
-    private void ActivateDash(int direction)
+    public void ActivateDash(int direction)
     {
         Debug.Log("Dashing");
         Vector3 dashDirection = mainCamera.transform.right * direction; //-1 will make this LEFT, 1 will keep this RIGHT

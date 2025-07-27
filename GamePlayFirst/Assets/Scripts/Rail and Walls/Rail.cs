@@ -38,7 +38,23 @@ public class Rail : MonoBehaviour
         float3 localPlayerPos = WorldToLocalConversion(playerPos);
         SplineUtility.GetNearestPoint(railSpline.Spline, localPlayerPos, out nearestPoint, out time);
 
+        float3 tangent = SplineUtility.EvaluateTangent(railSpline.Spline, time);
+        Vector3 worldTangent = transform.TransformDirection(tangent).normalized;
+
+        // Determine direction of tangent
+        float dot = Vector3.Dot(worldTangent, Vector3.forward);
+
+        // If dot < 0, then the tangent is pointing opposite of desired (world +Z)
+        // Flip time to get point on opposite end of spline
+        if (dot < 0f)
+        {
+            time = 1f - time;
+            nearestPoint = railSpline.Spline.EvaluatePosition(time);
+        }
+
         worldPosOnSpline = LocalToWorldConversion(nearestPoint);
+        normalDir = true; // Always going forward in world Z now
+
         return time;
     }
 
