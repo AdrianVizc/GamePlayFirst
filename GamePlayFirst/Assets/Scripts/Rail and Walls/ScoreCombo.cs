@@ -19,6 +19,8 @@ public class ScoreCombo : MonoBehaviour
     private Tricks tricks;
     private float totalTime;
 
+    private GameObject[] listOfRideables = new GameObject[2];
+
     private void Start()
     {
         rail = GetComponent<PlayerGrind>();
@@ -78,7 +80,30 @@ public class ScoreCombo : MonoBehaviour
         if(collision.gameObject.CompareTag("rail") ||
             collision.gameObject.CompareTag("wall"))
         {
-            currMultiplier += multiplier;
+            // Debug.Log("INDEX 1: " + listOfRideables[0] + "\nINDEX 2: " + listOfRideables[1]);
+            // If list of rideables are full and the game object is new, empty the array
+            if (listOfRideables[1] != null && (collision.gameObject != listOfRideables[1]))
+            {
+                System.Array.Clear(listOfRideables, 0, listOfRideables.Length);
+            }
+
+            // If list of rideables are empty, set index 1 to game object
+            if (listOfRideables[0] == null)
+            {
+                listOfRideables[0] = collision.gameObject;
+                currMultiplier += multiplier;
+            }
+            else
+            {
+                //If index 1 is full, set index 2 to current game object
+                listOfRideables[1] = collision.gameObject;
+
+                if (listOfRideables[0] != listOfRideables[1])
+                {
+                    currMultiplier += multiplier;
+                    System.Array.Clear(listOfRideables, 0, listOfRideables.Length);
+                }
+            }
         }
     }
 }
