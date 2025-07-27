@@ -34,7 +34,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] public bool isGrounded;
     [SerializeField] public bool canDoubleJump;
-    [SerializeField] private float gravityMultiplier;
+    [SerializeField] public float gravityMultiplier;
 
     [Header("Sideways Dash")]
     [SerializeField] public bool canDash;

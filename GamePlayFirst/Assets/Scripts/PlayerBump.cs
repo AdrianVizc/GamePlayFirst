@@ -52,5 +52,16 @@ public class PlayerBump : MonoBehaviour
         {
             zeroVel = true;
         }
+
+        ApplyExtraFallGravity();
+    }
+
+    private void ApplyExtraFallGravity()
+    {
+        if (!movement.isGrounded && rb.velocity.y < -0.1)
+        {
+            Vector3 addedGravity = Physics.gravity * (movement.gravityMultiplier - 1f);
+            rb.AddForce(addedGravity, ForceMode.Acceleration);
+        }
     }
 }
