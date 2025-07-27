@@ -1058,7 +1058,7 @@ PrefabInstance:
     - target: {fileID: 3208888085197836789, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5
+      value: 3.6
       objectReference: {fileID: 0}
     - target: {fileID: 3208888085197836789, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
@@ -1102,18 +1102,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5035894612058989691, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5035894612058989691, guid: 7517a6fdf98f9c844a91523105a57ccc,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.18910751
       objectReference: {fileID: 0}
     - target: {fileID: 5035894612058989691, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000008447955
+      value: 0.0000000084479606
       objectReference: {fileID: 0}
     - target: {fileID: 5035894612058989691, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000000016269276
+      value: -0.0000000016269286
+      objectReference: {fileID: 0}
+    - target: {fileID: 6972709684689986655, guid: 7517a6fdf98f9c844a91523105a57ccc,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6972709684689986655, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
@@ -1123,12 +1133,12 @@ PrefabInstance:
     - target: {fileID: 6972709684689986655, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000008447955
+      value: 0.0000000084479606
       objectReference: {fileID: 0}
     - target: {fileID: 6972709684689986655, guid: 7517a6fdf98f9c844a91523105a57ccc,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000000016269276
+      value: -0.0000000016269286
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
