@@ -34,6 +34,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] public bool isGrounded;
     [SerializeField] public bool canDoubleJump;
+    [SerializeField] private float gravityMultiplier;
 
     [Header("Sideways Dash")]
     [SerializeField] public bool canDash;
@@ -96,6 +97,7 @@ public class Movement : MonoBehaviour
         }
         
         Move();
+        ApplyExtraFallGravity();
     }
 
     private void GetInput()
@@ -286,5 +288,14 @@ public class Movement : MonoBehaviour
         Time.timeScale = 0.5f;
         yield return new WaitForSecondsRealtime(0.2f);
         Time.timeScale = 1f;
+    }
+
+    private void ApplyExtraFallGravity()
+    {
+        if (!isGrounded && rb.velocity.y < -0.1)
+        {
+            Vector3 addedGravity = Physics.gravity * (gravityMultiplier - 1f);
+            rb.AddForce(addedGravity, ForceMode.Acceleration);
+        }
     }
 }
