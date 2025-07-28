@@ -240,6 +240,8 @@ public class Movement : MonoBehaviour
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
 
             canDoubleJump = true;
+
+            AudioManager.instance.PlayEnvironmentSound("Jump");
         }
     }
 
@@ -251,6 +253,9 @@ public class Movement : MonoBehaviour
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
 
             canDoubleJump = false;
+
+            AudioManager.instance.PlayEnvironmentSound("Jump");
+            //AudioManager.instance.PlayEnvironmentSound("DoubleJump");
         }
     }
 
@@ -259,7 +264,23 @@ public class Movement : MonoBehaviour
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.1f, groundLayer);
         if (isGrounded)
         {
+            if (!AudioManager.instance.skateGrindPlayOnce)
+            {
+                AudioManager.instance.PlayEnvironmentSound("Land");
+                AudioManager.instance.PlayEnvironmentSound("Skate");
+                AudioManager.instance.skateGrindPlayOnce = true;
+            }            
+
             canDoubleJump = true;
+        }
+        else
+        {
+            if (AudioManager.instance.skateGrindPlayOnce)
+            {
+                AudioManager.instance.StopEnvironmentSound("Skate");
+                AudioManager.instance.skateGrindPlayOnce = false;
+            }
+                
         }
     }
 
@@ -270,7 +291,8 @@ public class Movement : MonoBehaviour
 
     public void ActivateDash(int direction)
     {
-        Debug.Log("Dashing");
+        AudioManager.instance.PlayEnvironmentSound("AirDash");
+
         Vector3 dashDirection = mainCamera.transform.right * direction; //-1 will make this LEFT, 1 will keep this RIGHT
         dashDirection.y = 0;
         dashDirection.Normalize();

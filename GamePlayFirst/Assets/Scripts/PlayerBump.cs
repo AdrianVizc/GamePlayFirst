@@ -32,6 +32,7 @@ public class PlayerBump : MonoBehaviour
             isBumping = false;
             zeroVel = false;
             movement.enabled = true;
+            AudioManager.instance.UnPauseSkateSound();
         }
         else if (Physics.SphereCast(transform.position, raycastCheckRadius, transform.forward, out RaycastHit hit, raycastCheckDistance, ~0, QueryTriggerInteraction.Ignore))
         {
@@ -40,12 +41,15 @@ public class PlayerBump : MonoBehaviour
                 return;
             }
 
+            AudioManager.instance.PlayEnvironmentSound("Bonk");
+            AudioManager.instance.PauseSkateSound();
+
             movement.enabled = false;
             Vector3 bumpDir = -transform.forward;
             rb.velocity *= 0.2f;
             rb.velocity = bumpDir * bumpForce;
 
-            isBumping = true;
+            isBumping = true;            
         }
 
         if(rb.velocity.z == 0)

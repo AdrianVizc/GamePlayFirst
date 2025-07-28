@@ -89,6 +89,9 @@ public class PlayerWall : MonoBehaviour
             // Jump off wall if player presses jump
             if (Input.GetButtonDown("Jump"))
             {
+                AudioManager.instance.PlayEnvironmentSound("Jump");
+                AudioManager.instance.StopEnvironmentSound("WallGrind");
+
                 movement.canDoubleJump = true;
                 movement.canDash = true;
 
@@ -164,6 +167,8 @@ public class PlayerWall : MonoBehaviour
 
     private void StartWallRun()
     {
+        AudioManager.instance.PlayEnvironmentSound("WallGrind");
+
         isWallRunning = true;
         GetComponent<Movement>().enabled = false;
         rb.useGravity = false;
@@ -191,6 +196,8 @@ public class PlayerWall : MonoBehaviour
 
     private void DoWallRun()
     {
+        //AudioManager.instance.PlayEnvironmentSound("WallGrind");
+
         Vector3 wallDir = Vector3.Cross(Vector3.up, storedWallNormal);
 
         // Force wall run to always favor positive Z direction
@@ -218,6 +225,8 @@ public class PlayerWall : MonoBehaviour
 
     private void EndWallRun()
     {
+        AudioManager.instance.StopEnvironmentSound("WallGrind");
+
         wallHit = false;
         wallDetected = false;
         isWallJumping = false;

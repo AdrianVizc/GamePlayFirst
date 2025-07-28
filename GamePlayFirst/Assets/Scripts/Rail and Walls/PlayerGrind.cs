@@ -81,7 +81,13 @@ public class PlayerGrind : MonoBehaviour
 
     private void MovePlayerAlongRail()
     {
-        if(currentRailScript != null)
+        if (!AudioManager.instance.railGrindPlayOnce)
+        {
+            AudioManager.instance.PlayEnvironmentSound("RailGrind");
+            AudioManager.instance.railGrindPlayOnce = true;
+        }
+
+        if (currentRailScript != null)
         {
             float progress = elapsedTime / timeForFullSpline;
 
@@ -146,6 +152,9 @@ public class PlayerGrind : MonoBehaviour
         if (collision.gameObject.CompareTag("rail"))
         {
             onRail = true;
+            AudioManager.instance.PlayEnvironmentSound("RailEnter");
+            AudioManager.instance.StopEnvironmentSound("Skate");
+
             currentRailScript = collision.gameObject.GetComponent<Rail>();
             CalculateAndSetRailPosition();
             GetComponent<Movement>().enabled = false;
@@ -195,6 +204,10 @@ public class PlayerGrind : MonoBehaviour
 
     private void JumpOff()
     {
+        AudioManager.instance.railGrindPlayOnce = false;
+        AudioManager.instance.PlayEnvironmentSound("Jump");
+        AudioManager.instance.StopEnvironmentSound("RailGrind");
+
         onRail = false;
         isJumping = false;
         currentRailScript = null;
@@ -247,6 +260,9 @@ public class PlayerGrind : MonoBehaviour
 
     private void EndRail()
     {
+        AudioManager.instance.railGrindPlayOnce = false;
+        AudioManager.instance.StopEnvironmentSound("RailGrind");
+
         onRail = false;
         currentRailScript = null;
 

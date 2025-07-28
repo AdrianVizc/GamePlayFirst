@@ -48,6 +48,7 @@ public class PauseMenu : Menu
             isPaused = true;
 
             Time.timeScale = 0f;
+            AudioManager.instance.PauseSounds();
         }
         else if (thisScene.IsValid() && isPaused && Input.GetKeyDown(KeyCode.Escape))
         {
@@ -64,6 +65,7 @@ public class PauseMenu : Menu
             isPaused = false;
 
             Time.timeScale = 1f;
+            AudioManager.instance.UnPauseSounds();
         }
     }
 }

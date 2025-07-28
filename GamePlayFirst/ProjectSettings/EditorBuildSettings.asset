@@ -6,15 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/JonesBBQ&FootMassage.unity
-    guid: 57a2491e92a0e7148b08a2b199221463
+    path: Assets/Scenes/MainScene.unity
+    guid: ddc9ac0e5443a7d42be2ffb512a7fa99
   - enabled: 1
     path: Assets/Scenes/UIScene.unity
     guid: 9a02eb8626aef4848ad3e95281858c76
   - enabled: 1
-    path: Assets/Scenes/MainScene.unity
-    guid: ddc9ac0e5443a7d42be2ffb512a7fa99
-  - enabled: 1
-    path: Assets/Scenes/Nick'sPlayground.unity
-    guid: 070e07940b9df5c48803957389ee8012
+    path: Assets/Scenes/PenguinCity.unity
+    guid: e1866235fa903d646a7929e8f42ac0d4
   m_configObjects: {}

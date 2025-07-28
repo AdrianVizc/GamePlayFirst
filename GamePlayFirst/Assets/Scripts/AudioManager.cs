@@ -19,12 +19,19 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioSource musicSource;
     [SerializeField] AudioSource UISource;
     [SerializeField] AudioSource environmentSource;
+    [SerializeField] AudioSource railGrindSource;
+    [SerializeField] AudioSource skateSource;
+    [SerializeField] AudioSource wallGrindSource;
 
     [Space]
 
     [SerializeField] Sound[] musicClips;
     [SerializeField] Sound[] UIClips;
     [SerializeField] Sound[] EnvironmentClips;
+
+    public bool railGrindPlayOnce;
+    public bool skateGrindPlayOnce;
+    public bool wallGrindPlayOnce;
 
     [Serializable]
     public class Sound
@@ -43,6 +50,10 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        railGrindPlayOnce = false;
+        skateGrindPlayOnce = false;
+        wallGrindPlayOnce = false;
     }
 
     public void LoadVolume() //Used to set audio mixer as the game opens. Otherwise, the AudioMenu script will only change the mixer when you open that menu
@@ -90,7 +101,7 @@ public class AudioManager : MonoBehaviour
     //Play sound on UISource
     public void PlayUISound(string name)
     {
-        Sound sound = Array.Find(musicClips, s => s.name == name);
+        Sound sound = Array.Find(UIClips, s => s.name == name);
 
         if (sound != null)
         {
@@ -98,14 +109,91 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    //Play sound on environmentSource
+    //Play sound
     public void PlayEnvironmentSound(string name)
     {
-        Sound sound = Array.Find(musicClips, s => s.name == name);
+        Sound sound = Array.Find(EnvironmentClips, s => s.name == name);
 
-        if (sound != null)
+        switch (name)
         {
-            environmentSource.PlayOneShot(sound.clip);
+            case "RailGrind":
+
+                railGrindSource.clip = sound.clip;
+                railGrindSource.loop = true;
+                railGrindSource.Play();
+
+                break;
+
+            case "Skate":
+
+                skateSource.clip = sound.clip;
+                skateSource.loop = true;
+                skateSource.Play();
+
+                break;
+            case "WallGrind":
+
+                wallGrindSource.clip = sound.clip;
+                wallGrindSource.loop = true;
+                wallGrindSource.Play();
+
+                break;
+
+            default:
+
+                environmentSource.PlayOneShot(sound.clip);
+
+                break;
         }
+    }
+
+    public void StopEnvironmentSound(string name)
+    {
+        Sound sound = Array.Find(EnvironmentClips, s => s.name == name);
+
+        switch (name)
+        {
+            case "RailGrind":
+
+                railGrindSource.Stop();
+
+                break;
+
+            case "Skate":
+
+                skateSource.Stop();
+
+                break;
+            case "WallGrind":
+
+                wallGrindSource.Stop();
+
+                break;
+        }
+    }
+
+    public void PauseSkateSound()
+    {
+        skateSource.Pause();
+    }
+    public void UnPauseSkateSound()
+    {
+        skateSource.UnPause();
+    }
+
+    public void PauseSounds()
+    {
+        environmentSource.Pause();
+        railGrindSource.Pause();
+        skateSource.Pause();
+        wallGrindSource.Pause();
+    }
+
+    public void UnPauseSounds()
+    {
+        environmentSource.UnPause();
+        railGrindSource.UnPause();
+        skateSource.UnPause();
+        wallGrindSource.UnPause();
     }
 }

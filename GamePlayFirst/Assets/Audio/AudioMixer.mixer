@@ -1,5 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!244 &-7933466294340232350
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Attenuation
+  m_EffectID: 03fc094d230b50e4ca4b9c0ad0d9a38f
+  m_EffectName: Attenuation
+  m_MixLevel: 9556b6c0e9dbb9a47a74881b6b9a42b5
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!244 &-6835845942371319972
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -83,14 +97,23 @@ AudioMixerController:
     name: MasterVol
   - guid: 5f3eb8b051cccf64e8b15de9b7842db4
     name: MusicVol
+  - guid: b04d3e8c50c92e94a91a98453dd95857
+    name: RailGrind
+  - guid: 6399cebb85e0fe64aa0260ce5ffda771
+    name: Skate
   - guid: fb1e924d23de0db4c8bbf61926625761
     name: UIVol
+  - guid: 396f01823d84e544ab97a4c211925422
+    name: WallGrind
   m_AudioMixerGroupViews:
   - guids:
     - 007f71277b38e1748815eca35a34b063
     - d43756dfd5dadbe4f9ea515ca9414f6a
     - e6916c4a54ceda04289b0b38d119022c
     - 7037ee178846dd441b4b9da00d4ab1ed
+    - a3c7a1486e2d71746b2323078161dffc
+    - 16aeb45553a6ad74ea1498e23c40ffcc
+    - 402b509554b4fea4b8d59065a009cb4e
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -141,6 +164,25 @@ AudioMixerSnapshotController:
   m_SnapshotID: f22c0f5458c451f4e90dcaf18c55fd72
   m_FloatValues: {}
   m_TransitionOverrides: {}
+--- !u!243 &2225041111349550539
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Skate
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 16aeb45553a6ad74ea1498e23c40ffcc
+  m_Children: []
+  m_Volume: 6399cebb85e0fe64aa0260ce5ffda771
+  m_Pitch: f7c2f3d4368c20a46a8ba05868d239f7
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 8274679788935131815}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!243 &6888738616591444590
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -150,12 +192,48 @@ AudioMixerGroupController:
   m_Name: Environment
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 7037ee178846dd441b4b9da00d4ab1ed
-  m_Children: []
+  m_Children:
+  - {fileID: 9221083790629854642}
+  - {fileID: 2225041111349550539}
+  - {fileID: 7380772245677597998}
   m_Volume: 2412c79f9ed13d74e9aeb4da241e22d8
   m_Pitch: 13c8fed868b66c14aa9870974b6a7941
   m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: -6835845942371319972}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &7188422955585031915
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Attenuation
+  m_EffectID: ebe3e01e3d56cee4c8245b9d5b4ec11c
+  m_EffectName: Attenuation
+  m_MixLevel: 94105c43aa8a3ca4f8e0ce6098b22ee8
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &7380772245677597998
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WallGrind
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 402b509554b4fea4b8d59065a009cb4e
+  m_Children: []
+  m_Volume: 396f01823d84e544ab97a4c211925422
+  m_Pitch: e5da2a58c30957d4180ce9df4e0619a7
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -7933466294340232350}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0
@@ -175,6 +253,39 @@ AudioMixerGroupController:
   m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: -5591563246314663105}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &8274679788935131815
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Attenuation
+  m_EffectID: b264bcb480f11c34e8615d6f8c0ce4b0
+  m_EffectName: Attenuation
+  m_MixLevel: 5d63feb02bfa55247b62ca534ce3892b
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &9221083790629854642
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: RailGrind
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: a3c7a1486e2d71746b2323078161dffc
+  m_Children: []
+  m_Volume: b04d3e8c50c92e94a91a98453dd95857
+  m_Pitch: c55cd2174ee19454fbfbeff0be5e4cdb
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 7188422955585031915}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0
