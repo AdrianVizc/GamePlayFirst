@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/JonesBBQ&FootMassage.unity
+    guid: 57a2491e92a0e7148b08a2b199221463
+  - enabled: 1
     path: Assets/Scenes/UIScene.unity
     guid: 9a02eb8626aef4848ad3e95281858c76
   - enabled: 1
@@ -14,7 +17,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Nick'sPlayground.unity
     guid: 070e07940b9df5c48803957389ee8012
-  - enabled: 1
-    path: Assets/Scenes/JonesBBQ&FootMassage.unity
-    guid: 57a2491e92a0e7148b08a2b199221463
   m_configObjects: {}
