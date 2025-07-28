@@ -7,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Metal
+  m_Name: Overhang
   m_Shader: {fileID: -6465566751694194690, guid: 1d2c59dc56e978f4ab72d01f4fa54310,
     type: 3}
-  m_Parent: {fileID: 2100000, guid: 501177ebdc20f644c9e073d1793dad3e, type: 2}
+  m_Parent: {fileID: 2100000, guid: ab32695267a4bea419455b73dfbbfd41, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -26,12 +26,12 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _Shades: 0.45
+    - _Shades: 0.49
     m_Colors:
-    - _BaseColor: {r: 0.3465821, g: 0.3465821, b: 0.3465821, a: 1}
-    - _Color: {r: 0.5943396, g: 0.55789423, b: 0.55789423, a: 1}
+    - _BaseColor: {r: 0.19142625, g: 0.22770277, b: 0.24999529, a: 1}
+    - _Color: {r: 0.5, g: 0.21933961, b: 0.24572647, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &4394707077522508450
+--- !u!114 &9078341378877455269
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
