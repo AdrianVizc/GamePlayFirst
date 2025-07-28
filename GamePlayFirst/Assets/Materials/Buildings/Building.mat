@@ -10,7 +10,7 @@ Material:
   m_Name: Building
   m_Shader: {fileID: -6465566751694194690, guid: 1d2c59dc56e978f4ab72d01f4fa54310,
     type: 3}
-  m_Parent: {fileID: 2100000, guid: 9bba28c0c1826ca43bf073e9a829c9c0, type: 2}
+  m_Parent: {fileID: 2100000, guid: ab32695267a4bea419455b73dfbbfd41, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
