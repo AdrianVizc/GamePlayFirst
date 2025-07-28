@@ -6,7 +6,6 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Splines;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class PlayerGrind : MonoBehaviour
 {
