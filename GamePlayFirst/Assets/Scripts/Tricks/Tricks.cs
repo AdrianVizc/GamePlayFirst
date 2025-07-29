@@ -135,7 +135,7 @@ public class Tricks : MonoBehaviour
                             if (nextNode.children.Count == 0)
                             {
                                 currentTrickScore += nextNode.points;
-                                Debug.Log(currentTrickScore);
+                                //Debug.Log(currentTrickScore);
                                 ResetCombo();
                             }
                             //Debug.Log(currentTrickScore);
@@ -160,6 +160,13 @@ public class Tricks : MonoBehaviour
 
                 if (comboTimer <= 0)
                 {
+                    if (currentNode.animationTrigger != null)
+                    {
+                        animator.SetTrigger(currentNode.animationTrigger);
+                        //Debug.Log("Played animation: " + currentNode.animationTrigger);
+                        currentTrickScore += currentNode.points;
+                        //Debug.Log(currentTrickScore);
+                    }
                     // Ran out of time for combo
                     currentTrickScore = 0;
                     ResetCombo();
