@@ -8,25 +8,25 @@ using System.Runtime.CompilerServices;
 
 public class Stopwatch : MonoBehaviour
 {
+    [SerializeField] private TMP_Text timerText;
+
     private bool stopwatchActive;
     private float currentTime;
-    [SerializeField] private TMP_Text text;
-    // Start is called before the first frame update
+
     void Start()
     {
         currentTime = 0;
         stopwatchActive = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (stopwatchActive)
         {
-            currentTime = currentTime + Time.deltaTime;
+            currentTime += Time.deltaTime;
         }
         TimeSpan time = TimeSpan.FromSeconds(currentTime);
-        text.text = time.Minutes.ToString() + ":" + time.Seconds.ToString() + ":" + time.Milliseconds.ToString();
+        timerText.text = time.Minutes.ToString("D2") + ":" + time.Seconds.ToString("D2");
     }
     //Stop timer when game ends
     public void StopTimer()

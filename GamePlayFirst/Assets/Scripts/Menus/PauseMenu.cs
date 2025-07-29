@@ -7,7 +7,7 @@ public class PauseMenu : Menu
 
     [SerializeField] public GameObject background;
 
-    private bool isPaused;
+    public bool isPaused;
 
     private void Awake()
     {
@@ -67,5 +67,32 @@ public class PauseMenu : Menu
             Time.timeScale = 1f;
             AudioManager.instance.UnPauseSounds();
         }
+    }
+
+    public void ResumeButton()
+    {
+        if (background.activeSelf)
+        {
+            background.SetActive(false);
+        }
+        else
+        {
+            SettingsMenu.Instance.BackButton();
+            background.SetActive(false);
+        }
+
+        isPaused = false;
+
+        Time.timeScale = 1f;
+        AudioManager.instance.UnPauseSounds();
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("MainScene").Value);
+
+        Time.timeScale = 1;
+
+        SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
     }
 }

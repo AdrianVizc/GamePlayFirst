@@ -27,11 +27,11 @@ public class SlideButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         Vector2 targetPos = buttonRect.anchoredPosition + new Vector2(slideDistance, 0);
-        LeanTween.move(buttonRect, targetPos, duration).setEaseInCubic();
+        LeanTween.move(buttonRect, targetPos, duration).setEaseInCubic().setIgnoreTimeScale(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        LeanTween.move(buttonRect, originalPos, duration).setEaseInCubic();
+        LeanTween.move(buttonRect, originalPos, duration).setEaseInCubic().setIgnoreTimeScale(true);
     }
 }

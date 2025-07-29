@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SettingsMenu : Menu
@@ -16,6 +17,18 @@ public class SettingsMenu : Menu
     {
         menusToOpen[FIRST_SETTINGS_MENU].gameObject.SetActive(true);
         background.sprite = backgroundSprites[FIRST_SETTINGS_MENU];
+
+        InGameCanvas.instance.gameObject.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        Scene thisScene = SceneManager.GetSceneByName(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+
+        if (thisScene.IsValid())
+        {
+            InGameCanvas.instance.gameObject.SetActive(true);
+        }
     }
 
     private void Awake()

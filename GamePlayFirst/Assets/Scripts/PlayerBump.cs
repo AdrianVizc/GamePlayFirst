@@ -7,7 +7,7 @@ public class PlayerBump : MonoBehaviour
     [Header("Bump Settings")]
     [SerializeField] private float bumpForce = 7.5f;
     private float raycastCheckDistance = 0.25f;
-    private float raycastCheckRadius = 0.4f;
+    [SerializeField] private float raycastCheckRadius = 0.4f;
 
     private Rigidbody rb;
     private Movement movement;

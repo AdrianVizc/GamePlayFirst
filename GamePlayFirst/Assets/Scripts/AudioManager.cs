@@ -87,6 +87,7 @@ public class AudioManager : MonoBehaviour
         {
             if (isBGM)
             {
+                musicSource.Stop();
                 musicSource.clip = sound.clip;
                 musicSource.loop = true;
                 musicSource.Play();
