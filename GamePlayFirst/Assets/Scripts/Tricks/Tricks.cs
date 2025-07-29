@@ -132,9 +132,10 @@ public class Tricks : MonoBehaviour
                             // Triggers immediately b/c no further branches possible (i.e A and D)
                             animator.SetTrigger(nextNode.animationTrigger);
                             //Debug.Log("Played animation: " + nextNode.animationTrigger);
-                            currentTrickScore += nextNode.points;
                             if (nextNode.children.Count == 0)
                             {
+                                currentTrickScore += nextNode.points;
+                                Debug.Log(currentTrickScore);
                                 ResetCombo();
                             }
                             //Debug.Log(currentTrickScore);
