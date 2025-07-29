@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Prototype_Outline
+  m_Name: Freaky Rails
   m_Shader: {fileID: -6465566751694194690, guid: 9ef87b5918c134b4cbdbeebdd41843db,
     type: 3}
   m_Parent: {fileID: 0}
@@ -52,7 +52,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Fade_Dist: 3000
-    - _Outline_Thickness: 0.0091
+    - _Outline_Thickness: 0.0049
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
