@@ -163,7 +163,6 @@ public class Tricks : MonoBehaviour
                 {
                     if (currentNode.animationTrigger != null)
                     {
-                        animator.SetTrigger(currentNode.animationTrigger);
                         //Debug.Log("Played animation: " + currentNode.animationTrigger);
                         currentTrickScore += currentNode.points;
                         scoreCombo.UpdateTrickScore();
