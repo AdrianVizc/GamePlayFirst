@@ -32,7 +32,7 @@ public class MainMenu : Menu
         else
         {
             gameObject.SetActive(true);
-        }
+        }        
     }
 
     public void Play()

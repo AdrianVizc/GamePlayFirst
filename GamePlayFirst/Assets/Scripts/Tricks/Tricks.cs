@@ -164,8 +164,7 @@ public class Tricks : MonoBehaviour
                     ResetCombo();
                 }
             }
-        }
-
+        }   
     }
     // Adds combos to the trie
     private void AddCombo(List<KeyCode> sequence, string animationTrigger)

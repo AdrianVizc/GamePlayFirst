@@ -44,8 +44,6 @@ public class ScoreCombo : MonoBehaviour
 
             return;
         }
-
-        DontDestroyOnLoad(gameObject);
     }
 
     private void Update()
@@ -69,9 +67,12 @@ public class ScoreCombo : MonoBehaviour
             score += (pointValue * currMultiplier);
 
             // Uncomment code for debugging purposes only to see values:
-            Debug.Log("Score: " + score + "\nCurrent Multiplier: " + currMultiplier);
-            Debug.Log("Combo Score Bonus: " + tricks.currentTrickScore);
+            Debug.Log("Score: " + score + "\nCurrent Multiplier: " + currMultiplier + "Combo Score Bonus: " + tricks.currentTrickScore);
+
+            
         }
+        InGameCanvas.instance.UpdateMultiplier(currMultiplier);
+        InGameCanvas.instance.UpdateTrickPoints(tricks.currentTrickScore);
     }
 
     private void OnCollisionEnter(Collision collision)
