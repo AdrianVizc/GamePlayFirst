@@ -8,6 +8,7 @@ public class ScoreCombo : MonoBehaviour
 
     [HideInInspector] public float score; // Player's total score
     [HideInInspector] public float currMultiplier; // Player's current multiplier level (1x, 1.25x, etc.)
+    private float currTrickScore;
 
     [SerializeField] private int pointValue = 100; // Use to increase each point value
     [SerializeField] private float multiplier = 0.25f; // Use to increase multiplier level
@@ -67,12 +68,17 @@ public class ScoreCombo : MonoBehaviour
             score += (pointValue * currMultiplier);
 
             // Uncomment code for debugging purposes only to see values:
-            Debug.Log("Score: " + score + "\nCurrent Multiplier: " + currMultiplier + "Combo Score Bonus: " + tricks.currentTrickScore);
-
-            
+            Debug.Log("Score: " + score + "\nCurrent Multiplier: " + currMultiplier);
         }
+
+
         InGameCanvas.instance.UpdateMultiplier(currMultiplier);
-        InGameCanvas.instance.UpdateTrickPoints(tricks.currentTrickScore);
+        InGameCanvas.instance.UpdateTrickPoints(currTrickScore);
+    }
+
+    public void UpdateTrickScore()
+    {
+        currTrickScore = tricks.currentTrickScore;
     }
 
     private void OnCollisionEnter(Collision collision)
