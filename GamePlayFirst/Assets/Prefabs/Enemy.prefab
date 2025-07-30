@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6036863025871497910}
   - component: {fileID: 5891322616742793485}
   - component: {fileID: 4501274303572158275}
-  - component: {fileID: 2122345346811763395}
+  - component: {fileID: 2854444090718638509}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -102,11 +102,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingPosObj: {fileID: 3990244432504480360}
   endingPosObj: {fileID: 3732407541898963236}
-  moveSpeed: 2
-  waitTime: 2
-  scoreLoss: 0
---- !u!64 &2122345346811763395
-MeshCollider:
+  moveSpeed: 10
+  waitTime: 0
+  scoreLoss: 2500
+--- !u!65 &2854444090718638509
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -123,10 +123,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -4310624213774340061, guid: c2a8654063192d148b5f1f7e134c3a95, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 3.34, y: -3.15, z: -1.52}
+  m_Center: {x: -0.0043250434, y: 0.83, z: 0.14}
 --- !u!1 &6731821845004060705
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,7 +259,7 @@ Transform:
   m_GameObject: {fileID: 8255591674630919320}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.64, y: 0, z: 0}
+  m_LocalPosition: {x: 49.61, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -363,7 +362,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c2a8654063192d148b5f1f7e134c3a95,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c2a8654063192d148b5f1f7e134c3a95,
         type: 3}
@@ -373,7 +372,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c2a8654063192d148b5f1f7e134c3a95,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c2a8654063192d148b5f1f7e134c3a95,
         type: 3}
@@ -388,7 +387,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c2a8654063192d148b5f1f7e134c3a95,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c2a8654063192d148b5f1f7e134c3a95,
         type: 3}
@@ -399,6 +398,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PenguinHurt
+      objectReference: {fileID: 0}
+    - target: {fileID: 1719205825624864064, guid: c2a8654063192d148b5f1f7e134c3a95,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 27.87
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

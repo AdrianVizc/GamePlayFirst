@@ -54,9 +54,13 @@ public class Enemy : MonoBehaviour
         {
             yield return StartCoroutine(MoveTo(endingPos));
 
+            transform.Rotate(0f, 180f, 0f);
+
             yield return new WaitForSeconds(waitTime);
 
             yield return StartCoroutine(MoveTo(startingPos));
+
+            transform.Rotate(0f, 180f, 0f);
 
             yield return new WaitForSeconds(waitTime);
         }

@@ -337,7 +337,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -51, y: -186.2}
+  m_AnchoredPosition: {x: -51, y: -146}
   m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1309119333
@@ -353,8 +353,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delayBeforeStart: 1
-  timeBtwChars: 0.1
-  delayBetweenTextAndBackground: 1
+  timeBtwChars: 0.075
+  delayBetweenTextAndBackground: 1.5
   leadingChar: 
   leadingCharBeforeDelay: 0
   textList:
@@ -365,7 +365,7 @@ MonoBehaviour:
   - Passed down to you by your father is the Silly and Whimsy Factory.
   - In there lies a comically large red button that will return joy, silliness, and
     whimsy back to this town.
-  - "All you need to do is press it\u2026"
+  - All you need to do is press it.
   - Except it seems the opps have caught on.
   - Make your mad dash to the factory in the SICKEST way possible and save this town
     without getting caught.
