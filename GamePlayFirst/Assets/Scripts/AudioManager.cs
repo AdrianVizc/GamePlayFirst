@@ -29,6 +29,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] Sound[] UIClips;
     [SerializeField] Sound[] EnvironmentClips;
 
+    [HideInInspector]
     public bool railGrindPlayOnce;
     public bool skateGrindPlayOnce;
     public bool wallGrindPlayOnce;
