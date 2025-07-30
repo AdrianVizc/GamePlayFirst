@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -337,8 +337,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -51, y: -340}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -51, y: -186.2}
+  m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1309119333
 MonoBehaviour:
@@ -358,11 +358,30 @@ MonoBehaviour:
   leadingChar: 
   leadingCharBeforeDelay: 0
   textList:
-  - This is a test
-  - Next message here
+  - You are alone in this mortal realm.
+  - All around you lies an endless concrete jungle and neverending mundanity.
+  - "You\u2019ve watched the rise of this society and now you\u2019re here to see
+    the end of it."
+  - Passed down to you by your father is the Silly and Whimsy Factory.
+  - In there lies a comically large red button that will return joy, silliness, and
+    whimsy back to this town.
+  - "All you need to do is press it\u2026"
+  - Except it seems the opps have caught on.
+  - Make your mad dash to the factory in the SICKEST way possible and save this town
+    without getting caught.
+  - "Surely\u2026 GULPS we\u2019re not the villains here right?"
+  - "We\u2019re just a silly little guy who wants to spread merriment to this world\u2026"
   backgroundList:
-  - {fileID: 21300000, guid: 72f2a798f5b5cea4589ac2fec11cbcc2, type: 3}
-  - {fileID: 21300000, guid: 3e7d0f97389ace3448bd3345fcb1cb41, type: 3}
+  - {fileID: 21300000, guid: 5ef6c068b966d5e4896133c690070308, type: 3}
+  - {fileID: 21300000, guid: 5ef6c068b966d5e4896133c690070308, type: 3}
+  - {fileID: 21300000, guid: 5ef6c068b966d5e4896133c690070308, type: 3}
+  - {fileID: 21300000, guid: ee0bfb2654131f14980840de9b19f92a, type: 3}
+  - {fileID: 21300000, guid: ee0bfb2654131f14980840de9b19f92a, type: 3}
+  - {fileID: 21300000, guid: ab9f85808f370c7428a2b1ec10a63f2d, type: 3}
+  - {fileID: 21300000, guid: ab9f85808f370c7428a2b1ec10a63f2d, type: 3}
+  - {fileID: 21300000, guid: aa6b7d0a8f10f454b838e50cbbdb49a8, type: 3}
+  - {fileID: 21300000, guid: 7ffc9eedd07a5d346afc24c7379d91e5, type: 3}
+  - {fileID: 21300000, guid: 7ffc9eedd07a5d346afc24c7379d91e5, type: 3}
   backgroundImage: {fileID: 1427088068}
   nextSceneName: PenguinCity
 --- !u!114 &1309119334
@@ -387,15 +406,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c28fbe28138c37e4ebfb890c99efd4e3, type: 2}
+  m_sharedMaterial: {fileID: 3318959912703535883, guid: c28fbe28138c37e4ebfb890c99efd4e3,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4282565322
+  m_fontColor: {r: 0.7924528, g: 0.758843, b: 0.25792095, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -412,8 +432,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 75
-  m_fontSizeBase: 75
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -607,14 +627,14 @@ RectTransform:
   m_GameObject: {fileID: 1427088066}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6, y: 6, z: 6}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6045743}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 120}
   m_SizeDelta: {x: 176, y: 96}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1427088068
@@ -637,7 +657,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 72f2a798f5b5cea4589ac2fec11cbcc2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5ef6c068b966d5e4896133c690070308, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
