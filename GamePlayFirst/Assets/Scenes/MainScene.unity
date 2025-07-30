@@ -956,6 +956,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 58b415b6294db634dbc0bd35dfb075c1, type: 3}
   - name: PenguinDead3
     clip: {fileID: 8300000, guid: 96954b778f9aaf64eb720ede40f1a101, type: 3}
+  - name: PointSound
+    clip: {fileID: 8300000, guid: 897b678a288ea8044ac777603cf8dffb, type: 3}
   railGrindPlayOnce: 0
   skateGrindPlayOnce: 0
   wallGrindPlayOnce: 0

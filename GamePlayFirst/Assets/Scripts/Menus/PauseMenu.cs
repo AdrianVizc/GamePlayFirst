@@ -7,7 +7,7 @@ public class PauseMenu : Menu
 
     [SerializeField] public GameObject background;
 
-    public bool isPaused;
+    private bool isPaused;
 
     private void Awake()
     {

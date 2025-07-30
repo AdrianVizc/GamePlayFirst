@@ -17,6 +17,12 @@ public class InGameCanvas : MonoBehaviour
     [SerializeField] private ComboLineColors[] comboLineColors;
     [SerializeField] private float rainbowSpeed; //Smaller means color changes faster
     [SerializeField] private Material rainbowMaterial;
+    [SerializeField] private GameObject awesomePopup;
+    [SerializeField] private GameObject wowPopup;
+    [SerializeField] private GameObject coolPopup;
+    [SerializeField] private Sprite[] awesomeBackground;
+    [SerializeField] private Sprite[] wowBackground;
+    [SerializeField] private Sprite[] coolBackground;
 
     private Color32[] colors;
 
@@ -53,8 +59,12 @@ public class InGameCanvas : MonoBehaviour
             gameObject.SetActive(false);
         }
 
+        awesomePopup.SetActive(false);
+        wowPopup.SetActive(false);
+        coolPopup.SetActive(false);        
+
         colors = new Color32[7]
-       {
+        {
             new Color32(255, 0, 0, 255), //red
             new Color32(255, 165, 0, 255), //orange
             new Color32(255, 255, 0, 255), //yellow
@@ -117,6 +127,11 @@ public class InGameCanvas : MonoBehaviour
                 ComboLineRainbow();
             }
         }            
+    }
+
+    public void UIPopUp()
+    {
+
     }
 
     private void ComboLineRainbow()
