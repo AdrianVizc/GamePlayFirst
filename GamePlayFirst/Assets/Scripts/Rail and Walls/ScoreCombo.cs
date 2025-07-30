@@ -89,7 +89,6 @@ public class ScoreCombo : MonoBehaviour
     {
         score += tricks.currentTrickScore;
         ++combo;
-        Debug.Log(combo);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -111,7 +110,6 @@ public class ScoreCombo : MonoBehaviour
                 listOfRideables[0] = collision.gameObject;
                 currMultiplier += multiplier;
                 ++combo;
-                Debug.Log(combo);
             }
             else
             {
@@ -122,7 +120,6 @@ public class ScoreCombo : MonoBehaviour
                 {
                     currMultiplier += multiplier;
                     ++combo;
-                    Debug.Log(combo);
                     System.Array.Clear(listOfRideables, 0, listOfRideables.Length);
                 }
             }
