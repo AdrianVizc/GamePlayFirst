@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static AudioManager;
 
 public class Enemy : MonoBehaviour
 {
@@ -17,6 +18,10 @@ public class Enemy : MonoBehaviour
     private Vector3 endingPos;
 
     private Animator animator;
+
+    private const string PENGUIN_DEATH_1 = "PenguinDead1";
+    private const string PENGUIN_DEATH_2 = "PenguinDead2";
+    private const string PENGUIN_DEATH_3 = "PenguinDead3";
 
     private void Start()
     {
@@ -35,6 +40,20 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            switch (Random.Range(1, 4))
+            {
+                case 1:
+                    AudioManager.instance.PlayEnvironmentSound(PENGUIN_DEATH_1);
+                    break;
+                case 2:
+                    AudioManager.instance.PlayEnvironmentSound(PENGUIN_DEATH_2);
+                    break;
+                case 3:
+                    AudioManager.instance.PlayEnvironmentSound(PENGUIN_DEATH_3);
+                    break;
+                
+            }            
+
             ScoreCombo.Instance.score -= scoreLoss;
 
             animator.SetTrigger("OnHit");
