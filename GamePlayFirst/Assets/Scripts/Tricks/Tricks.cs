@@ -132,10 +132,10 @@ public class Tricks : MonoBehaviour
                             // Triggers immediately b/c no further branches possible (i.e A and D)
                             animator.SetTrigger(nextNode.animationTrigger);
                             //Debug.Log("Played animation: " + nextNode.animationTrigger);
-                            currentTrickScore = nextNode.points;
-                            scoreCombo.UpdateTrickScore();
                             if (nextNode.children.Count == 0)
                             {
+                                currentTrickScore += nextNode.points;
+                                scoreCombo.UpdateTrickScore();
                                 ResetCombo();
                             }
                             //Debug.Log(currentTrickScore);
@@ -164,7 +164,7 @@ public class Tricks : MonoBehaviour
                     if (currentNode.animationTrigger != null)
                     {
                         //Debug.Log("Played animation: " + currentNode.animationTrigger);
-                        currentTrickScore = currentNode.points;
+                        currentTrickScore += currentNode.points;
                         scoreCombo.UpdateTrickScore();
                         // Debug.Log(currentTrickScore);
                     }
@@ -178,7 +178,7 @@ public class Tricks : MonoBehaviour
     // Adds combos to the trie
     private void AddCombo(List<KeyCode> sequence, string animationTrigger)
     {
-        // float prevPoints = 0;
+        float prevPoints = 0;
         FieldInfo publicField;
         ComboNode node = root;
         foreach (KeyCode key in sequence)
@@ -188,16 +188,16 @@ public class Tricks : MonoBehaviour
                 node.children[key] = new ComboNode();
             }
             //Debug.Log($"Added key to combo: {key} : {node.animationTrigger}");
-            // prevPoints = node.points;
+            prevPoints = node.points;
             node = node.children[key];
             node.animationTrigger = keyDict[key];
             publicField = GetType().GetField(node.animationTrigger);
-            node.points = (float)publicField.GetValue(this);
+            node.points = prevPoints + (float)publicField.GetValue(this);
             //Debug.Log($"{node.animationTrigger} : {node.points}");
         }
         node.animationTrigger = animationTrigger;
         publicField = GetType().GetField(animationTrigger);
-        node.points =(float)publicField.GetValue(this);
+        node.points = prevPoints + (float)publicField.GetValue(this);
         //Debug.Log($"{animationTrigger} : {node.points}");
         //Debug.Log($"Added key to combo: {node} : {node.animationTrigger}");
     }
@@ -224,10 +224,9 @@ public class Tricks : MonoBehaviour
             {
                 animator.SetTrigger(nextNode.animationTrigger);
                 Debug.Log("Played animation: " + nextNode.animationTrigger);
-                
+                currentTrickScore += nextNode.points;
                 if (nextNode.children.Count == 0)
                 {
-                    currentTrickScore += nextNode.points;
                     ResetCombo();
                 }
             }
