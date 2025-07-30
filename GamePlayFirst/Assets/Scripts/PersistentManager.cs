@@ -10,7 +10,7 @@ public class PersistentManager : MonoBehaviour
 {
     public static PersistentManager Instance; //Code to make script into a singleton
 
-    [SerializeField] private bool skipStartupAnimation;
+    [SerializeField] public bool testingMode;
     [SerializeField] private VideoPlayer videoPlayer;
 
     [Space]
@@ -56,7 +56,7 @@ public class PersistentManager : MonoBehaviour
 
     void Start()
     {
-        if (!skipStartupAnimation)
+        if (!testingMode)
         {
             StartCoroutine(PlayBeginningAnimationThenStartup());
         }
@@ -187,7 +187,7 @@ public class PersistentManager : MonoBehaviour
             case 1:
                 screenMode = FullScreenMode.FullScreenWindow;
                 break;
-            case 3:
+            case 2:
                 screenMode = FullScreenMode.Windowed;
                 break;
         }

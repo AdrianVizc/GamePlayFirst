@@ -31,7 +31,9 @@ public class AudioManager : MonoBehaviour
 
     [HideInInspector]
     public bool railGrindPlayOnce;
+    [HideInInspector]
     public bool skateGrindPlayOnce;
+    [HideInInspector]
     public bool wallGrindPlayOnce;
 
     [Serializable]

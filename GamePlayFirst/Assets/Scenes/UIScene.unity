@@ -11083,7 +11083,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1738013845}
   - {fileID: 738130323}
   - {fileID: 1181962424}
   - {fileID: 2040473151}
@@ -13599,9 +13598,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1738013840}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1022931229}
@@ -13613,13 +13612,13 @@ RectTransform:
   - {fileID: 1500451803}
   - {fileID: 629093269}
   - {fileID: 1416991684}
-  m_Father: {fileID: 1475874931}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 960, y: 540}
-  m_SizeDelta: {x: 1920, y: 1080}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!114 &1738013846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13647,7 +13646,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trickPoints: {fileID: 1022931230}
   multiplier: {fileID: 1607499422}
-  combo: 0
+  combo: {fileID: 629093270}
+  trickName: {fileID: 2122335063}
+  comboLine: {fileID: 582952711}
+  comboLineColors:
+  - name: White
+    sprite: {fileID: 21300000, guid: 6ced5eb0060ea754baba7c5452259906, type: 3}
+    pointThreshold: 0
+  - name: Blue
+    sprite: {fileID: 21300000, guid: 915af5918049cb841a4642b70137bbd9, type: 3}
+    pointThreshold: 10
+  - name: Green
+    sprite: {fileID: 21300000, guid: f1b1455393e901f4f9953d8fe4641896, type: 3}
+    pointThreshold: 20
+  - name: Orange
+    sprite: {fileID: 21300000, guid: b490a0cae5c72fd49885b456d2d47393, type: 3}
+    pointThreshold: 30
+  - name: Pink
+    sprite: {fileID: 21300000, guid: 3cbccc44dd3c0f34c9387cc364fdc897, type: 3}
+    pointThreshold: 40
+  - name: Rainbow
+    sprite: {fileID: 21300000, guid: 6b70aa79f3b98404a8907f9334414274, type: 3}
+    pointThreshold: 50
+  rainbowSpeed: 0.6
+  rainbowMaterial: {fileID: 2100000, guid: 3388189e105fcca4e99c4f0bc0f3864f, type: 2}
 --- !u!1 &1743854322
 GameObject:
   m_ObjectHideFlags: 0
@@ -16825,5 +16847,6 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1738013845}
   - {fileID: 1475874931}
   - {fileID: 552976074}

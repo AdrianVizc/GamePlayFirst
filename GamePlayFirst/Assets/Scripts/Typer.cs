@@ -19,8 +19,7 @@ public class Typer : MonoBehaviour
 
     [SerializeField] List<string> textList;             // List of texts to type out
     [SerializeField] List<Sprite> backgroundList;       // List of backgrounds to switch between
-    [SerializeField] Image backgroundImage;             // The Image component for the background
-    [SerializeField] string nextSceneName;              // Name of the next scene to load after the last text
+    [SerializeField] Image backgroundImage;
     private int currentTextIndex = 0;                   // Index of the current text in the list
     private bool isTyping = false;
     private bool skipTyping = false;
@@ -54,7 +53,9 @@ public class Typer : MonoBehaviour
         if (currentTextIndex >= textList.Count)
         {
             // If all texts are done, switch to the next scene
-            SceneManager.LoadScene(nextSceneName);
+            SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+
+            SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
             return; // Exit method
         }
 
@@ -110,7 +111,9 @@ public class Typer : MonoBehaviour
 
         if (currentTextIndex == textList.Count - 1)
         {
-            SceneManager.LoadScene(nextSceneName);
+            SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+
+            SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
         }
         else
         {
@@ -156,7 +159,9 @@ public class Typer : MonoBehaviour
 
         if (currentTextIndex == textList.Count - 1)
         {
-            SceneManager.LoadScene(nextSceneName);
+            SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+
+            SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
         }
         else
         {

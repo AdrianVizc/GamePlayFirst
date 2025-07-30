@@ -83,6 +83,8 @@ public class ScoreCombo : MonoBehaviour
 
         InGameCanvas.instance.UpdateMultiplier(currMultiplier);
         InGameCanvas.instance.UpdateTrickPoints(score);
+        InGameCanvas.instance.UpdateCombo(combo);
+        InGameCanvas.instance.UpdateComboLineColor(combo);
     }
 
     public void UpdateTrickScore()

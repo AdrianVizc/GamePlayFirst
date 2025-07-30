@@ -105,7 +105,7 @@ public class GraphicsMenu : Menu
         }
         else
         {
-            windowDropdown.value = 3;
+            windowDropdown.value = 2;
         }
     }
 
