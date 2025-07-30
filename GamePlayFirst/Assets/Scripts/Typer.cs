@@ -23,23 +23,19 @@ public class Typer : MonoBehaviour
     [SerializeField] string nextSceneName;              // Name of the next scene to load after the last text
     private int currentTextIndex = 0;                   // Index of the current text in the list
     private bool isTyping = false;
+    private bool skipTyping = false;
 
     void Update()
     {
-        // Check for mouse click to advance the text
-        if (Input.GetMouseButtonDown(0)) // Left mouse button
+        if (Input.GetMouseButtonDown(0)) // Left click
         {
             if (isTyping)
             {
-                // If typing, finish the current text immediately
-                currentTextIndex++;
-                StopAllCoroutines(); // Stop current typing coroutines
-                StartNextBackgroundAndText();
+                skipTyping = true; // Request full text instantly
             }
             else
             {
-                // If not typing, go to the next text
-                StartNextText();
+                StartNextText(); // Go to next text
             }
         }
     }
@@ -80,15 +76,24 @@ public class Typer : MonoBehaviour
     IEnumerator TypeWriterText()
     {
         isTyping = true;
+        skipTyping = false;
+
         _text.text = leadingCharBeforeDelay ? leadingChar : "";
         yield return new WaitForSeconds(delayBeforeStart);
 
         foreach (char c in writer)
         {
+            if (skipTyping)
+            {
+                _text.text = writer; // Show full text
+                break;
+            }
+
             if (_text.text.Length > 0)
             {
                 _text.text = _text.text.Substring(0, _text.text.Length - leadingChar.Length);
             }
+
             _text.text += c;
             _text.text += leadingChar;
             yield return new WaitForSeconds(timeBtwChars);
@@ -99,19 +104,16 @@ public class Typer : MonoBehaviour
             _text.text = _text.text.Substring(0, _text.text.Length - leadingChar.Length);
         }
 
-        // Add delay before switching to the next background and text
-        yield return new WaitForSeconds(delayBetweenTextAndBackground);
+        yield return new WaitForSeconds(delayBetweenTextAndBackground); // Always delay
+
         isTyping = false;
 
-        // Check if this is the last text in the list
         if (currentTextIndex == textList.Count - 1)
         {
-            // All texts and backgrounds are done, load the next scene
             SceneManager.LoadScene(nextSceneName);
         }
         else
         {
-            // Move to the next text and background
             currentTextIndex++;
             StartNextBackgroundAndText();
         }
@@ -120,15 +122,24 @@ public class Typer : MonoBehaviour
     IEnumerator TypeWriterTMP()
     {
         isTyping = true;
+        skipTyping = false;
+
         _tmpProText.text = leadingCharBeforeDelay ? leadingChar : "";
         yield return new WaitForSeconds(delayBeforeStart);
 
         foreach (char c in writer)
         {
+            if (skipTyping)
+            {
+                _tmpProText.text = writer;
+                break;
+            }
+
             if (_tmpProText.text.Length > 0)
             {
                 _tmpProText.text = _tmpProText.text.Substring(0, _tmpProText.text.Length - leadingChar.Length);
             }
+
             _tmpProText.text += c;
             _tmpProText.text += leadingChar;
             yield return new WaitForSeconds(timeBtwChars);
@@ -139,19 +150,16 @@ public class Typer : MonoBehaviour
             _tmpProText.text = _tmpProText.text.Substring(0, _tmpProText.text.Length - leadingChar.Length);
         }
 
-        // Add delay before switching to the next background and text
         yield return new WaitForSeconds(delayBetweenTextAndBackground);
+
         isTyping = false;
 
-        // Check if this is the last text in the list
         if (currentTextIndex == textList.Count - 1)
         {
-            // All texts and backgrounds are done, load the next scene
             SceneManager.LoadScene(nextSceneName);
         }
         else
         {
-            // Move to the next text and background
             currentTextIndex++;
             StartNextBackgroundAndText();
         }
