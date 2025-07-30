@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.08900578, g: 0.120851755, b: 0.21663098, a: 1}
+  m_IndirectSpecularColor: {r: 0.08929936, g: 0.121155076, b: 0.21699978, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -11981,7 +11981,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 96f7c959a70e7d6469547ad971d1342c,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919760438278066647, guid: 96f7c959a70e7d6469547ad971d1342c,
         type: 3}
@@ -20968,7 +20968,11 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 96f7c959a70e7d6469547ad971d1342c,
         type: 3}
-      insertIndex: 2377
+      insertIndex: 2346
+      addedObject: {fileID: 9024775295274272224}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 96f7c959a70e7d6469547ad971d1342c,
+        type: 3}
+      insertIndex: 2378
       addedObject: {fileID: 370032728}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96f7c959a70e7d6469547ad971d1342c, type: 3}
@@ -23454,6 +23458,80 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8755629901123100260, guid: 7238d77f4c7396748827929ea79c8fb7,
     type: 3}
   m_PrefabInstance: {fileID: 8336196220360038226}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &9024775295274272223
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 676607368}
+    m_Modifications:
+    - target: {fileID: 6293370167493498970, guid: 03a3cc645039eab4890a2b7cb7d9e845,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6293370167493498970, guid: 03a3cc645039eab4890a2b7cb7d9e845,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6293370167493498970, guid: 03a3cc645039eab4890a2b7cb7d9e845,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 145
+      objectReference: {fileID: 0}
+    - target: {fileID: 6293370167493498970, guid: 03a3cc645039eab4890a2b7cb7d9e845,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.49999952
+      objectReference: {fileID: 0}
+    - target: {fileID: 6293370167493498970, guid: 03a3cc645039eab4890a2b7cb7d9e845,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.49999952
+      objectReference: {fileID: 0}
+    - target: {fileID: 6293370167493498970, guid: 03a3cc645039eab4890a2b7cb7d9e845,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.50000054
+      objectReference: {fileID: 0}
+    - target: {fileID: 6293370167493498970, guid: 03a3cc645039eab4890a2b7cb7d9e845,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.50000054
+      objectReference: {fileID: 0}
+    - target: {fileID: 6293370167493498970, guid: 03a3cc645039eab4890a2b7cb7d9e845,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6293370167493498970, guid: 03a3cc645039eab4890a2b7cb7d9e845,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6293370167493498970, guid: 03a3cc645039eab4890a2b7cb7d9e845,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6490116106012640334, guid: 03a3cc645039eab4890a2b7cb7d9e845,
+        type: 3}
+      propertyPath: m_Name
+      value: SM_Env_Sidewalk_Corner_18 (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 03a3cc645039eab4890a2b7cb7d9e845, type: 3}
+--- !u!4 &9024775295274272224 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6293370167493498970, guid: 03a3cc645039eab4890a2b7cb7d9e845,
+    type: 3}
+  m_PrefabInstance: {fileID: 9024775295274272223}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -138,7 +138,7 @@ public class ScoreCombo : MonoBehaviour
             score = 0;
             combo = 0;
             currMultiplier = 1 - multiplier;
-            Debug.Log(totalScore);
+            //Debug.Log(totalScore);iterator LITE
         }
 
         isCheckingGround = false;
