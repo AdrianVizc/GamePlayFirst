@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour
     private Vector3 startingPos;
     private Vector3 endingPos;
 
+    private Animator animator;
+
     private void Start()
     {
         startingPosObj.gameObject.SetActive(false);
@@ -25,6 +27,8 @@ public class Enemy : MonoBehaviour
         endingPos = endingPosObj.position;
 
         StartCoroutine(MoveLoop());
+
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -33,10 +37,17 @@ public class Enemy : MonoBehaviour
         {
             ScoreCombo.Instance.score -= scoreLoss;
 
-            gameObject.SetActive(false);
+            animator.SetTrigger("OnHit");
+
+            StartCoroutine(DisableAfterDelay());
         }        
     }
 
+    private IEnumerator DisableAfterDelay()
+    {
+        yield return new WaitForSeconds(1.5f);
+        gameObject.SetActive(false);
+    }
     private IEnumerator MoveLoop()
     {
         while (true)
