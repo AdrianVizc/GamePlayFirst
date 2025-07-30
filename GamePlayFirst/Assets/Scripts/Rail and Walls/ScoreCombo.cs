@@ -133,7 +133,7 @@ public class ScoreCombo : MonoBehaviour
         // If player is still on ground after delay
         if(movement.isGrounded && !rail.onRail && !wall.isWallRunning)
         {
-            totalScore += (score * multiplier);
+            totalScore += (score * currMultiplier);
             totalTime = 0;
             score = 0;
             combo = 0;
