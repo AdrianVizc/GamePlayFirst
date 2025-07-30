@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -372,16 +372,16 @@ MonoBehaviour:
   - "Surely\u2026 GULPS we\u2019re not the villains here right?"
   - "We\u2019re just a silly little guy who wants to spread merriment to this world\u2026"
   backgroundList:
-  - {fileID: 21300000, guid: 5ef6c068b966d5e4896133c690070308, type: 3}
-  - {fileID: 21300000, guid: 5ef6c068b966d5e4896133c690070308, type: 3}
-  - {fileID: 21300000, guid: 5ef6c068b966d5e4896133c690070308, type: 3}
-  - {fileID: 21300000, guid: ee0bfb2654131f14980840de9b19f92a, type: 3}
-  - {fileID: 21300000, guid: ee0bfb2654131f14980840de9b19f92a, type: 3}
-  - {fileID: 21300000, guid: ab9f85808f370c7428a2b1ec10a63f2d, type: 3}
-  - {fileID: 21300000, guid: ab9f85808f370c7428a2b1ec10a63f2d, type: 3}
-  - {fileID: 21300000, guid: aa6b7d0a8f10f454b838e50cbbdb49a8, type: 3}
-  - {fileID: 21300000, guid: 7ffc9eedd07a5d346afc24c7379d91e5, type: 3}
-  - {fileID: 21300000, guid: 7ffc9eedd07a5d346afc24c7379d91e5, type: 3}
+  - {fileID: 21300000, guid: b5850444d70268b41b209d2171335b57, type: 3}
+  - {fileID: 21300000, guid: b5850444d70268b41b209d2171335b57, type: 3}
+  - {fileID: 21300000, guid: b5850444d70268b41b209d2171335b57, type: 3}
+  - {fileID: 21300000, guid: 9cea1e79e8ac2634aadec66ef83bc3df, type: 3}
+  - {fileID: 21300000, guid: 9cea1e79e8ac2634aadec66ef83bc3df, type: 3}
+  - {fileID: 21300000, guid: f54c7e529f494db45979316f1ba18e43, type: 3}
+  - {fileID: 21300000, guid: f54c7e529f494db45979316f1ba18e43, type: 3}
+  - {fileID: 21300000, guid: 18046ef437a81134988df048d10b4573, type: 3}
+  - {fileID: 21300000, guid: c6cd68426ca3c0842949f63f020f6015, type: 3}
+  - {fileID: 21300000, guid: c6cd68426ca3c0842949f63f020f6015, type: 3}
   backgroundImage: {fileID: 1427088068}
   nextSceneName: PenguinCity
 --- !u!114 &1309119334
