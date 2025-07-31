@@ -6,15 +6,38 @@ using UnityEngine.SceneManagement;
 
 public class EndGameCanvas : MonoBehaviour
 {
+    public static EndGameCanvas instance;
+
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject panel;
     [SerializeField] private TMP_Text totalScoreText;
     [SerializeField] private TMP_Text time;
     [SerializeField] private float duration = 0.3f;
 
-    private void OnEnable()
+    private void Awake()
     {
-        pauseMenu.SetActive(false);        
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void Start()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void Startup()
+    {
+        Time.timeScale = 0f;
+
+        Cursor.lockState = CursorLockMode.None;
+
+        pauseMenu.SetActive(false);
 
         Stopwatch.instance.StopTimer();
         time.text = Stopwatch.instance.timerText.text;

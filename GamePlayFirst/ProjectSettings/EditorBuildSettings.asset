@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PenguinCity.unity
     guid: e1866235fa903d646a7929e8f42ac0d4
+  - enabled: 1
+    path: Assets/Scenes/EndCutscene.unity
+    guid: d7720798e181b754dbdc21e6c8775c9a
   m_configObjects: {}
