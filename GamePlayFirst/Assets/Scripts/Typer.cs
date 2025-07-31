@@ -23,6 +23,7 @@ public class Typer : MonoBehaviour
     private int currentTextIndex = 0;                   // Index of the current text in the list
     private bool isTyping = false;
     private bool skipTyping = false;
+    private bool skipAll = false;
 
     void Update()
     {
@@ -35,6 +36,15 @@ public class Typer : MonoBehaviour
             else
             {
                 StartNextText(); // Go to next text
+            }
+        }
+
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            if (!skipAll)
+            {
+                skipAll = true;
+                SkipAllTexts();
             }
         }
     }
@@ -86,34 +96,32 @@ public class Typer : MonoBehaviour
         {
             if (skipTyping)
             {
-                _text.text = writer; // Show full text
+                _text.text = writer;
                 break;
             }
 
-            if (_text.text.Length > 0)
+            // Remove the trailing leadingChar, add the next char, then re-add it
+            if (_text.text.Length > 0 && leadingChar.Length > 0)
             {
                 _text.text = _text.text.Substring(0, _text.text.Length - leadingChar.Length);
             }
 
-            _text.text += c;
-            _text.text += leadingChar;
+            _text.text += c + leadingChar;
             yield return new WaitForSeconds(timeBtwChars);
         }
 
-        if (leadingChar != "")
+        // Remove the trailing leadingChar only if it's there
+        if (!string.IsNullOrEmpty(leadingChar) && _text.text.EndsWith(leadingChar) && _text.text.Length > writer.Length)
         {
             _text.text = _text.text.Substring(0, _text.text.Length - leadingChar.Length);
         }
 
-        yield return new WaitForSeconds(delayBetweenTextAndBackground); // Always delay
-
+        yield return new WaitForSeconds(delayBetweenTextAndBackground);
         isTyping = false;
 
         if (currentTextIndex == textList.Count - 1)
         {
-            SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
-
-            SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
+            SceneManager.LoadScene("MainScene");
         }
         else
         {
@@ -138,30 +146,29 @@ public class Typer : MonoBehaviour
                 break;
             }
 
-            if (_tmpProText.text.Length > 0)
+            // Remove the trailing leadingChar, add the next char, then re-add it
+            if (_tmpProText.text.Length > 0 && leadingChar.Length > 0)
             {
                 _tmpProText.text = _tmpProText.text.Substring(0, _tmpProText.text.Length - leadingChar.Length);
             }
 
-            _tmpProText.text += c;
-            _tmpProText.text += leadingChar;
+            _tmpProText.text += c + leadingChar;
             yield return new WaitForSeconds(timeBtwChars);
         }
 
-        if (leadingChar != "")
+        // Remove the trailing leadingChar only if it's there
+        if (!string.IsNullOrEmpty(leadingChar) && _tmpProText.text.EndsWith(leadingChar) && _tmpProText.text.Length > writer.Length)
         {
             _tmpProText.text = _tmpProText.text.Substring(0, _tmpProText.text.Length - leadingChar.Length);
         }
 
         yield return new WaitForSeconds(delayBetweenTextAndBackground);
-
+        
         isTyping = false;
 
         if (currentTextIndex == textList.Count - 1)
         {
-            SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
-
-            SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
+            SceneManager.LoadScene("MainScene");
         }
         else
         {
@@ -180,5 +187,39 @@ public class Typer : MonoBehaviour
 
         // Start typing the next text
         StartNextText();
+    }
+
+    void SkipAllTexts()
+    {
+        // Stop any ongoing typing coroutines:
+        StopAllCoroutines();
+
+        // Show the last text fully (from textList)
+        string lastText = textList[textList.Count - 1];
+
+        if (_text != null)
+        {
+            _text.text = lastText;
+        }
+
+        if (_tmpProText != null)
+        {
+            _tmpProText.text = lastText;
+        }
+
+        // Set currentTextIndex to the last text index to prevent further typing
+        currentTextIndex = textList.Count;
+
+        // Optionally change to the last background
+        if (backgroundList.Count > 0 && backgroundImage != null)
+        {
+            backgroundImage.sprite = backgroundList[backgroundList.Count - 1];
+        }
+
+        isTyping = false;
+        skipTyping = false;
+
+        // Immediately load the final scene if you want
+        SceneManager.LoadScene("MainScene");
     }
 }
