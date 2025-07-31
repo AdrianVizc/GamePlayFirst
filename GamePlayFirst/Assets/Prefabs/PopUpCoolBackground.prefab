@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 4358831366999397314}
   - component: {fileID: 5959644306449704324}
   - component: {fileID: -8462936750642989322}
+  - component: {fileID: -6363486362576568524}
   m_Layer: 5
   m_Name: PopUpCoolBackground
   m_TagString: Untagged
@@ -171,3 +172,18 @@ MonoBehaviour:
   backgroundImage: {fileID: 5959644306449704324}
   textImage: {fileID: 7490289504304457838}
   fadeDuration: 2
+  waitBeforeFade: 1
+--- !u!114 &-6363486362576568524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6556237286062155387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66515d49cf4e844ffb40a7e35e0af4d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popupText: {fileID: 7490289504304457838}
+  popupBackground: {fileID: 5959644306449704324}

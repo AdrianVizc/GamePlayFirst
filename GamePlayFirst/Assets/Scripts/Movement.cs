@@ -54,6 +54,11 @@ public class Movement : MonoBehaviour
     private Camera mainCamera;
     private PlayerGrind rail;
 
+    [Header("Animation Settings")]
+    [SerializeField] private float accelAnimation = 2f;
+    [SerializeField] private float decelAnimation = 0.5f;
+    private Animator animator;
+
     private float rotationSuppressionTimer = 0f;
 
     // Start is called before the first frame update
@@ -61,6 +66,7 @@ public class Movement : MonoBehaviour
     {
         rb = this.GetComponent<Rigidbody>();
         rail = GetComponent<PlayerGrind>();
+        animator = GetComponentInChildren<Animator>();
         rb.freezeRotation = true;
         canDoubleJump = true;
         slidOffWallRail = false;
@@ -80,6 +86,7 @@ public class Movement : MonoBehaviour
     private void FixedUpdate()
     {
         GroundCheck();
+        //transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
 
         if (isDashing)
         {
@@ -108,12 +115,18 @@ public class Movement : MonoBehaviour
         {
             rotationSuppressionTimer -= Time.fixedDeltaTime;
         }
+
+        if(!isGrounded)
+        {
+            transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+        }
     }
 
     private void GetInput()
     {
         float vertical = Input.GetAxis("Vertical");
         float horizontal = Input.GetAxis("Horizontal");
+        animator.SetFloat("horizontalLean", horizontal);
 
         isAccelerating = vertical > 0.1f;
         isBraking = vertical < -0.1f;
@@ -164,6 +177,7 @@ public class Movement : MonoBehaviour
                 if (currentSpeed < maxSpeed)
                 {
                     currentSpeed += accelSpeed * Time.fixedDeltaTime;
+                    animator.speed = accelAnimation;
                 }
             }
             else if (isBraking)
@@ -171,6 +185,7 @@ public class Movement : MonoBehaviour
                 if (currentSpeed > minSpeed)
                 {
                     currentSpeed -= brakeForce * Time.fixedDeltaTime;
+                    animator.speed = decelAnimation;
                 }
             }
             else
@@ -178,6 +193,7 @@ public class Movement : MonoBehaviour
                 if (currentSpeed > minSpeed)
                 {
                     currentSpeed -= decelSpeed * Time.fixedDeltaTime;
+                    animator.speed = 1;
                 }
             }
 
@@ -259,11 +275,12 @@ public class Movement : MonoBehaviour
     {
         if (isGrounded)
         {
+            animator.SetBool("isJumping", true);
+            animator.SetBool("isGrounded", false);
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
 
             canDoubleJump = true;
-
             AudioManager.instance.PlayEnvironmentSound("Jump");
         }
     }
@@ -292,6 +309,7 @@ public class Movement : MonoBehaviour
                 AudioManager.instance.PlayEnvironmentSound("Land");
                 AudioManager.instance.PlayEnvironmentSound("Skate");
                 AudioManager.instance.skateGrindPlayOnce = true;
+                animator.SetBool("isJumping", false);
             }            
 
             canDoubleJump = true;
@@ -351,5 +369,14 @@ public class Movement : MonoBehaviour
     public void TemporarilyDisableRotation(float duration)
     {
         rotationSuppressionTimer = duration;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        int groundLayer = LayerMask.NameToLayer("groundLayer");
+        if(collision.gameObject.layer == groundLayer)
+        {
+            animator.SetBool("isGrounded", true);
+        }
     }
 }

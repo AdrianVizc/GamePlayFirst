@@ -79,6 +79,12 @@ public class PersistentManager : MonoBehaviour
 
         while (videoPlayer.isPlaying)
         {
+            if (Input.anyKeyDown) // Replace with whatever key you want
+            {
+                videoPlayer.Stop(); // Or Pause(), depending on your intent
+                break;
+            }
+
             yield return null;
         }
         videoPlayer.gameObject.SetActive(false);

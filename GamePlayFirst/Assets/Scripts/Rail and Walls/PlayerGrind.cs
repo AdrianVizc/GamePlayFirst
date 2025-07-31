@@ -30,6 +30,7 @@ public class PlayerGrind : MonoBehaviour
     private bool isJumping;
     private bool isRailTagIgnored;
     private Movement movement;
+    private Animator animator;
 
     private CinemachineVirtualCamera virtualCamera;
     private float defaultFOV;
@@ -40,6 +41,7 @@ public class PlayerGrind : MonoBehaviour
         defaultFOV = virtualCamera.m_Lens.FieldOfView;
         rb = GetComponent<Rigidbody>();
         movement = GetComponent<Movement>();
+        animator = GetComponentInChildren<Animator>();
         timeForFullSpline = 0;
         elapsedTime = 0;
         isJumping = false;
@@ -51,13 +53,13 @@ public class PlayerGrind : MonoBehaviour
         if (onRail)
         {
             movement.canDash = true;
-
             if (Input.GetButtonDown("Jump") && !IsRailTooVertical())
             {
                 isJumping = true;
                 movement.canDoubleJump = true;
             }
 
+            animator.SetBool("isRailVert", IsRailTooVertical());
             MovePlayerAlongRail();
         }
     }
@@ -135,6 +137,8 @@ public class PlayerGrind : MonoBehaviour
         if (collision.gameObject.CompareTag("rail"))
         {
             onRail = true;
+            animator.SetBool("onRail", true);
+            animator.SetBool("isGrounded", false);
             AudioManager.instance.PlayEnvironmentSound("RailEnter");
             AudioManager.instance.StopEnvironmentSound("Skate");
 
@@ -178,6 +182,7 @@ public class PlayerGrind : MonoBehaviour
 
     void ThrowOffRail()
     {
+        animator.SetBool("onRail", false);
         movement.canDoubleJump = true;
         transform.position += Vector3.ProjectOnPlane(transform.forward, Vector3.up) * 1f; // Move player forward slightly
         EndRail();
@@ -185,11 +190,13 @@ public class PlayerGrind : MonoBehaviour
         transform.rotation = Quaternion.identity;
 
         transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
-        movement.TemporarilyDisableRotation(0.2f);
+        movement.TemporarilyDisableRotation(0.1f);
     }
 
     private void JumpOff()
     {
+        animator.SetBool("onRail", false);
+        animator.SetBool("isJumping", true);
         AudioManager.instance.railGrindPlayOnce = false;
         AudioManager.instance.PlayEnvironmentSound("Jump");
         AudioManager.instance.StopEnvironmentSound("RailGrind");
@@ -202,7 +209,7 @@ public class PlayerGrind : MonoBehaviour
 
         // Reset rotation to flat to remove skew from grinding
         transform.rotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
-        movement.TemporarilyDisableRotation(0.2f);
+        movement.TemporarilyDisableRotation(0.1f);
 
         // Move slightly up before jumping, to clear the rail
         transform.position += Vector3.up * 0.5f;

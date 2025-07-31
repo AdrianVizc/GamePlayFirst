@@ -26,6 +26,9 @@ public class PlayerBump : MonoBehaviour
 
     void FixedUpdate()
     {
+        Vector3 bottom = transform.position + Vector3.down;
+        Vector3 top = transform.position + Vector3.up;
+
         if (isBumping && zeroVel)
         {
             movement.currentSpeed = 0;
@@ -34,7 +37,7 @@ public class PlayerBump : MonoBehaviour
             movement.enabled = true;
             AudioManager.instance.UnPauseSkateSound();
         }
-        else if (Physics.SphereCast(transform.position, raycastCheckRadius, transform.forward, out RaycastHit hit, raycastCheckDistance, ~0, QueryTriggerInteraction.Ignore))
+        else if (Physics.CapsuleCast(bottom, top, raycastCheckRadius, transform.forward, out RaycastHit hit, raycastCheckDistance, ~0, QueryTriggerInteraction.Ignore))
         {
             if (hit.collider.CompareTag("rail") || (hit.collider.CompareTag("wall") && !movement.isGrounded))
             {
