@@ -28,11 +28,13 @@ public class MainMenu : Menu
         if (thisScene.IsValid())
         {
             gameObject.SetActive(false);
+
+            Cursor.lockState = CursorLockMode.Locked;
         }
         else
         {
             gameObject.SetActive(true);
-        }        
+        }
     }
 
     public void Play()

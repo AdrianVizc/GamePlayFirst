@@ -139,6 +139,8 @@ public class InGameCanvas : MonoBehaviour
         {
             doOnce = true;
 
+            GameObject randomPrefab = popupPrefab[Random.Range(0, popupPrefab.Length)];
+
             Transform chosenPos = popupPositions[Random.Range(0, popupPositions.Length)];
 
             while (previousPos == chosenPos)
@@ -148,7 +150,26 @@ public class InGameCanvas : MonoBehaviour
 
             previousPos = chosenPos;
 
-            Instantiate(popupPrefab[Random.Range(0, popupPrefab.Length)], chosenPos);
+            Instantiate(randomPrefab, chosenPos);
+
+            for (int i = 0; i < popupPrefab.Length; i++)
+            {
+                if (popupPrefab[i] == randomPrefab)
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            AudioManager.instance.PlayEnvironmentSound("Awesome");
+                            break;
+                        case 1:
+                            AudioManager.instance.PlayEnvironmentSound("Cool");
+                            break;
+                        case 2:
+                            AudioManager.instance.PlayEnvironmentSound("Wow");
+                            break;
+                    }
+                }
+            }
         }
 
         if (num % popupPointThreshold != 0)
