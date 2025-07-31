@@ -34,6 +34,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] public bool isGrounded;
     [SerializeField] public bool canDoubleJump;
+    [SerializeField] public bool slidOffWallRail;
     [SerializeField] public float gravityMultiplier;
 
     [Header("Sideways Dash")]
@@ -60,6 +61,7 @@ public class Movement : MonoBehaviour
         rail = GetComponent<PlayerGrind>();
         rb.freezeRotation = true;
         canDoubleJump = true;
+        slidOffWallRail = false;
         mainCamera = Camera.main;
         currentSpeed = startingSpeed;
         adaptiveForward = transform.forward;
@@ -115,6 +117,17 @@ public class Movement : MonoBehaviour
             {
                 Jump();
                 canDash = true;
+            }
+            else if(slidOffWallRail)
+            {
+                slidOffWallRail = false;
+
+                rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+                rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+
+                canDoubleJump = true;
+
+                AudioManager.instance.PlayEnvironmentSound("Jump");
             }
             else if (canDoubleJump)
             {
