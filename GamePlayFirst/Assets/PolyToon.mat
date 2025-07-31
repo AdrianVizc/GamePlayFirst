@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Toon Opaque
+  m_Name: PolyToon
   m_Shader: {fileID: -6465566751694194690, guid: 1d2c59dc56e978f4ab72d01f4fa54310,
     type: 3}
   m_Parent: {fileID: 0}
@@ -42,15 +42,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Max: 1.29
-    - _Min: 0.61
+    - _Max: 1
+    - _Min: 0.3
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Shades: 0.8
+    - _Shades: 0.35
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Color: {r: 0.9622641, g: 0.9622641, b: 0.9622641, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &5007382711652572066
+--- !u!114 &3536200964192908619
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
