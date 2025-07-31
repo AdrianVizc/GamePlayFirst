@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 9111571617798739408}
   - component: {fileID: 770402761800774335}
   - component: {fileID: -4955579426049782814}
+  - component: {fileID: -3215089405697587457}
   m_Layer: 5
   m_Name: PopUpAwesomeBackground
   m_TagString: Untagged
@@ -171,3 +172,18 @@ MonoBehaviour:
   backgroundImage: {fileID: 770402761800774335}
   textImage: {fileID: 8849780645070250278}
   fadeDuration: 2
+  waitBeforeFade: 1
+--- !u!114 &-3215089405697587457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7079700337249774750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66515d49cf4e844ffb40a7e35e0af4d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popupText: {fileID: 8849780645070250278}
+  popupBackground: {fileID: 770402761800774335}
