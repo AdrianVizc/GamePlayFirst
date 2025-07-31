@@ -54,6 +54,8 @@ public class Movement : MonoBehaviour
     private Camera mainCamera;
     private PlayerGrind rail;
 
+    private float rotationSuppressionTimer = 0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -101,6 +103,11 @@ public class Movement : MonoBehaviour
         
         Move();
         ApplyExtraFallGravity();
+
+        if (rotationSuppressionTimer > 0f)
+        {
+            rotationSuppressionTimer -= Time.fixedDeltaTime;
+        }
     }
 
     private void GetInput()
@@ -220,7 +227,10 @@ public class Movement : MonoBehaviour
                 finalRotation = intendedRotation;
             }
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, lateralSpeed * Time.fixedDeltaTime);
+            if (rotationSuppressionTimer <= 0f)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, lateralSpeed * Time.fixedDeltaTime);
+            }
 
             //Applying Forward Movement
             Vector3 forward = transform.forward;
@@ -336,5 +346,10 @@ public class Movement : MonoBehaviour
             Vector3 addedGravity = Physics.gravity * (gravityMultiplier - 1f);
             rb.AddForce(addedGravity, ForceMode.Acceleration);
         }
+    }
+
+    public void TemporarilyDisableRotation(float duration)
+    {
+        rotationSuppressionTimer = duration;
     }
 }
