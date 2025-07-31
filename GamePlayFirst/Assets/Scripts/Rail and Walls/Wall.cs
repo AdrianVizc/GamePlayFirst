@@ -43,6 +43,7 @@ public class PlayerWall : MonoBehaviour
     private bool wallCooldownReady;
 
     private Movement movement;
+    private Animator animator;
 
     private void Start()
     {
@@ -59,6 +60,7 @@ public class PlayerWall : MonoBehaviour
         wallCooldownReady = true;
         rb = GetComponent<Rigidbody>();
         movement = GetComponent<Movement>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -88,6 +90,8 @@ public class PlayerWall : MonoBehaviour
             // Jump off wall if player presses jump
             if (Input.GetButtonDown("Jump"))
             {
+                animator.SetBool("onWall", false);
+                animator.SetBool("isJumping", true);
                 AudioManager.instance.PlayEnvironmentSound("Jump");
                 AudioManager.instance.StopEnvironmentSound("WallGrind");
 
@@ -166,6 +170,9 @@ public class PlayerWall : MonoBehaviour
 
     private void StartWallRun()
     {
+        animator.SetBool("onWall", true);
+        animator.SetBool("isJumping", false);
+        animator.SetBool("isGrounded", false);
         AudioManager.instance.PlayEnvironmentSound("WallGrind");
 
         isWallRunning = true;
@@ -224,6 +231,7 @@ public class PlayerWall : MonoBehaviour
 
     private void EndWallRun()
     {
+        animator.SetBool("onWall", false);
         AudioManager.instance.StopEnvironmentSound("WallGrind");
 
         wallHit = false;
