@@ -51,29 +51,12 @@ public class PlayerGrind : MonoBehaviour
         if (onRail)
         {
             movement.canDash = true;
-            // float horizontal = Input.GetAxis("Horizontal");
 
             if (Input.GetButtonDown("Jump") && !IsRailTooVertical())
             {
                 isJumping = true;
                 movement.canDoubleJump = true;
             }
-            // else if (Input.GetKeyDown(KeyCode.Q) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal < -0.1f))
-            // {
-            //     // Move slightly up before jumping, to clear the rail
-            //     transform.position += Vector3.up * 2f;
-            //     ThrowOffRail();
-            //     movement.ActivateDash(-1);
-            //     StartCoroutine(IgnoreRailTemporarily(1f));
-            // }
-            // else if (Input.GetKeyDown(KeyCode.E) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal > 0.1f))
-            // {
-            //     // Move slightly up before jumping, to clear the rail
-            //     transform.position += Vector3.up * 2f;
-            //     ThrowOffRail();
-            //     movement.ActivateDash(1);
-            //     StartCoroutine(IgnoreRailTemporarily(1f));
-            // }
 
             MovePlayerAlongRail();
         }
@@ -200,6 +183,9 @@ public class PlayerGrind : MonoBehaviour
         EndRail();
 
         transform.rotation = Quaternion.identity;
+
+        transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+        movement.TemporarilyDisableRotation(0.2f);
     }
 
     private void JumpOff()
@@ -216,6 +202,7 @@ public class PlayerGrind : MonoBehaviour
 
         // Reset rotation to flat to remove skew from grinding
         transform.rotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
+        movement.TemporarilyDisableRotation(0.2f);
 
         // Move slightly up before jumping, to clear the rail
         transform.position += Vector3.up * 0.5f;
@@ -273,8 +260,9 @@ public class PlayerGrind : MonoBehaviour
         flatForward.Normalize();
 
         // Set rotation flat on horizontal plane
-        transform.rotation = Quaternion.LookRotation(flatForward, Vector3.up);
+        //transform.rotation = Quaternion.LookRotation(flatForward, Vector3.up);
         transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0); // Flatten pitch/roll
+        movement.TemporarilyDisableRotation(0.2f);
 
         // Zero velocities to stop spinning/moving
         rb.angularVelocity = Vector3.zero;
