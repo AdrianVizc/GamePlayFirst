@@ -39,7 +39,7 @@ public class Tricks : MonoBehaviour
     [SerializeField] public float SpecialTrick4 = 500f;
     private bool leftTriggerPressed = false;
     private bool rightTriggerPressed = false;
-    [HideInInspector] public string TrickName = "";
+    [HideInInspector] private string TrickName = "";
 
     void Start()
     {
@@ -137,6 +137,8 @@ public class Tricks : MonoBehaviour
                             TrickName = nextNode.animationTrigger;
                             currentTrickScore = nextNode.points;
                             scoreCombo.UpdateTrickScore();
+
+                            InGameCanvas.instance.UpdateTrickName(TrickName);
                             
                             if (nextNode.children.Count == 0)
                             {
