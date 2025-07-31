@@ -34,6 +34,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] public bool isGrounded;
     [SerializeField] public bool canDoubleJump;
+    [SerializeField] public bool slidOffWallRail;
     [SerializeField] public float gravityMultiplier;
 
     [Header("Sideways Dash")]
@@ -53,6 +54,8 @@ public class Movement : MonoBehaviour
     private Camera mainCamera;
     private PlayerGrind rail;
 
+    private float rotationSuppressionTimer = 0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -60,6 +63,7 @@ public class Movement : MonoBehaviour
         rail = GetComponent<PlayerGrind>();
         rb.freezeRotation = true;
         canDoubleJump = true;
+        slidOffWallRail = false;
         mainCamera = Camera.main;
         currentSpeed = startingSpeed;
         adaptiveForward = transform.forward;
@@ -99,6 +103,11 @@ public class Movement : MonoBehaviour
         
         Move();
         ApplyExtraFallGravity();
+
+        if (rotationSuppressionTimer > 0f)
+        {
+            rotationSuppressionTimer -= Time.fixedDeltaTime;
+        }
     }
 
     private void GetInput()
@@ -115,6 +124,17 @@ public class Movement : MonoBehaviour
             {
                 Jump();
                 canDash = true;
+            }
+            else if(slidOffWallRail)
+            {
+                slidOffWallRail = false;
+
+                rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+                rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+
+                canDoubleJump = true;
+
+                AudioManager.instance.PlayEnvironmentSound("Jump");
             }
             else if (canDoubleJump)
             {
@@ -207,7 +227,10 @@ public class Movement : MonoBehaviour
                 finalRotation = intendedRotation;
             }
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, lateralSpeed * Time.fixedDeltaTime);
+            if (rotationSuppressionTimer <= 0f)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, lateralSpeed * Time.fixedDeltaTime);
+            }
 
             //Applying Forward Movement
             Vector3 forward = transform.forward;
@@ -323,5 +346,10 @@ public class Movement : MonoBehaviour
             Vector3 addedGravity = Physics.gravity * (gravityMultiplier - 1f);
             rb.AddForce(addedGravity, ForceMode.Acceleration);
         }
+    }
+
+    public void TemporarilyDisableRotation(float duration)
+    {
+        rotationSuppressionTimer = duration;
     }
 }

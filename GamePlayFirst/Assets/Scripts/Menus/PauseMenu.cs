@@ -7,7 +7,7 @@ public class PauseMenu : Menu
 
     [SerializeField] public GameObject background;
 
-    public bool isPaused;
+    private bool isPaused;
 
     private void Awake()
     {
@@ -49,6 +49,8 @@ public class PauseMenu : Menu
 
             Time.timeScale = 0f;
             AudioManager.instance.PauseSounds();
+
+            Cursor.lockState = CursorLockMode.None;
         }
         else if (thisScene.IsValid() && isPaused && Input.GetKeyDown(KeyCode.Escape))
         {
@@ -66,6 +68,8 @@ public class PauseMenu : Menu
 
             Time.timeScale = 1f;
             AudioManager.instance.UnPauseSounds();
+
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 

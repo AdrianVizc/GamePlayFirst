@@ -19,28 +19,45 @@ public class Typer : MonoBehaviour
 
     [SerializeField] List<string> textList;             // List of texts to type out
     [SerializeField] List<Sprite> backgroundList;       // List of backgrounds to switch between
-    [SerializeField] Image backgroundImage;             // The Image component for the background
-    [SerializeField] string nextSceneName;              // Name of the next scene to load after the last text
+    [SerializeField] Image backgroundImage;
+    [SerializeField] float escapeHoldDuration = 2f;
     private int currentTextIndex = 0;                   // Index of the current text in the list
     private bool isTyping = false;
+    private bool skipTyping = false;
+    private bool skipAll = false;
+    private float escapeHoldTimer = 0f;
 
     void Update()
     {
-        // Check for mouse click to advance the text
-        if (Input.GetMouseButtonDown(0)) // Left mouse button
+        if (Input.GetMouseButtonDown(0)) // Left click
         {
             if (isTyping)
             {
-                // If typing, finish the current text immediately
-                currentTextIndex++;
-                StopAllCoroutines(); // Stop current typing coroutines
-                StartNextBackgroundAndText();
+                skipTyping = true; // Request full text instantly
             }
             else
             {
-                // If not typing, go to the next text
-                StartNextText();
+                StartNextText(); // Go to next text
             }
+        }
+
+        if (skipAll)
+            return; // Already skipping everything, ignore input
+
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            escapeHoldTimer += Time.deltaTime;
+
+            if (escapeHoldTimer >= escapeHoldDuration)
+            {
+                skipAll = true;
+                SkipAllTexts();
+            }
+        }
+        else
+        {
+            // Reset timer if Escape released early
+            escapeHoldTimer = 0f;
         }
     }
 
@@ -58,7 +75,9 @@ public class Typer : MonoBehaviour
         if (currentTextIndex >= textList.Count)
         {
             // If all texts are done, switch to the next scene
-            SceneManager.LoadScene(nextSceneName);
+            SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+
+            SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
             return; // Exit method
         }
 
@@ -80,38 +99,44 @@ public class Typer : MonoBehaviour
     IEnumerator TypeWriterText()
     {
         isTyping = true;
+        skipTyping = false;
+
         _text.text = leadingCharBeforeDelay ? leadingChar : "";
         yield return new WaitForSeconds(delayBeforeStart);
 
         foreach (char c in writer)
         {
-            if (_text.text.Length > 0)
+            if (skipTyping)
+            {
+                _text.text = writer;
+                break;
+            }
+
+            // Remove the trailing leadingChar, add the next char, then re-add it
+            if (_text.text.Length > 0 && leadingChar.Length > 0)
             {
                 _text.text = _text.text.Substring(0, _text.text.Length - leadingChar.Length);
             }
-            _text.text += c;
-            _text.text += leadingChar;
+
+            _text.text += c + leadingChar;
             yield return new WaitForSeconds(timeBtwChars);
         }
 
-        if (leadingChar != "")
+        // Remove the trailing leadingChar only if it's there
+        if (!string.IsNullOrEmpty(leadingChar) && _text.text.EndsWith(leadingChar) && _text.text.Length > writer.Length)
         {
             _text.text = _text.text.Substring(0, _text.text.Length - leadingChar.Length);
         }
 
-        // Add delay before switching to the next background and text
         yield return new WaitForSeconds(delayBetweenTextAndBackground);
         isTyping = false;
 
-        // Check if this is the last text in the list
         if (currentTextIndex == textList.Count - 1)
         {
-            // All texts and backgrounds are done, load the next scene
-            SceneManager.LoadScene(nextSceneName);
+            SceneManager.LoadScene("MainScene");
         }
         else
         {
-            // Move to the next text and background
             currentTextIndex++;
             StartNextBackgroundAndText();
         }
@@ -120,38 +145,45 @@ public class Typer : MonoBehaviour
     IEnumerator TypeWriterTMP()
     {
         isTyping = true;
+        skipTyping = false;
+
         _tmpProText.text = leadingCharBeforeDelay ? leadingChar : "";
         yield return new WaitForSeconds(delayBeforeStart);
 
         foreach (char c in writer)
         {
-            if (_tmpProText.text.Length > 0)
+            if (skipTyping)
+            {
+                _tmpProText.text = writer;
+                break;
+            }
+
+            // Remove the trailing leadingChar, add the next char, then re-add it
+            if (_tmpProText.text.Length > 0 && leadingChar.Length > 0)
             {
                 _tmpProText.text = _tmpProText.text.Substring(0, _tmpProText.text.Length - leadingChar.Length);
             }
-            _tmpProText.text += c;
-            _tmpProText.text += leadingChar;
+
+            _tmpProText.text += c + leadingChar;
             yield return new WaitForSeconds(timeBtwChars);
         }
 
-        if (leadingChar != "")
+        // Remove the trailing leadingChar only if it's there
+        if (!string.IsNullOrEmpty(leadingChar) && _tmpProText.text.EndsWith(leadingChar) && _tmpProText.text.Length > writer.Length)
         {
             _tmpProText.text = _tmpProText.text.Substring(0, _tmpProText.text.Length - leadingChar.Length);
         }
 
-        // Add delay before switching to the next background and text
         yield return new WaitForSeconds(delayBetweenTextAndBackground);
+        
         isTyping = false;
 
-        // Check if this is the last text in the list
         if (currentTextIndex == textList.Count - 1)
         {
-            // All texts and backgrounds are done, load the next scene
-            SceneManager.LoadScene(nextSceneName);
+            SceneManager.LoadScene("MainScene");
         }
         else
         {
-            // Move to the next text and background
             currentTextIndex++;
             StartNextBackgroundAndText();
         }
@@ -167,5 +199,39 @@ public class Typer : MonoBehaviour
 
         // Start typing the next text
         StartNextText();
+    }
+
+    void SkipAllTexts()
+    {
+        // Stop any ongoing typing coroutines:
+        StopAllCoroutines();
+
+        // Show the last text fully (from textList)
+        string lastText = textList[textList.Count - 1];
+
+        if (_text != null)
+        {
+            _text.text = lastText;
+        }
+
+        if (_tmpProText != null)
+        {
+            _tmpProText.text = lastText;
+        }
+
+        // Set currentTextIndex to the last text index to prevent further typing
+        currentTextIndex = textList.Count;
+
+        // Optionally change to the last background
+        if (backgroundList.Count > 0 && backgroundImage != null)
+        {
+            backgroundImage.sprite = backgroundList[backgroundList.Count - 1];
+        }
+
+        isTyping = false;
+        skipTyping = false;
+
+        // Immediately load the final scene if you want
+        SceneManager.LoadScene("MainScene");
     }
 }

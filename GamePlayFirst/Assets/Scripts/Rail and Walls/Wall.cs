@@ -2,7 +2,6 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class PlayerWall : MonoBehaviour
 {
@@ -232,6 +231,8 @@ public class PlayerWall : MonoBehaviour
         isWallJumping = false;
         isWallRunning = false;
         rb.useGravity = true;
+
+        movement.slidOffWallRail = true;
 
         StartCoroutine(ChangeFOV(virtualCamera, defaultFOV, 0.3f));
         StartCoroutine(ChangeTilt(virtualCamera, defaultTilt, 0.3f));

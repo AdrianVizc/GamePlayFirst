@@ -39,6 +39,7 @@ public class Tricks : MonoBehaviour
     [SerializeField] public float SpecialTrick4 = 500f;
     private bool leftTriggerPressed = false;
     private bool rightTriggerPressed = false;
+    [HideInInspector] private string TrickName = "";
 
     void Start()
     {
@@ -131,14 +132,19 @@ public class Tricks : MonoBehaviour
                         {
                             // Triggers immediately b/c no further branches possible (i.e A and D)
                             animator.SetTrigger(nextNode.animationTrigger);
-                            //Debug.Log("Played animation: " + nextNode.animationTrigger);
+
+                            // TRICK FINISHES HERE
+                            TrickName = nextNode.animationTrigger;
+                            currentTrickScore = nextNode.points;
+                            scoreCombo.UpdateTrickScore();
+
+                            InGameCanvas.instance.UpdateTrickName(TrickName);
+                            
                             if (nextNode.children.Count == 0)
                             {
-                                currentTrickScore += nextNode.points;
-                                scoreCombo.UpdateTrickScore();
                                 ResetCombo();
                             }
-                            //Debug.Log(currentTrickScore);
+                            
                         }
                         // Else wait for more input or timeout
                     }
@@ -161,24 +167,18 @@ public class Tricks : MonoBehaviour
 
                 if (comboTimer <= 0)
                 {
-                    if (currentNode.animationTrigger != null)
-                    {
-                        //Debug.Log("Played animation: " + currentNode.animationTrigger);
-                        currentTrickScore += currentNode.points;
-                        scoreCombo.UpdateTrickScore();
-                        // Debug.Log(currentTrickScore);
-                    }
+                    
                     // Ran out of time for combo
                     currentTrickScore = 0;
                     ResetCombo();
                 }
             }
-        }   
+        }
     }
     // Adds combos to the trie
     private void AddCombo(List<KeyCode> sequence, string animationTrigger)
     {
-        float prevPoints = 0;
+        
         FieldInfo publicField;
         ComboNode node = root;
         foreach (KeyCode key in sequence)
@@ -187,19 +187,16 @@ public class Tricks : MonoBehaviour
             {
                 node.children[key] = new ComboNode();
             }
-            //Debug.Log($"Added key to combo: {key} : {node.animationTrigger}");
-            prevPoints = node.points;
+            
             node = node.children[key];
             node.animationTrigger = keyDict[key];
             publicField = GetType().GetField(node.animationTrigger);
-            node.points = prevPoints + (float)publicField.GetValue(this);
-            //Debug.Log($"{node.animationTrigger} : {node.points}");
+            node.points = (float)publicField.GetValue(this);
+    
         }
         node.animationTrigger = animationTrigger;
         publicField = GetType().GetField(animationTrigger);
-        node.points = prevPoints + (float)publicField.GetValue(this);
-        //Debug.Log($"{animationTrigger} : {node.points}");
-        //Debug.Log($"Added key to combo: {node} : {node.animationTrigger}");
+        node.points = (float)publicField.GetValue(this);
     }
 
     private void ResetCombo()
@@ -223,8 +220,10 @@ public class Tricks : MonoBehaviour
             if (nextNode.animationTrigger != null)
             {
                 animator.SetTrigger(nextNode.animationTrigger);
+                //TRICK FINISHES HERE
                 Debug.Log("Played animation: " + nextNode.animationTrigger);
-                currentTrickScore += nextNode.points;
+                currentTrickScore = nextNode.points;
+                scoreCombo.UpdateTrickScore();
                 if (nextNode.children.Count == 0)
                 {
                     ResetCombo();

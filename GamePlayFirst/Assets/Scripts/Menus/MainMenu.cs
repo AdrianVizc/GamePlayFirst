@@ -28,17 +28,26 @@ public class MainMenu : Menu
         if (thisScene.IsValid())
         {
             gameObject.SetActive(false);
+
+            Cursor.lockState = CursorLockMode.Locked;
         }
         else
         {
             gameObject.SetActive(true);
-        }        
+        }
     }
 
     public void Play()
     {
-        SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+        if (!PersistentManager.Instance.testingMode)
+        {
+            SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("CutScene").Value);
+        }
+        else
+        {
+            SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
 
-        SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
+            SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
+        }            
     }
 }
