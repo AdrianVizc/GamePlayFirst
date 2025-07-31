@@ -136,7 +136,7 @@ public class ScoreCombo : MonoBehaviour
         // If player is still on ground after delay
         if(movement.isGrounded && !rail.onRail && !wall.isWallRunning)
         {
-            InGameCanvas.instance.DisplayTrickPoints(score);
+            InGameCanvas.instance.DisplayTrickPoints(score * currMultiplier);
             totalScore += (score * currMultiplier);
             totalTime = 0;
             score = 0;

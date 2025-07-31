@@ -967,7 +967,7 @@ MonoBehaviour:
   - name: Wow
     clip: {fileID: 8300000, guid: acca03a7f38c8a540872075ec4dd33c8, type: 3}
   - name: BigRedButton
-    clip: {fileID: 8300000, guid: aa4b02375d496c74a8a472b6d415feb4, type: 3}
+    clip: {fileID: 8300000, guid: da50fa6daf5f2624bb7726838555e6dd, type: 3}
   railGrindPlayOnce: 0
   skateGrindPlayOnce: 0
   wallGrindPlayOnce: 0
