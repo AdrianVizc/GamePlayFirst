@@ -20,10 +20,12 @@ public class Typer : MonoBehaviour
     [SerializeField] List<string> textList;             // List of texts to type out
     [SerializeField] List<Sprite> backgroundList;       // List of backgrounds to switch between
     [SerializeField] Image backgroundImage;
+    [SerializeField] float escapeHoldDuration = 2f;
     private int currentTextIndex = 0;                   // Index of the current text in the list
     private bool isTyping = false;
     private bool skipTyping = false;
     private bool skipAll = false;
+    private float escapeHoldTimer = 0f;
 
     void Update()
     {
@@ -39,13 +41,23 @@ public class Typer : MonoBehaviour
             }
         }
 
+        if (skipAll)
+            return; // Already skipping everything, ignore input
+
         if (Input.GetKey(KeyCode.Escape))
         {
-            if (!skipAll)
+            escapeHoldTimer += Time.deltaTime;
+
+            if (escapeHoldTimer >= escapeHoldDuration)
             {
                 skipAll = true;
                 SkipAllTexts();
             }
+        }
+        else
+        {
+            // Reset timer if Escape released early
+            escapeHoldTimer = 0f;
         }
     }
 
