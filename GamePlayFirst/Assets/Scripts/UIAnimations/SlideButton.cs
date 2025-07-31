@@ -34,4 +34,9 @@ public class SlideButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         LeanTween.move(buttonRect, originalPos, duration).setEaseInCubic().setIgnoreTimeScale(true);
     }
+
+    public void BugFix()
+    {
+        LeanTween.move(buttonRect, originalPos, duration).setEaseInCubic().setIgnoreTimeScale(true);
+    }
 }

@@ -37,8 +37,15 @@ public class MainMenu : Menu
 
     public void Play()
     {
-        SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+        if (!PersistentManager.Instance.testingMode)
+        {
+            SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("CutScene").Value);
+        }
+        else
+        {
+            SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
 
-        SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
+            SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
+        }            
     }
 }
