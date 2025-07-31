@@ -232,6 +232,8 @@ public class PlayerWall : MonoBehaviour
         isWallRunning = false;
         rb.useGravity = true;
 
+        movement.slidOffWallRail = true;
+
         StartCoroutine(ChangeFOV(virtualCamera, defaultFOV, 0.3f));
         StartCoroutine(ChangeTilt(virtualCamera, defaultTilt, 0.3f));
     }

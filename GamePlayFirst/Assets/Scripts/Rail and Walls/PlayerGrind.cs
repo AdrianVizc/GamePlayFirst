@@ -287,6 +287,8 @@ public class PlayerGrind : MonoBehaviour
 
         GetComponent<Movement>().enabled = true;
 
+        movement.slidOffWallRail = true;
+
         // unfreeze rotation after a short delay
         //StartCoroutine(UnfreezeRotation(rb, 0.1f));
     }

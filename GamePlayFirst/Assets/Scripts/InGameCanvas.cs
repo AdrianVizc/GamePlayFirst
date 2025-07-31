@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
+using System.Xml;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class InGameCanvas : MonoBehaviour
 {
@@ -17,12 +19,16 @@ public class InGameCanvas : MonoBehaviour
     [SerializeField] private ComboLineColors[] comboLineColors;
     [SerializeField] private float rainbowSpeed; //Smaller means color changes faster
     [SerializeField] private Material rainbowMaterial;
-    [SerializeField] private GameObject awesomePopup;
-    [SerializeField] private GameObject wowPopup;
-    [SerializeField] private GameObject coolPopup;
-    [SerializeField] private Sprite[] awesomeBackground;
-    [SerializeField] private Sprite[] wowBackground;
-    [SerializeField] private Sprite[] coolBackground;
+    [SerializeField] private Transform[] popupPositions;
+    [SerializeField] private GameObject[] popupPrefab;
+    [SerializeField] private int popupPointThreshold; //Number of Combos needed for popup to appear. Must be > 1
+    [SerializeField] private float waitBeforeTrickPointFadeOut = 1; //Amount of time before it starts to disappear
+    [SerializeField] private float trickPointFadeOut = 2; //Disappears over "trickPointFadeOut" seconds 
+    [SerializeField] private TMP_Text trickPointsPopup;
+
+    private Transform previousPos;
+    private bool doOnce;
+    private Coroutine fadeOutCoroutine;
 
     private Color32[] colors;
 
@@ -48,6 +54,8 @@ public class InGameCanvas : MonoBehaviour
 
     private void Start()
     {
+        doOnce = false;
+
         Scene thisScene = SceneManager.GetSceneByName(PersistentManager.Instance.GetStringPref("PlayScene").Value);
 
         if (thisScene.IsValid())
@@ -57,11 +65,7 @@ public class InGameCanvas : MonoBehaviour
         else
         {
             gameObject.SetActive(false);
-        }
-
-        awesomePopup.SetActive(false);
-        wowPopup.SetActive(false);
-        coolPopup.SetActive(false);        
+        }      
 
         colors = new Color32[7]
         {
@@ -129,9 +133,28 @@ public class InGameCanvas : MonoBehaviour
         }            
     }
 
-    public void UIPopUp()
-    {
+    public void UIPopUp(float num)
+    {        
+        if (num % popupPointThreshold == 0 && num != 0 && !doOnce)
+        {
+            doOnce = true;
 
+            Transform chosenPos = popupPositions[Random.Range(0, popupPositions.Length)];
+
+            while (previousPos == chosenPos)
+            {
+                chosenPos = popupPositions[Random.Range(0, popupPositions.Length)];
+            }
+
+            previousPos = chosenPos;
+
+            Instantiate(popupPrefab[Random.Range(0, popupPrefab.Length)], chosenPos);
+        }
+
+        if (num % popupPointThreshold != 0)
+        {
+            doOnce = false;
+        }
     }
 
     private void ComboLineRainbow()
@@ -140,9 +163,48 @@ public class InGameCanvas : MonoBehaviour
 
         comboLine.sprite = foundComboLine.sprite;
 
-        comboLine.material = rainbowMaterial;
-        
+        comboLine.material = rainbowMaterial;        
 
         StartCoroutine(Cycle());
+    }
+
+    public void DisplayTrickPoints(float num)
+    {
+        if (num != 0)
+        {
+            AudioManager.instance.PlayEnvironmentSound("PointSound");
+
+            if (fadeOutCoroutine != null)
+            {
+                StopCoroutine(fadeOutCoroutine);
+            }
+
+            trickPointsPopup.text = "+" + num;
+
+            Color currentColor = trickPointsPopup.color;
+            currentColor.a = 1f;
+            trickPointsPopup.color = currentColor;
+
+            fadeOutCoroutine = StartCoroutine(FadeOut());
+        }              
+    }
+
+    IEnumerator FadeOut()
+    {
+        float elapsedTime = 0f;
+
+        TMP_Text originalText = trickPointsPopup;
+
+        yield return new WaitForSeconds(waitBeforeTrickPointFadeOut);
+
+        while (elapsedTime < trickPointFadeOut)
+        {
+            float alpha = Mathf.Lerp(originalText.color.a, 0f, elapsedTime / trickPointFadeOut);
+            trickPointsPopup.color = new Color(originalText.color.r, originalText.color.g, originalText.color.b, alpha);
+
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
     }
 }

@@ -85,6 +85,7 @@ public class ScoreCombo : MonoBehaviour
         InGameCanvas.instance.UpdateTrickPoints(score);
         InGameCanvas.instance.UpdateCombo(combo);
         InGameCanvas.instance.UpdateComboLineColor(combo);
+        InGameCanvas.instance.UIPopUp(combo);
     }
 
     public void UpdateTrickScore()
@@ -135,6 +136,7 @@ public class ScoreCombo : MonoBehaviour
         // If player is still on ground after delay
         if(movement.isGrounded && !rail.onRail && !wall.isWallRunning)
         {
+            InGameCanvas.instance.DisplayTrickPoints(score);
             totalScore += (score * currMultiplier);
             totalTime = 0;
             score = 0;
