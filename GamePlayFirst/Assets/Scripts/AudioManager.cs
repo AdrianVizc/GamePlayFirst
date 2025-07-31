@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
+using static AudioManager;
 
 public class AudioManager : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] AudioSource musicSource;
     [SerializeField] AudioSource UISource;
+    [SerializeField] AudioSource pointAddUp;
+    [SerializeField] AudioSource totalPoints;
     [SerializeField] AudioSource environmentSource;
     [SerializeField] AudioSource railGrindSource;
     [SerializeField] AudioSource skateSource;
@@ -107,9 +110,22 @@ public class AudioManager : MonoBehaviour
     {
         Sound sound = Array.Find(UIClips, s => s.name == name);
 
-        if (sound != null)
+        switch (name)
         {
-            UISource.PlayOneShot(sound.clip);
+            case "PointAddUp":
+
+                pointAddUp.clip = sound.clip;
+                pointAddUp.loop = true;
+                pointAddUp.Play();
+
+                break;
+
+            default:
+
+                UISource.PlayOneShot(sound.clip);
+
+                break;
+
         }
     }
 
@@ -153,8 +169,6 @@ public class AudioManager : MonoBehaviour
 
     public void StopEnvironmentSound(string name)
     {
-        Sound sound = Array.Find(EnvironmentClips, s => s.name == name);
-
         switch (name)
         {
             case "RailGrind":
@@ -172,6 +186,22 @@ public class AudioManager : MonoBehaviour
 
                 wallGrindSource.Stop();
 
+                break;
+        }
+    }
+
+    public void StopUISound(string name)
+    {
+        switch (name)
+        {
+            case "PointAddUp":
+
+                pointAddUp.Stop();
+                break;
+
+            case "TotalPoints":
+
+                totalPoints.Stop();
                 break;
         }
     }

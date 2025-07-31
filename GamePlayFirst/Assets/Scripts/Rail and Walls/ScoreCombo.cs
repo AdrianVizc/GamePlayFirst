@@ -10,7 +10,7 @@ public class ScoreCombo : MonoBehaviour
 
     [HideInInspector] public float score; // Player's current score
     [HideInInspector] public float currMultiplier; // Player's current multiplier level (1x, 1.25x, etc.)
-    private float totalScore; // Player's total score
+    public float totalScore; // Player's total score
 
     [SerializeField] private int pointValue = 100; // Use to increase each point value
     [SerializeField] private float multiplier = 0.25f; // Use to increase multiplier level
