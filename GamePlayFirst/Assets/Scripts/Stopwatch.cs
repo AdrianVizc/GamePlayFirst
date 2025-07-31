@@ -8,10 +8,24 @@ using System.Runtime.CompilerServices;
 
 public class Stopwatch : MonoBehaviour
 {
-    [SerializeField] private TMP_Text timerText;
+    public static Stopwatch instance;
+
+    [SerializeField] public TMP_Text timerText;
 
     private bool stopwatchActive;
     private float currentTime;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -28,7 +42,7 @@ public class Stopwatch : MonoBehaviour
         TimeSpan time = TimeSpan.FromSeconds(currentTime);
         timerText.text = time.Minutes.ToString("D2") + ":" + time.Seconds.ToString("D2");
     }
-    //Stop timer when game ends
+
     public void StopTimer()
     {
         stopwatchActive = false;

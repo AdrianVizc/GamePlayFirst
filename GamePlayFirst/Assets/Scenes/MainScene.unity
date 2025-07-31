@@ -213,6 +213,8 @@ MonoBehaviour:
     DefaultValue: PenguinCity
   - prefName: MainScene
     DefaultValue: MainScene
+  - prefName: EndCutscene
+    DefaultValue: EndCutscene
 --- !u!1 &243173987
 GameObject:
   m_ObjectHideFlags: 0
