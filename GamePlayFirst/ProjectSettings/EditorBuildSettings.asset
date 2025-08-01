@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EndCutscene.unity
     guid: d7720798e181b754dbdc21e6c8775c9a
+  - enabled: 1
+    path: Assets/Scenes/AdrianTest.unity
+    guid: 58a0b6c7af3d1a14e81fc42c2b2d912c
   m_configObjects: {}
