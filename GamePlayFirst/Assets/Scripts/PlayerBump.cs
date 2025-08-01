@@ -26,8 +26,8 @@ public class PlayerBump : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 bottom = transform.position + Vector3.down;
-        Vector3 top = transform.position + Vector3.up;
+        Vector3 bottom = transform.position + Vector3.down * 1.2f;
+        Vector3 top = transform.position + Vector3.up * 1.2f;
 
         if (isBumping && zeroVel)
         {
