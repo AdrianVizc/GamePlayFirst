@@ -26,8 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 357205357654106904}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.18910751, y: 0.0000000084479606, z: -0.0000000016269286,
-    w: 0.9819564}
+  m_LocalRotation: {x: 0.18910751, y: -0.000000008447955, z: 0.0000000016269276, w: 0.9819564}
   m_LocalPosition: {x: 0, y: 2, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -397,7 +396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minSpeed: 10
-  maxSpeed: 27
+  maxSpeed: 25
   startingSpeed: 5
   currentSpeed: 0
   accelSpeed: 5
@@ -422,7 +421,7 @@ MonoBehaviour:
   slidOffWallRail: 0
   gravityMultiplier: 1.5
   canDash: 0
-  dashForce: 20
+  dashForce: 40
   upForce: 2
   isDashing: 0
   dashDuration: 0.4
@@ -697,7 +696,7 @@ Transform:
   m_GameObject: {fileID: 2685739011977674486}
   serializedVersion: 2
   m_LocalRotation: {x: 0.18910751, y: -0.000000008447955, z: 0.0000000016269276, w: 0.9819564}
-  m_LocalPosition: {x: 2, y: 1.9000001, z: -155}
+  m_LocalPosition: {x: 0, y: 2, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
