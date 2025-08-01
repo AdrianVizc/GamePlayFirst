@@ -59,7 +59,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -70,6 +70,7 @@ public class Enemy : MonoBehaviour
             rb = collision.gameObject.GetComponent<Rigidbody>();
             animator = collision.gameObject.GetComponentInChildren<Animator>();
 
+            animator.SetTrigger("getHurt");
             AudioManager.instance.PlayEnvironmentSound("Bonk");
             AudioManager.instance.PauseSkateSound();
 
@@ -78,7 +79,7 @@ public class Enemy : MonoBehaviour
             rb.velocity *= 0.2f;
             rb.velocity = bumpDir * bumpForce;
 
-            isBumping = true;            
+            isBumping = true;
 
             switch (Random.Range(1, 4))
             {
@@ -91,15 +92,17 @@ public class Enemy : MonoBehaviour
                 case 3:
                     AudioManager.instance.PlayEnvironmentSound(PENGUIN_DEATH_3);
                     break;
-                
-            }            
+
+            }
 
             ScoreCombo.Instance.score -= scoreLoss;
 
-            animator.SetTrigger("getHurt");
-
             StartCoroutine(DisableAfterDelay());
-        }        
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        
     }
 
     private IEnumerator DisableAfterDelay()
