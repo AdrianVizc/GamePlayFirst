@@ -120,6 +120,8 @@ public class Movement : MonoBehaviour
         {
             transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
         }
+
+        animator.SetFloat("verticalVelocity", rb.velocity.y);
     }
 
     private void GetInput()
