@@ -37,6 +37,7 @@ public class PlayerWall : MonoBehaviour
     private bool isGrounded;
     private Transform orientation;
     private Rigidbody rb;
+    private GameObject modelHolder;
     [HideInInspector] public bool isWallRunning;
     private bool isWallJumping;
     private bool wallDetected;
@@ -61,6 +62,7 @@ public class PlayerWall : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         movement = GetComponent<Movement>();
         animator = GetComponentInChildren<Animator>();
+        modelHolder = transform.Find("ModelHolder").gameObject;
     }
 
     private void Update()
@@ -92,6 +94,8 @@ public class PlayerWall : MonoBehaviour
             {
                 animator.SetBool("onWall", false);
                 animator.SetBool("isJumping", true);
+                modelHolder.transform.localPosition = new Vector3(0, 0.4f, 0);  
+                modelHolder.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
                 AudioManager.instance.PlayEnvironmentSound("Jump");
                 AudioManager.instance.StopEnvironmentSound("WallGrind");
 
@@ -193,9 +197,18 @@ public class PlayerWall : MonoBehaviour
         // Use side detection to determine camera tilt
         float sideDot = Vector3.Dot(storedWallNormal, transform.right);
         if (sideDot > 0.1f)
+        {
+            animator.SetBool("leftWall", true);
+            modelHolder.transform.localPosition = new Vector3(-0.3f, 0.4f, 0);
             StartCoroutine(ChangeTilt(virtualCamera, tilt, 0.3f));
+        }
         else if (sideDot < -0.1f)
+        {
+            animator.SetBool("rightWall", true);
+            modelHolder.transform.localPosition = new Vector3(0.3f, 0.4f, 0);
+            modelHolder.transform.localScale = new Vector3(-0.3f, 0.3f, 0.3f);
             StartCoroutine(ChangeTilt(virtualCamera, -tilt, 0.3f));
+        }
         else
             StartCoroutine(ChangeTilt(virtualCamera, 0f, 0.3f)); // wall in front — no tilt
     }
@@ -232,6 +245,10 @@ public class PlayerWall : MonoBehaviour
     private void EndWallRun()
     {
         animator.SetBool("onWall", false);
+        animator.SetBool("leftWall", false);
+        animator.SetBool("rightWall", false);
+        modelHolder.transform.localPosition = new Vector3(0, 0.4f, 0);
+        modelHolder.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
         AudioManager.instance.StopEnvironmentSound("WallGrind");
 
         wallHit = false;

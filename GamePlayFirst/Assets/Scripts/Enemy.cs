@@ -39,8 +39,6 @@ public class Enemy : MonoBehaviour
 
         StartCoroutine(MoveLoop());
 
-        animator = GetComponentInChildren<Animator>();
-
         isBumping = false;
         zeroVel = false;
     }
@@ -70,6 +68,7 @@ public class Enemy : MonoBehaviour
             // Bump
             movement = collision.gameObject.GetComponent<Movement>();
             rb = collision.gameObject.GetComponent<Rigidbody>();
+            animator = collision.gameObject.GetComponentInChildren<Animator>();
 
             AudioManager.instance.PlayEnvironmentSound("Bonk");
             AudioManager.instance.PauseSkateSound();
@@ -97,7 +96,7 @@ public class Enemy : MonoBehaviour
 
             ScoreCombo.Instance.score -= scoreLoss;
 
-            animator.SetTrigger("OnHit");
+            animator.SetTrigger("getHurt");
 
             StartCoroutine(DisableAfterDelay());
         }        

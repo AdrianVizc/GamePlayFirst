@@ -11,6 +11,7 @@ public class PlayerBump : MonoBehaviour
 
     private Rigidbody rb;
     private Movement movement;
+    private Animator animator;
     private bool isBumping;
     private bool zeroVel;
 
@@ -21,6 +22,7 @@ public class PlayerBump : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         movement = GetComponent<Movement>();
+        animator = GetComponentInChildren<Animator>();
         zeroVel = false;
     }
 
@@ -54,7 +56,8 @@ public class PlayerBump : MonoBehaviour
             rb.velocity *= 0.2f;
             rb.velocity = bumpDir * bumpForce;
 
-            isBumping = true;            
+            isBumping = true;
+            //animator.SetTrigger("getHurt");
         }
 
         if(rb.velocity.z == 0)

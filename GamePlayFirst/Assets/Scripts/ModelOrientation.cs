@@ -22,7 +22,7 @@ public class ModelOrientation : MonoBehaviour
                 Vector3 groundNormal = hit.normal;
 
                 // Get current Y rotation (we want to keep facing direction)
-                float currentYRotation = transform.eulerAngles.y;
+                float currentYRotation = transform.parent.eulerAngles.y + 180f;
 
                 // Create a rotation aligned with the ground normal
                 Quaternion alignToGround = Quaternion.FromToRotation(Vector3.up, groundNormal);
@@ -34,11 +34,12 @@ public class ModelOrientation : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 15f * Time.deltaTime);
             }
         }
-        else
-        {
-            // If not grounded, reset X/Z rotation to upright
-            Quaternion uprightRotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
-            transform.rotation = Quaternion.Slerp(transform.rotation, uprightRotation, 10f * Time.deltaTime);
-        }
+        // else
+        // {
+        //     // If not grounded, reset X/Z rotation to upright
+        //     Quaternion uprightRotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
+        //     transform.rotation = Quaternion.Slerp(transform.rotation, uprightRotation, 10f * Time.deltaTime);
+        // }
+
     }
 }

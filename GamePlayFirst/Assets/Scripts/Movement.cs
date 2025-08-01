@@ -58,6 +58,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float accelAnimation = 2f;
     [SerializeField] private float decelAnimation = 0.5f;
     private Animator animator;
+    private GameObject modelHolder;
 
     private float rotationSuppressionTimer = 0f;
 
@@ -75,6 +76,7 @@ public class Movement : MonoBehaviour
         adaptiveForward = transform.forward;
         rb.velocity = mainCamera.transform.forward * currentSpeed;
         maxDot = Mathf.Cos(maxTurnAngle * Mathf.Deg2Rad);
+        modelHolder = transform.Find("ModelHolder").gameObject;
     }
 
     // Update is called once per frame
@@ -96,6 +98,7 @@ public class Movement : MonoBehaviour
                 isDashing = false;
                 isRecovering = true;
                 recoveryTimer = recoveryDuration;
+
             }
         }
 
@@ -119,6 +122,11 @@ public class Movement : MonoBehaviour
         if(!isGrounded)
         {
             transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+        }
+
+        if(isGrounded)
+        {
+            modelHolder.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
         }
 
         animator.SetFloat("verticalVelocity", rb.velocity.y);
@@ -161,10 +169,13 @@ public class Movement : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal < -0.1f))
             {
+                animator.SetTrigger("dashLeft");
                 ActivateDash(-1);
             }
             else if (Input.GetKeyDown(KeyCode.E) || (Input.GetKeyDown(KeyCode.Joystick1Button1) && horizontal > 0.1f))
             {
+                animator.SetTrigger("dashRight");
+                modelHolder.transform.localScale = new Vector3(-0.3f, 0.3f, 0.3f);
                 ActivateDash(1);
             }
         }
