@@ -93,10 +93,10 @@ public class PauseMenu : Menu
 
     public void MainMenu()
     {
-        SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("MainScene").Value);
+        SceneManager.LoadScene("UIScene");
 
         Time.timeScale = 1;
 
-        SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
+        SceneManager.LoadScene("AdrianTest", LoadSceneMode.Additive);        
     }
 }

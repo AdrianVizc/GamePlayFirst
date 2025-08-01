@@ -49,9 +49,7 @@ public class PersistentManager : MonoBehaviour
             Destroy(gameObject);
 
             return;
-        }
-
-        SceneManager.LoadScene("AdrianTest", LoadSceneMode.Additive);
+        }        
 
         DontDestroyOnLoad(gameObject);        
     }
@@ -72,6 +70,8 @@ public class PersistentManager : MonoBehaviour
     {
         videoPlayer.Prepare();
 
+        
+
         while (!videoPlayer.isPrepared)
         {
             yield return null;
@@ -81,23 +81,31 @@ public class PersistentManager : MonoBehaviour
 
         while (videoPlayer.isPlaying)
         {
-            if (Input.anyKeyDown) // Replace with whatever key you want
+            if (Input.anyKeyDown)
             {
-                videoPlayer.Stop(); // Or Pause(), depending on your intent
+                videoPlayer.Stop();
                 break;
             }
 
             yield return null;
         }
         videoPlayer.gameObject.SetActive(false);
-
+        
+        SceneManager.LoadScene("AdrianTest", LoadSceneMode.Additive);
+        SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
         Startup();
     }
 
     #region Startup
     private void Startup()
     {
-        SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
+        if (testingMode)
+        {
+            SceneManager.LoadScene("AdrianTest", LoadSceneMode.Additive);
+            SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
+        }
+
+        Camera.main.gameObject.SetActive(false);
 
         SetupPrefs();
 
@@ -106,7 +114,7 @@ public class PersistentManager : MonoBehaviour
         resolutionNumber = ES3.Load("resolutionNumber", GetNativeResolution());
         screenMode = ES3.Load("ScreenMode", FullScreenMode.FullScreenWindow);
         FinalizeViewSwitch();
-        AudioManager.instance.LoadVolume();
+        AudioManager.instance.LoadVolume();        
     }
 
     private int GetNativeResolution() //Checks if user's native resolution = any of the dropdown settings. If not, defaults to RESOLUTION_ELEMENT
