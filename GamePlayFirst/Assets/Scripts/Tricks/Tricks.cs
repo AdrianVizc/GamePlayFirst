@@ -14,8 +14,8 @@ public class ComboNode
 
 public class Tricks : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
     [HideInInspector] public float currentTrickScore;
+    private Animator animator;
 
     private ComboNode root = new ComboNode();
     private ComboNode currentNode;
@@ -43,6 +43,7 @@ public class Tricks : MonoBehaviour
 
     void Start()
     {
+        animator = GetComponentInChildren<Animator>();
         rail = GetComponent<PlayerGrind>();
         wall = GetComponent<PlayerWall>();
         scoreCombo = GetComponent<ScoreCombo>();
@@ -122,38 +123,43 @@ public class Tricks : MonoBehaviour
             {
                 if (Input.GetKeyDown(key))
                 {
-                    if (currentNode.children.TryGetValue(key, out ComboNode nextNode))
-                    {
-                        currentNode = nextNode;
-                        lastKeyPressed = key;
-                        comboTimer = comboMaxTime;
+                    AnimatorStateInfo animatorState = animator.GetCurrentAnimatorStateInfo(0);
 
-                        if (nextNode.animationTrigger != null)
+                    if(animatorState.normalizedTime >= 1f)
+                    {
+                        if (currentNode.children.TryGetValue(key, out ComboNode nextNode))
                         {
-                            // Triggers immediately b/c no further branches possible (i.e A and D)
-                            animator.SetTrigger(nextNode.animationTrigger);
+                            currentNode = nextNode;
+                            lastKeyPressed = key;
+                            comboTimer = comboMaxTime;
 
-                            // TRICK FINISHES HERE
-                            TrickName = nextNode.animationTrigger;
-                            currentTrickScore = nextNode.points;
-                            scoreCombo.UpdateTrickScore();
-
-                            InGameCanvas.instance.UpdateTrickName(TrickName);
-                            
-                            if (nextNode.children.Count == 0)
+                            if (nextNode.animationTrigger != null)
                             {
-                                ResetCombo();
+                                // Triggers immediately b/c no further branches possible (i.e A and D)
+                                animator.SetTrigger(nextNode.animationTrigger);
+
+                                // TRICK FINISHES HERE
+                                TrickName = nextNode.animationTrigger;
+                                currentTrickScore = nextNode.points;
+                                scoreCombo.UpdateTrickScore();
+
+                                InGameCanvas.instance.UpdateTrickName(TrickName);
+
+                                if (nextNode.children.Count == 0)
+                                {
+                                    ResetCombo();
+                                }
+
                             }
-                            
+                            // Else wait for more input or timeout
                         }
-                        // Else wait for more input or timeout
-                    }
-                    else
-                    {
-                        // Invalid combo path — reset
-                        currentTrickScore = 0;
-                        scoreCombo.UpdateTrickScore();
-                        ResetCombo();
+                        else
+                        {
+                            // Invalid combo path — reset
+                            currentTrickScore = 0;
+                            scoreCombo.UpdateTrickScore();
+                            ResetCombo();
+                        }
                     }
 
                     break; // Only handle one key per frame

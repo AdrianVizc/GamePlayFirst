@@ -26,6 +26,8 @@ public class Typer : MonoBehaviour
     private bool skipTyping = false;
     private bool skipAll = false;
     private float escapeHoldTimer = 0f;
+    private Scene thisScene;
+    [SerializeField] private GameObject mainMenuButton;
 
     void Update()
     {
@@ -63,7 +65,13 @@ public class Typer : MonoBehaviour
 
     // Initialization
     void Start()
-    {
+    {        
+        thisScene = SceneManager.GetSceneByName(PersistentManager.Instance.GetStringPref("EndCutscene").Value);
+        if(thisScene.IsValid())
+        {
+            mainMenuButton.SetActive(false);
+        }
+
         _text = GetComponent<Text>();
         _tmpProText = GetComponent<TMP_Text>();
 
@@ -75,9 +83,17 @@ public class Typer : MonoBehaviour
         if (currentTextIndex >= textList.Count)
         {
             // If all texts are done, switch to the next scene
-            SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+            if (thisScene.IsValid())
+            {
+                mainMenuButton.SetActive(true);
+            }
+            else
+            {
+                SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
 
-            SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
+                SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
+            }
+                
             return; // Exit method
         }
 
@@ -133,7 +149,16 @@ public class Typer : MonoBehaviour
 
         if (currentTextIndex == textList.Count - 1)
         {
-            SceneManager.LoadScene("MainScene");
+            if (thisScene.IsValid())
+            {
+                mainMenuButton.SetActive(true);
+            }
+            else
+            {
+                SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+
+                SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
+            }
         }
         else
         {
@@ -180,7 +205,16 @@ public class Typer : MonoBehaviour
 
         if (currentTextIndex == textList.Count - 1)
         {
-            SceneManager.LoadScene("MainScene");
+            if (thisScene.IsValid())
+            {
+                mainMenuButton.SetActive(true);
+            }
+            else
+            {
+                SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+
+                SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
+            }
         }
         else
         {
@@ -232,6 +266,20 @@ public class Typer : MonoBehaviour
         skipTyping = false;
 
         // Immediately load the final scene if you want
-        SceneManager.LoadScene("MainScene");
+        if (thisScene.IsValid())
+        {
+            mainMenuButton.SetActive(true);
+        }
+        else
+        {
+            SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+
+            SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
+        }
+    }
+
+    public void MainMenuButton()
+    {
+        PauseMenu.Instance.MainMenu();
     }
 }

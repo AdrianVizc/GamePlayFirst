@@ -31,7 +31,7 @@ public class Movement : MonoBehaviour
 
     [Header("Jumping")]
     [SerializeField] private float playerHeight;
-    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] public LayerMask groundLayer;
     [SerializeField] public bool isGrounded;
     [SerializeField] public bool canDoubleJump;
     [SerializeField] public bool slidOffWallRail;
@@ -120,6 +120,8 @@ public class Movement : MonoBehaviour
         {
             transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
         }
+
+        animator.SetFloat("verticalVelocity", rb.velocity.y);
     }
 
     private void GetInput()
