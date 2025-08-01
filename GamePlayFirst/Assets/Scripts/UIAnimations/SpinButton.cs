@@ -6,7 +6,11 @@ public class SpinButton : MonoBehaviour, IPointerEnterHandler
 {
     [SerializeField] Image buttonImg;
 
-    public float resetDistance = 200f; // In pixels. Adjust as needed to modify spin behavior.
+    [Header("Bounding Box")]
+    public float resetWidth = 200f;
+    public float resetHeight = 100f;
+
+    [Header("Animation")]
     public float resetDuration = 0.3f;
     public float rotateAngle = 375f;
     public float scaleUpFactor = 1.7f;
@@ -30,15 +34,7 @@ public class SpinButton : MonoBehaviour, IPointerEnterHandler
     {
         if (buttonRect == null) return;
 
-        // Check if cursor is outside a certain distance
-        bool isOutside = !RectTransformUtility.RectangleContainsScreenPoint(buttonRect, Input.mousePosition, null)
-                        && Vector2.Distance(buttonRect.position, Input.mousePosition) > resetDistance;
-
-        // If user leaves the button, mark for reset after spin
-        if (isOutside && hasSpun && !exitTriggered)
-        {
-            exitTriggered = true;
-        }
+        CheckExitBoundary();
 
         if (!isSpinning && exitTriggered && buttonRect.localRotation.eulerAngles.z != 0f)
         {
@@ -97,5 +93,17 @@ public class SpinButton : MonoBehaviour, IPointerEnterHandler
                 hasSpun = false;
                 exitTriggered = false;
             });
+    }
+
+    void CheckExitBoundary()
+    {
+        // Check if cursor is outside a certain distance
+        Vector2 diff = (Vector2)Input.mousePosition - (Vector2)buttonRect.position;
+        bool isOutside = Mathf.Abs(diff.x) > resetWidth / 2f || Mathf.Abs(diff.y) > resetHeight / 2f;
+
+        if (isOutside && hasSpun && !exitTriggered)
+        {
+            exitTriggered = true;
+        }
     }
 }
