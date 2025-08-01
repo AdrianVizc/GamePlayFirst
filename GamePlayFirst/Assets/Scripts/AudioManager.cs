@@ -206,6 +206,13 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void EndGameStopSounds()
+    {
+        skateSource.Stop();
+        wallGrindSource.Stop();
+        railGrindSource.Stop();
+    }
+
     public void PauseSkateSound()
     {
         skateSource.Pause();

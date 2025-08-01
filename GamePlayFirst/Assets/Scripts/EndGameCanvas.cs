@@ -41,6 +41,8 @@ public class EndGameCanvas : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.None;
 
+        AudioManager.instance.EndGameStopSounds();
+
         pauseMenu.SetActive(false);
 
         Stopwatch.instance.StopTimer();

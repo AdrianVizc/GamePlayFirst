@@ -133,7 +133,8 @@ public class Typer : MonoBehaviour
 
         if (currentTextIndex == textList.Count - 1)
         {
-            SceneManager.LoadScene("MainScene");
+            SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+            SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
         }
         else
         {
@@ -180,7 +181,8 @@ public class Typer : MonoBehaviour
 
         if (currentTextIndex == textList.Count - 1)
         {
-            SceneManager.LoadScene("MainScene");
+            SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+            SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
         }
         else
         {
@@ -232,6 +234,7 @@ public class Typer : MonoBehaviour
         skipTyping = false;
 
         // Immediately load the final scene if you want
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene(PersistentManager.Instance.GetStringPref("PlayScene").Value);
+        SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
     }
 }
