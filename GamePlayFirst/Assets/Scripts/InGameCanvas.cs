@@ -97,7 +97,7 @@ public class InGameCanvas : MonoBehaviour
 
     public void UpdatePenguinNegativeScore(float num)
     {
-        if (fadeOutCoroutine != null)
+        if (fadeOutCoroutinePenguin != null)
         {
             StopCoroutine(fadeOutCoroutinePenguin);
         }

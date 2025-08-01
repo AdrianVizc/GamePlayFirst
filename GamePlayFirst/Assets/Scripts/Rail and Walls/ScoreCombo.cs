@@ -131,7 +131,7 @@ public class ScoreCombo : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("EndZone"))
+        if(other.gameObject.CompareTag("EndZone"))
         {
             InGameCanvas.instance.DisplayTrickPoints(score * currMultiplier);
             totalScore += (score * currMultiplier);

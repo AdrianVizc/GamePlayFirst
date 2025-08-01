@@ -8275,6 +8275,7 @@ GameObject:
   - component: {fileID: 929914349}
   - component: {fileID: 929914352}
   - component: {fileID: 929914353}
+  - component: {fileID: 929914354}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -8422,6 +8423,26 @@ MonoBehaviour:
   imageComponent: {fileID: 929914350}
   unselectedSprite: {fileID: 21300000, guid: 1e2fbfa9e39454a47902ece6e342a35e, type: 3}
   hoverSprite: {fileID: 21300000, guid: 2e1a20642c793fe46b30cc65dd8c3143, type: 3}
+--- !u!114 &929914354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 929914347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc74d8e9f9756451fb49690d992dc0d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonImg: {fileID: 929914350}
+  resetWidth: 200
+  resetHeight: 100
+  resetDuration: 0.3
+  rotateAngle: 375
+  scaleUpFactor: 1.7
+  rotateDuration: 0.3
+  scaleDuration: 1
 --- !u!1 &930747381
 GameObject:
   m_ObjectHideFlags: 0
@@ -13319,6 +13340,7 @@ GameObject:
   - component: {fileID: 1552309506}
   - component: {fileID: 1552309509}
   - component: {fileID: 1552309510}
+  - component: {fileID: 1552309511}
   m_Layer: 5
   m_Name: SettingsButton
   m_TagString: Untagged
@@ -13466,6 +13488,26 @@ MonoBehaviour:
   imageComponent: {fileID: 1552309507}
   unselectedSprite: {fileID: 21300000, guid: a6dc0734a08a30b40a46fe5f15bf791b, type: 3}
   hoverSprite: {fileID: 21300000, guid: 8bdf7b48e998de44aaa856f971b8d252, type: 3}
+--- !u!114 &1552309511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552309504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc74d8e9f9756451fb49690d992dc0d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonImg: {fileID: 1552309507}
+  resetWidth: 200
+  resetHeight: 100
+  resetDuration: 0.3
+  rotateAngle: 375
+  scaleUpFactor: 1.7
+  rotateDuration: 0.3
+  scaleDuration: 1
 --- !u!1 &1569455906
 GameObject:
   m_ObjectHideFlags: 0
@@ -16173,6 +16215,7 @@ GameObject:
   - component: {fileID: 1910892465}
   - component: {fileID: 1910892468}
   - component: {fileID: 1910892469}
+  - component: {fileID: 1910892470}
   m_Layer: 5
   m_Name: PlayButton
   m_TagString: Untagged
@@ -16320,6 +16363,26 @@ MonoBehaviour:
   imageComponent: {fileID: 1910892466}
   unselectedSprite: {fileID: 21300000, guid: 49d16455e59aa7349a2a26a32ecd7772, type: 3}
   hoverSprite: {fileID: 21300000, guid: cd42579219f5f8b4e942c2eaa27cf04a, type: 3}
+--- !u!114 &1910892470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910892463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc74d8e9f9756451fb49690d992dc0d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonImg: {fileID: 1910892466}
+  resetWidth: 200
+  resetHeight: 100
+  resetDuration: 0.3
+  rotateAngle: 375
+  scaleUpFactor: 1.7
+  rotateDuration: 0.3
+  scaleDuration: 1
 --- !u!1 &1921861815
 GameObject:
   m_ObjectHideFlags: 0
