@@ -23,6 +23,12 @@ public class Enemy : MonoBehaviour
     private const string PENGUIN_DEATH_2 = "PenguinDead2";
     private const string PENGUIN_DEATH_3 = "PenguinDead3";
 
+    private bool isBumping;
+    private bool zeroVel;
+    private Movement movement;
+    private Rigidbody rb;
+    private float bumpForce = 9f;
+
     private void Start()
     {
         startingPosObj.gameObject.SetActive(false);
@@ -34,6 +40,25 @@ public class Enemy : MonoBehaviour
         StartCoroutine(MoveLoop());
 
         animator = GetComponentInChildren<Animator>();
+
+        isBumping = false;
+        zeroVel = false;
+    }
+
+    private void FixedUpdate()
+    {
+        if (isBumping && zeroVel)
+        {
+            movement.currentSpeed = 0;
+            isBumping = false;
+            zeroVel = false;
+            movement.enabled = true;
+            AudioManager.instance.UnPauseSkateSound();
+        }
+        if (rb != null && rb.velocity.z == 0)
+        {
+            zeroVel = true;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -41,6 +66,21 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             GetComponent<Collider>().enabled = false;
+
+            // Bump
+            movement = collision.gameObject.GetComponent<Movement>();
+            rb = collision.gameObject.GetComponent<Rigidbody>();
+
+            AudioManager.instance.PlayEnvironmentSound("Bonk");
+            AudioManager.instance.PauseSkateSound();
+
+            movement.enabled = false;
+            Vector3 bumpDir = -rb.transform.forward;
+            rb.velocity *= 0.2f;
+            rb.velocity = bumpDir * bumpForce;
+
+            isBumping = true;            
+
             switch (Random.Range(1, 4))
             {
                 case 1:
