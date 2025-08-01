@@ -19,6 +19,7 @@ public class PulsingNumber : MonoBehaviour
     {
         textTransform = scoreText.GetComponent<RectTransform>();
         originalScale = textTransform.localScale;
+        AddScore(5);
     }
 
     public void AddScore(int amount)

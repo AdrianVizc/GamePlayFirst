@@ -18,6 +18,7 @@ public class ScoreCounter : MonoBehaviour
     void Start()
     {
         textTransform = scoreText.GetComponent<RectTransform>();
+        AddScore(5);
     }
 
     public void AddScore(int amount)
