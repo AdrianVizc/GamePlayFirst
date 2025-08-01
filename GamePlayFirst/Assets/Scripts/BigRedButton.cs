@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class BigRedButton : MonoBehaviour
 {
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        AudioManager.instance.PlayEnvironmentSound("BigRedButton");
+        if (other.gameObject.CompareTag("Player"))
+        {
+            AudioManager.instance.PlayEnvironmentSound("BigRedButton");
 
-        EndGameCanvas.instance.gameObject.SetActive(true);
-        EndGameCanvas.instance.Startup();
+            EndGameCanvas.instance.gameObject.SetActive(true);
+            EndGameCanvas.instance.Startup();
+        }        
     }
 }
