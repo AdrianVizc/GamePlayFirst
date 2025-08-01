@@ -40,6 +40,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            GetComponent<Collider>().enabled = false;
             switch (Random.Range(1, 4))
             {
                 case 1:
