@@ -14,6 +14,7 @@ public class ScoreCounter : MonoBehaviour
     private int currentScore = 0;
     private bool isAnimating = false;
 
+    // Example: AddScore(5);
     void Start()
     {
         textTransform = scoreText.GetComponent<RectTransform>();
@@ -47,13 +48,11 @@ public class ScoreCounter : MonoBehaviour
     void PulseText(System.Action onComplete)
     {
         Vector3 originalScale = textTransform.localScale;
-        float pulseScale = 1.3f;
-        float duration = 0.15f;
 
-        LeanTween.scale(textTransform, originalScale * pulseScale, duration)
+        LeanTween.scale(textTransform, originalScale * pulseScale, pulseDuration)
             .setEaseOutBack()
             .setOnComplete(() => {
-                LeanTween.scale(textTransform, originalScale, duration)
+                LeanTween.scale(textTransform, originalScale, pulseDuration)
                     .setEaseInBack()
                     .setOnComplete(() => {
                         onComplete?.Invoke();
