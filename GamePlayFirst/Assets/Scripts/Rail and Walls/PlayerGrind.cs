@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
+using Unity.Burst.Intrinsics;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -35,6 +36,8 @@ public class PlayerGrind : MonoBehaviour
 
     private CinemachineVirtualCamera virtualCamera;
     private float defaultFOV;
+
+    private GameObject[] listOfRideables = new GameObject[2];
 
     private void Start()
     {
@@ -131,9 +134,30 @@ public class PlayerGrind : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(isRailTagIgnored)
+        // If list of rideables are full and the game object is new, empty the array
+        if (listOfRideables[1] != null && (collision.gameObject != listOfRideables[1]))
         {
-            return;
+            System.Array.Clear(listOfRideables, 0, listOfRideables.Length);
+        }
+
+        // If list of rideables are empty, set index 1 to game object
+        if (listOfRideables[0] == null)
+        {
+            listOfRideables[0] = collision.gameObject;
+        }
+        else
+        {
+            //If index 1 is full, set index 2 to current game object
+            listOfRideables[1] = collision.gameObject;
+
+            if (listOfRideables[0] != listOfRideables[1])
+            {
+                System.Array.Clear(listOfRideables, 0, listOfRideables.Length);
+            }
+            else if (isRailTagIgnored)
+            {
+                return;
+            }
         }
 
         // When player touches a rail, start grinding

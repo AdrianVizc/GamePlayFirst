@@ -14,6 +14,7 @@ public class PlayerBump : MonoBehaviour
     private Animator animator;
     private bool isBumping;
     private bool zeroVel;
+    private bool isCollidingIgnored;
 
     // private float currentSpeed;
     // private const float MAX_SPEED = 10f;
@@ -24,6 +25,7 @@ public class PlayerBump : MonoBehaviour
         movement = GetComponent<Movement>();
         animator = GetComponentInChildren<Animator>();
         zeroVel = false;
+        isCollidingIgnored = false;
     }
 
     void FixedUpdate()
@@ -39,7 +41,7 @@ public class PlayerBump : MonoBehaviour
             movement.enabled = true;
             AudioManager.instance.UnPauseSkateSound();
         }
-        else if (Physics.CapsuleCast(bottom, top, raycastCheckRadius, transform.forward, out RaycastHit hit, raycastCheckDistance, ~0, QueryTriggerInteraction.Ignore))
+        else if (!isCollidingIgnored && Physics.CapsuleCast(bottom, top, raycastCheckRadius, transform.forward, out RaycastHit hit, raycastCheckDistance, ~0, QueryTriggerInteraction.Ignore))
         {
             if (hit.collider.CompareTag("rail") || 
                 (hit.collider.CompareTag("wall") && !movement.isGrounded) &&
@@ -58,6 +60,8 @@ public class PlayerBump : MonoBehaviour
 
             isBumping = true;
             //animator.SetTrigger("getHurt");
+
+            StartCoroutine(IgnoreCollideTemporarily(0.1f));
         }
 
         if(rb.velocity.z == 0)
@@ -75,5 +79,12 @@ public class PlayerBump : MonoBehaviour
             Vector3 addedGravity = Physics.gravity * (movement.gravityMultiplier - 1f);
             rb.AddForce(addedGravity, ForceMode.Acceleration);
         }
+    }
+
+    private IEnumerator IgnoreCollideTemporarily(float duration)
+    {
+        isCollidingIgnored = true;
+        yield return new WaitForSeconds(duration); // ignore rail tag for x sec
+        isCollidingIgnored = false;
     }
 }
