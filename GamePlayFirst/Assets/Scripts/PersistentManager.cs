@@ -51,6 +51,8 @@ public class PersistentManager : MonoBehaviour
             return;
         }
 
+        SceneManager.LoadScene("AdrianTest", LoadSceneMode.Additive);
+
         DontDestroyOnLoad(gameObject);        
     }
 
