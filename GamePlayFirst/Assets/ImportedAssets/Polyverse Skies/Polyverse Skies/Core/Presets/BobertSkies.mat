@@ -350,7 +350,7 @@ Material:
     - _Skycol: {r: 0.27941146, g: 0.64219046, b: 1, a: 0}
     - _StarsRotationAxis: {r: 0, g: 1, b: 0, a: 0}
     - _SunColor: {r: 0.9811321, g: 0.637308, b: 0.4026344, a: 1}
-    - _SunDirection: {r: 0, g: -0.04, b: -1, a: 0}
+    - _SunDirection: {r: -0.01, g: -0.04, b: -1, a: 0}
     - _Tint: {r: 1, g: 1, b: 1, a: 0}
     - _Vector1: {r: 0, g: 1, b: 1, a: 0}
     - _water: {r: 0.5, g: 0.5, b: 0.5, a: 1}
