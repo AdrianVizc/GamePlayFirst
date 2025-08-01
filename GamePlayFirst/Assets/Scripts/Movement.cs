@@ -31,7 +31,7 @@ public class Movement : MonoBehaviour
 
     [Header("Jumping")]
     [SerializeField] private float playerHeight;
-    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] public LayerMask groundLayer;
     [SerializeField] public bool isGrounded;
     [SerializeField] public bool canDoubleJump;
     [SerializeField] public bool slidOffWallRail;
