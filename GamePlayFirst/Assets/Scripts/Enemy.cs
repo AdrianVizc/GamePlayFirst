@@ -59,18 +59,17 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             GetComponent<Collider>().enabled = false;
 
             // Bump
-            movement = collision.gameObject.GetComponent<Movement>();
-            rb = collision.gameObject.GetComponent<Rigidbody>();
-            animator = collision.gameObject.GetComponentInChildren<Animator>();
+            movement = other.gameObject.GetComponent<Movement>();
+            rb = other.gameObject.GetComponent<Rigidbody>();
+            animator = other.gameObject.GetComponentInChildren<Animator>();
 
-            animator.SetTrigger("getHurt");
             AudioManager.instance.PlayEnvironmentSound("Bonk");
             AudioManager.instance.PauseSkateSound();
 
@@ -95,14 +94,13 @@ public class Enemy : MonoBehaviour
 
             }
 
-            ScoreCombo.Instance.score -= scoreLoss;
+            ScoreCombo.Instance.totalScore -= scoreLoss;
+            InGameCanvas.instance.UpdatePenguinNegativeScore(scoreLoss);
+
+            animator.SetTrigger("getHurt");
 
             StartCoroutine(DisableAfterDelay());
         }
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        
     }
 
     private IEnumerator DisableAfterDelay()
