@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -358,31 +358,17 @@ MonoBehaviour:
   leadingChar: 
   leadingCharBeforeDelay: 0
   textList:
-  - You are alone in this mortal realm.
-  - All around you lies an endless concrete jungle and neverending mundanity.
-  - "You\u2019ve watched the rise of this society and now you\u2019re here to see
-    the end of it."
-  - Passed down to you by your father is the Silly and Whimsy Factory.
-  - In there lies a comically large red button that will return joy, silliness, and
-    whimsy back to this town.
-  - All you need to do is press it.
-  - Except it seems the opps have caught on.
-  - Make your mad dash to the factory in the SICKEST way possible and save this town
-    without getting caught.
-  - "Surely... we\u2019re not the villains here right?"
-  - "We\u2019re just a silly little guy who wants to spread merriment to this world."
+  - Joy, merriment, and whimsy have been returned to Penguin City!
+  - I mean, sure the penguins all lost their jobs.
+  - They no longer have income or permanent places to live....
+  - But they're having the time of their life!
   backgroundList:
-  - {fileID: 21300000, guid: b5850444d70268b41b209d2171335b57, type: 3}
-  - {fileID: 21300000, guid: b5850444d70268b41b209d2171335b57, type: 3}
-  - {fileID: 21300000, guid: b5850444d70268b41b209d2171335b57, type: 3}
-  - {fileID: 21300000, guid: 9cea1e79e8ac2634aadec66ef83bc3df, type: 3}
-  - {fileID: 21300000, guid: 9cea1e79e8ac2634aadec66ef83bc3df, type: 3}
-  - {fileID: 21300000, guid: f54c7e529f494db45979316f1ba18e43, type: 3}
-  - {fileID: 21300000, guid: f54c7e529f494db45979316f1ba18e43, type: 3}
-  - {fileID: 21300000, guid: 18046ef437a81134988df048d10b4573, type: 3}
-  - {fileID: 21300000, guid: c6cd68426ca3c0842949f63f020f6015, type: 3}
-  - {fileID: 21300000, guid: c6cd68426ca3c0842949f63f020f6015, type: 3}
+  - {fileID: 21300000, guid: 0f5875281796151499f88ff273b90585, type: 3}
+  - {fileID: 21300000, guid: 0f5875281796151499f88ff273b90585, type: 3}
+  - {fileID: 21300000, guid: 0f5875281796151499f88ff273b90585, type: 3}
+  - {fileID: 21300000, guid: 0f5875281796151499f88ff273b90585, type: 3}
   backgroundImage: {fileID: 1427088068}
+  escapeHoldDuration: 2
 --- !u!114 &1309119334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -656,7 +642,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b5850444d70268b41b209d2171335b57, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0f5875281796151499f88ff273b90585, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
