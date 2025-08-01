@@ -129,6 +129,19 @@ public class ScoreCombo : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("EndZone"))
+        {
+            InGameCanvas.instance.DisplayTrickPoints(score * currMultiplier);
+            totalScore += (score * currMultiplier);
+            totalTime = 0;
+            score = 0;
+            combo = 0;
+            currMultiplier = 1 - multiplier;
+        }
+    }
+
     IEnumerator CheckGrounded(float delay)
     {
         isCheckingGround = true;

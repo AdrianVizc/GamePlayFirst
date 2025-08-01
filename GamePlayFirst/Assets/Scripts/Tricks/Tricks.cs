@@ -14,6 +14,9 @@ public class ComboNode
 
 public class Tricks : MonoBehaviour
 {
+    [Header("Trick Animation Settings")]
+    [SerializeField] private float percentageBuffer = 0f;
+
     [HideInInspector] public float currentTrickScore;
     private Animator animator;
 
@@ -125,7 +128,8 @@ public class Tricks : MonoBehaviour
                 {
                     AnimatorStateInfo animatorState = animator.GetCurrentAnimatorStateInfo(0);
 
-                    if(animatorState.normalizedTime >= 1f)
+                    // If the current animation finishes, allow key input to go through
+                    if(animatorState.normalizedTime >= (1 - percentageBuffer))
                     {
                         if (currentNode.children.TryGetValue(key, out ComboNode nextNode))
                         {
@@ -227,7 +231,7 @@ public class Tricks : MonoBehaviour
             {
                 animator.SetTrigger(nextNode.animationTrigger);
                 //TRICK FINISHES HERE
-                Debug.Log("Played animation: " + nextNode.animationTrigger);
+                // Debug.Log("Played animation: " + nextNode.animationTrigger);
                 currentTrickScore = nextNode.points;
                 scoreCombo.UpdateTrickScore();
                 if (nextNode.children.Count == 0)
