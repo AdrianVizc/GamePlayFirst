@@ -26,7 +26,7 @@ public class PlayerBump : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 bottom = transform.position + Vector3.down * 1.2f;
+        Vector3 bottom = transform.position + Vector3.down * 0.75f;
         Vector3 top = transform.position + Vector3.up * 1.2f;
 
         if (isBumping && zeroVel)
@@ -39,7 +39,9 @@ public class PlayerBump : MonoBehaviour
         }
         else if (Physics.CapsuleCast(bottom, top, raycastCheckRadius, transform.forward, out RaycastHit hit, raycastCheckDistance, ~0, QueryTriggerInteraction.Ignore))
         {
-            if (hit.collider.CompareTag("rail") || (hit.collider.CompareTag("wall") && !movement.isGrounded))
+            if (hit.collider.CompareTag("rail") || 
+                (hit.collider.CompareTag("wall") && !movement.isGrounded) &&
+                !hit.collider.CompareTag("enemy"))
             {
                 return;
             }

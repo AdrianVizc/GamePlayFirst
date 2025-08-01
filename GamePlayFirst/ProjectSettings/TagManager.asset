@@ -6,6 +6,7 @@ TagManager:
   tags:
   - rail
   - wall
+  - enemy
   layers:
   - Default
   - TransparentFX

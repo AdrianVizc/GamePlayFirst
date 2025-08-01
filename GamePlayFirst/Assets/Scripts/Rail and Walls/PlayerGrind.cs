@@ -209,7 +209,6 @@ public class PlayerGrind : MonoBehaviour
 
         onRail = false;
         isJumping = false;
-        currentRailScript = null;
 
         rb.constraints = RigidbodyConstraints.FreezeRotation;
 
@@ -231,6 +230,19 @@ public class PlayerGrind : MonoBehaviour
         // float forwardBoost = 2f;
         finalJump += transform.forward;// * forwardBoost;
 
+        // Get the current rail normal
+        float progress = elapsedTime / timeForFullSpline;
+        float3 pos, tangent, up;
+        SplineUtility.Evaluate(currentRailScript.railSpline.Spline, progress, out pos, out tangent, out up);
+
+        // Convert spline-space normal to world space
+        Vector3 worldNormal = currentRailScript.LocalToWorldConversion(up + pos) - currentRailScript.LocalToWorldConversion(pos);
+        worldNormal.Normalize();
+
+        // Apply a small outward push along the normal
+        float normalPushForce = 2f; // tweak this value as needed
+        finalJump += worldNormal * normalPushForce;
+
         rb.AddForce(finalJump, ForceMode.VelocityChange);
 
         StartCoroutine(IgnoreRailTemporarily(0.5f));
@@ -238,6 +250,8 @@ public class PlayerGrind : MonoBehaviour
 
         // Re-enable movement
         GetComponent<Movement>().enabled = true;
+
+        currentRailScript = null;
     }
 
     private IEnumerator IgnoreRailTemporarily(float duration)
