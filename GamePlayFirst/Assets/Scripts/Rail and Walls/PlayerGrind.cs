@@ -31,6 +31,7 @@ public class PlayerGrind : MonoBehaviour
     private bool isRailTagIgnored;
     private Movement movement;
     private Animator animator;
+    private ParticleSystem sparksVFX;
 
     private CinemachineVirtualCamera virtualCamera;
     private float defaultFOV;
@@ -46,6 +47,8 @@ public class PlayerGrind : MonoBehaviour
         elapsedTime = 0;
         isJumping = false;
         isRailTagIgnored = false;
+        sparksVFX = transform.Find("Sparks").gameObject.GetComponent<ParticleSystem>();
+        sparksVFX.Stop();
     }
 
     private void Update()
@@ -136,6 +139,7 @@ public class PlayerGrind : MonoBehaviour
         // When player touches a rail, start grinding
         if (collision.gameObject.CompareTag("rail"))
         {
+            sparksVFX.Play();
             onRail = true;
             animator.SetBool("onRail", true);
             animator.SetBool("isGrounded", false);
@@ -182,6 +186,7 @@ public class PlayerGrind : MonoBehaviour
 
     void ThrowOffRail()
     {
+        sparksVFX.Stop();
         animator.SetBool("onRail", false);
         movement.canDoubleJump = true;
         transform.position += Vector3.ProjectOnPlane(transform.forward, Vector3.up) * 1f; // Move player forward slightly
@@ -195,6 +200,7 @@ public class PlayerGrind : MonoBehaviour
 
     private void JumpOff()
     {
+        sparksVFX.Stop();
         animator.SetBool("onRail", false);
         animator.SetBool("isJumping", true);
         AudioManager.instance.railGrindPlayOnce = false;
