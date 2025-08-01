@@ -15,7 +15,7 @@ public class ComboNode
 public class Tricks : MonoBehaviour
 {
     [Header("Trick Animation Settings")]
-    private float percentageBuffer = 0.5f;
+    private float percentageBuffer = 0.35f;
 
     [HideInInspector] public float currentTrickScore;
     private Animator animator;
@@ -42,6 +42,7 @@ public class Tricks : MonoBehaviour
     [SerializeField] public float SpecialTrick4 = 500f;
     private bool leftTriggerPressed = false;
     private bool rightTriggerPressed = false;
+    private bool firstPress = false;
     [HideInInspector] private string TrickName = "";
 
     void Start()
@@ -129,7 +130,6 @@ public class Tricks : MonoBehaviour
                 if (Input.GetKeyDown(key))
                 {
                     AnimatorStateInfo animatorState = animator.GetCurrentAnimatorStateInfo(0);
-                    bool firstPress = false;
                     float timeAddition = 0f;
 
                     if (!firstPress || lastKeyPressed != key)
@@ -194,6 +194,8 @@ public class Tricks : MonoBehaviour
                 }
             }
         }
+       
+        firstPress = false;
     }
     // Adds combos to the trie
     private void AddCombo(List<KeyCode> sequence, string animationTrigger)
@@ -230,31 +232,46 @@ public class Tricks : MonoBehaviour
 
     private void TriggerCombo(KeyCode? triggerKey)
     {
-    
-        if (currentNode.children.TryGetValue(triggerKey.Value, out ComboNode nextNode))
+        AnimatorStateInfo animatorState = animator.GetCurrentAnimatorStateInfo(0);
+        bool firstPress = false;
+        float timeAddition = 0f;
+
+        if (!firstPress || lastKeyPressed != triggerKey)
         {
-            currentNode = nextNode;
-            lastKeyPressed = triggerKey;
-            comboTimer = comboMaxTime;
-            
-            if (nextNode.animationTrigger != null)
+            timeAddition = 1f;
+            firstPress = true;
+            //Debug.Log("LAST KEY DIFFERENT");
+        }
+        if (animatorState.normalizedTime + timeAddition >= (1 - percentageBuffer))
+        {
+            if (currentNode.children.TryGetValue(triggerKey.Value, out ComboNode nextNode))
             {
-                animator.SetTrigger(nextNode.animationTrigger);
-                //TRICK FINISHES HERE
-                // Debug.Log("Played animation: " + nextNode.animationTrigger);
-                currentTrickScore = nextNode.points;
-                scoreCombo.UpdateTrickScore();
-                if (nextNode.children.Count == 0)
+                currentNode = nextNode;
+                lastKeyPressed = triggerKey;
+                comboTimer = comboMaxTime;
+
+                if (nextNode.animationTrigger != null)
                 {
-                    ResetCombo();
+                    animator.SetTrigger(nextNode.animationTrigger);
+                    //TRICK FINISHES HERE
+
+                    // Debug.Log("Played animation: " + nextNode.animationTrigger);
+                    currentTrickScore = nextNode.points;
+                    scoreCombo.UpdateTrickScore();
+                    InGameCanvas.instance.UpdateTrickName(TrickName);
+                    if (nextNode.children.Count == 0)
+                    {
+                        ResetCombo();
+                    }
                 }
             }
+            else
+            {
+                currentTrickScore = 0;
+                ResetCombo();
+            }
         }
-        else
-        {
-            currentTrickScore = 0;
-            ResetCombo();
-        }
+        
     }
     
 }
