@@ -42,7 +42,7 @@ public class PlayerBump : MonoBehaviour
         else if (Physics.CapsuleCast(bottom, top, raycastCheckRadius, transform.forward, out RaycastHit hit, raycastCheckDistance, ~0, QueryTriggerInteraction.Ignore))
         {
             if (hit.collider.CompareTag("rail") || 
-                (hit.collider.CompareTag("wall") && !movement.isGrounded) ||
+                (hit.collider.CompareTag("wall") && !movement.isGrounded) &&
                 !hit.collider.CompareTag("enemy"))
             {
                 return;
