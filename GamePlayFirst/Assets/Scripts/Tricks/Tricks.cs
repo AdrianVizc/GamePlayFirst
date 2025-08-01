@@ -15,7 +15,7 @@ public class ComboNode
 public class Tricks : MonoBehaviour
 {
     [Header("Trick Animation Settings")]
-    [SerializeField] private float percentageBuffer = 0f;
+    private float percentageBuffer = 0.5f;
 
     [HideInInspector] public float currentTrickScore;
     private Animator animator;
@@ -23,7 +23,7 @@ public class Tricks : MonoBehaviour
     private ComboNode root = new ComboNode();
     private ComboNode currentNode;
     [HideInInspector] public float comboTimer;
-    private float comboMaxTime = 0.5f;
+    private float comboMaxTime = 5f;
     private KeyCode? lastKeyPressed = null;
 
     private PlayerGrind rail;
@@ -90,7 +90,8 @@ public class Tricks : MonoBehaviour
 
         onRail = rail.onRail;
         isWallRunning = wall.isWallRunning;
-
+        //AnimatorStateInfo animatorState = animator.GetCurrentAnimatorStateInfo(0);
+        //Debug.Log("Animation Time On Input: " + animatorState.normalizedTime + "buffer: " + (1 - percentageBuffer));
         if (onRail || isWallRunning)
         {
             // Handles LT and RT (they aren't defined as keycodes so have to be dealt with differently)
@@ -120,16 +121,26 @@ public class Tricks : MonoBehaviour
             {
                 leftTriggerPressed = false;
             }
-            
-            
+
+
             foreach (KeyCode key in new[] { KeyCode.UpArrow, KeyCode.LeftArrow, KeyCode.DownArrow, KeyCode.RightArrow, KeyCode.Joystick1Button4, KeyCode.Joystick1Button5 })
             {
+
                 if (Input.GetKeyDown(key))
                 {
                     AnimatorStateInfo animatorState = animator.GetCurrentAnimatorStateInfo(0);
+                    bool firstPress = false;
+                    float timeAddition = 0f;
 
+                    if (!firstPress || lastKeyPressed != key)
+                    {
+                        timeAddition = 1f;
+                        firstPress = true;
+                        //Debug.Log("LAST KEY DIFFERENT");
+                    }
                     // If the current animation finishes, allow key input to go through
-                    if(animatorState.normalizedTime >= (1 - percentageBuffer))
+                    //Debug.Log("Animation Time On Input: " + animatorState.normalizedTime + "buffer: " + (1 - percentageBuffer));
+                    if (animatorState.normalizedTime + timeAddition >= (1 - percentageBuffer))
                     {
                         if (currentNode.children.TryGetValue(key, out ComboNode nextNode))
                         {
@@ -141,7 +152,6 @@ public class Tricks : MonoBehaviour
                             {
                                 // Triggers immediately b/c no further branches possible (i.e A and D)
                                 animator.SetTrigger(nextNode.animationTrigger);
-
                                 // TRICK FINISHES HERE
                                 TrickName = nextNode.animationTrigger;
                                 currentTrickScore = nextNode.points;
@@ -177,7 +187,7 @@ public class Tricks : MonoBehaviour
 
                 if (comboTimer <= 0)
                 {
-                    
+
                     // Ran out of time for combo
                     currentTrickScore = 0;
                     ResetCombo();
