@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static AudioManager;
+using static UnityEngine.UI.GridLayoutGroup;
 
 public class Enemy : MonoBehaviour
 {
@@ -59,7 +60,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    /*private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -95,11 +96,55 @@ public class Enemy : MonoBehaviour
             }            
 
             ScoreCombo.Instance.score -= scoreLoss;
+            InGameCanvas.instance.UpdatePenguinNegativeScore(scoreLoss);
 
             animator.SetTrigger("getHurt");
 
             StartCoroutine(DisableAfterDelay());
         }        
+    }*/
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            GetComponent<Collider>().enabled = false;
+
+            // Bump
+            movement = other.gameObject.GetComponent<Movement>();
+            rb = other.gameObject.GetComponent<Rigidbody>();
+
+            AudioManager.instance.PlayEnvironmentSound("Bonk");
+            AudioManager.instance.PauseSkateSound();
+
+            movement.enabled = false;
+            Vector3 bumpDir = -rb.transform.forward;
+            rb.velocity *= 0.2f;
+            rb.velocity = bumpDir * bumpForce;
+
+            isBumping = true;
+
+            switch (Random.Range(1, 4))
+            {
+                case 1:
+                    AudioManager.instance.PlayEnvironmentSound(PENGUIN_DEATH_1);
+                    break;
+                case 2:
+                    AudioManager.instance.PlayEnvironmentSound(PENGUIN_DEATH_2);
+                    break;
+                case 3:
+                    AudioManager.instance.PlayEnvironmentSound(PENGUIN_DEATH_3);
+                    break;
+
+            }
+
+            ScoreCombo.Instance.totalScore -= scoreLoss;
+            InGameCanvas.instance.UpdatePenguinNegativeScore(scoreLoss);
+
+            animator.SetTrigger("OnHit");
+
+            StartCoroutine(DisableAfterDelay());
+        }
     }
 
     private IEnumerator DisableAfterDelay()

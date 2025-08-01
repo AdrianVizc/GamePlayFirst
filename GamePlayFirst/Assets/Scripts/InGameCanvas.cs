@@ -25,10 +25,12 @@ public class InGameCanvas : MonoBehaviour
     [SerializeField] private float waitBeforeTrickPointFadeOut = 1; //Amount of time before it starts to disappear
     [SerializeField] private float trickPointFadeOut = 2; //Disappears over "trickPointFadeOut" seconds 
     [SerializeField] private TMP_Text trickPointsPopup;
+    [SerializeField] private TMP_Text penguinNegativeScoreText;
 
     private Transform previousPos;
     private bool doOnce;
     private Coroutine fadeOutCoroutine;
+    private Coroutine fadeOutCoroutinePenguin;
 
     private Color32[] colors;
 
@@ -93,9 +95,47 @@ public class InGameCanvas : MonoBehaviour
         }
     }
 
+    public void UpdatePenguinNegativeScore(float num)
+    {
+        if (fadeOutCoroutinePenguin != null)
+        {
+            StopCoroutine(fadeOutCoroutinePenguin);
+        }
+
+        penguinNegativeScoreText.text = "-" + num;
+
+        Color currentColor = penguinNegativeScoreText.color;
+        currentColor.a = 1f;
+        penguinNegativeScoreText.color = currentColor;
+
+        fadeOutCoroutinePenguin = StartCoroutine(FadeOutPenguin());
+    }
+
+    IEnumerator FadeOutPenguin()
+    {
+        float elapsedTime = 0f;
+
+        TMP_Text originalText = penguinNegativeScoreText;
+
+        yield return new WaitForSeconds(waitBeforeTrickPointFadeOut);
+
+        while (elapsedTime < trickPointFadeOut)
+        {
+            float alpha = Mathf.Lerp(originalText.color.a, 0f, elapsedTime / trickPointFadeOut);
+            penguinNegativeScoreText.color = new Color(originalText.color.r, originalText.color.g, originalText.color.b, alpha);
+
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+    }
+
     public void UpdateTrickPoints(float num)
     {
-        trickPoints.text = num.ToString();
+        if (num >= 0)
+        {
+            trickPoints.text = num.ToString();
+        }        
     }
 
     public void UpdateMultiplier(float num)
