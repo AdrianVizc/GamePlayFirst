@@ -96,6 +96,7 @@ public class Enemy : MonoBehaviour
             }            
 
             ScoreCombo.Instance.score -= scoreLoss;
+            InGameCanvas.instance.UpdatePenguinNegativeScore(scoreLoss);
 
             animator.SetTrigger("OnHit");
 
