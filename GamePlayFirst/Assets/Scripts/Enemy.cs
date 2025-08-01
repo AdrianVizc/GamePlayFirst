@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     private Vector3 endingPos;
 
     private Animator animator;
+    private Animator playerAnimator;
 
     private const string PENGUIN_DEATH_1 = "PenguinDead1";
     private const string PENGUIN_DEATH_2 = "PenguinDead2";
@@ -36,6 +37,8 @@ public class Enemy : MonoBehaviour
 
         startingPos = startingPosObj.position;
         endingPos = endingPosObj.position;
+
+        animator = GetComponentInChildren<Animator>();
 
         StartCoroutine(MoveLoop());
 
@@ -68,7 +71,7 @@ public class Enemy : MonoBehaviour
             // Bump
             movement = other.gameObject.GetComponent<Movement>();
             rb = other.gameObject.GetComponent<Rigidbody>();
-            animator = other.gameObject.GetComponentInChildren<Animator>();
+            playerAnimator = other.gameObject.GetComponentInChildren<Animator>();
 
             AudioManager.instance.PlayEnvironmentSound("Bonk");
             AudioManager.instance.PauseSkateSound();
@@ -97,7 +100,8 @@ public class Enemy : MonoBehaviour
             ScoreCombo.Instance.totalScore -= scoreLoss;
             InGameCanvas.instance.UpdatePenguinNegativeScore(scoreLoss);
 
-            animator.SetTrigger("getHurt");
+            playerAnimator.SetTrigger("getHurt");
+            animator.SetTrigger("OnHit");
 
             StartCoroutine(DisableAfterDelay());
         }
