@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Building Material
-  m_Shader: {fileID: -6465566751694194690, guid: 1d2c59dc56e978f4ab72d01f4fa54310,
+  m_Shader: {fileID: -6465566751694194690, guid: 5d402e4ba4ba3224896a615a8566d43c,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -103,15 +103,22 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _LineDensity: 30
+    - _LineWidth: 0
     - _Max: 1
+    - _MaxShade: 1
     - _Metallic: 0
     - _Min: 0.3
+    - _MinShade: 0.3
+    - _NoiseScale: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Shades: 0.45
+    - _ShadowOffset: -0.5
+    - _ShadowRange: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1

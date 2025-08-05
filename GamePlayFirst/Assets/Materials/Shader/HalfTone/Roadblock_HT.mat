@@ -116,23 +116,23 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _LineDensity: 37.35
-    - _LineWidth: 6.18
+    - _LineDensity: -328
+    - _LineWidth: 1
     - _Max: 1
     - _MaxShade: 1
     - _Metallic: 0
     - _Min: 0.33
     - _MinShade: 0.3
     - _Mode: 0
-    - _NoiseScale: 2.11
+    - _NoiseScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Shades: 0.4
-    - _ShadowOffset: -0.55
-    - _ShadowRange: 1
+    - _ShadowOffset: -5
+    - _ShadowRange: 14.89
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
