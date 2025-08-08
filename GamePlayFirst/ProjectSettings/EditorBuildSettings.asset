@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/AdrianTest.unity
     guid: 58a0b6c7af3d1a14e81fc42c2b2d912c
+  - enabled: 1
+    path: Assets/Scenes/SpiderMan.unity
+    guid: a5dab5ae3ec49f44d8f032ff3095e8ce
   m_configObjects: {}
