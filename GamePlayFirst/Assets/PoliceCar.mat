@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PoliceCar
-  m_Shader: {fileID: -6465566751694194690, guid: 1d2c59dc56e978f4ab72d01f4fa54310,
+  m_Shader: {fileID: -6465566751694194690, guid: 540124f356d32674cb767bd663a3d715,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -37,6 +37,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseTexture:
+        m_Texture: {fileID: 2800000, guid: cb90d9047b1b7574591dcb1f8b16180c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Texture2D:
         m_Texture: {fileID: 2800000, guid: cb90d9047b1b7574591dcb1f8b16180c, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -55,11 +59,22 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _CellShade: 0.19
+    - _Circle_Density: 6935.47
+    - _Falloff_threshold: 12.53
+    - _Lit_Threshold: 1.9
     - _Max: 1
+    - _MaxShade: 0.13
     - _Min: 1.38
+    - _MinShade: 2.92
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Rotation: 0
     - _Shades: 2.9
+    - _Shading_Multiplier: 0.1
+    - _Softness: 0
+    - _USE_SCREEN_SPACE: 0
     m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
     - _Color: {r: 0.9622641, g: 0.9622641, b: 0.9622641, a: 0}
   m_BuildTextureStacks: []
