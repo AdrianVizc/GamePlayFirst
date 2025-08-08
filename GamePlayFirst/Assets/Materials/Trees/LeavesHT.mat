@@ -104,6 +104,7 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
+    - _CellShade: 0.1
     - _Circle_Density: 26.46
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -119,7 +120,9 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Lit_Threshold: 1.36
+    - _MaxShade: 13.9
     - _Metallic: 0
+    - _MinShade: 3.2
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
