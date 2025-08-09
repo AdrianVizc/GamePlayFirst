@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HTv2
+  m_Name: RoadBlock_HT
   m_Shader: {fileID: -6465566751694194690, guid: 540124f356d32674cb767bd663a3d715,
     type: 3}
   m_Parent: {fileID: 0}
@@ -109,7 +109,7 @@ Material:
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
     - _CellShade: 1
-    - _Circle_Density: 12.29
+    - _Circle_Density: 22.27
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -119,13 +119,13 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _Falloff_threshold: 4.34
+    - _Falloff_threshold: 2.56
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _LineDensity: 27.97
     - _LineWidth: 1
-    - _Lit_Threshold: 0.9
+    - _Lit_Threshold: 1.25
     - _Max: 1
     - _MaxShade: 1
     - _Metallic: 0
@@ -140,7 +140,7 @@ Material:
     - _ReceiveShadows: 1
     - _Rotation: 0
     - _Shades: 0.4
-    - _Shading_Multiplier: 0.1
+    - _Shading_Multiplier: 3.13
     - _ShadowOffset: -3.28
     - _ShadowRange: 12.09
     - _Smoothness: 0.5
