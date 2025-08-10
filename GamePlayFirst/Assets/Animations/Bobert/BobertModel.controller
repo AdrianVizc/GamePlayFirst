@@ -837,57 +837,57 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 8587591652013322334}
-    m_Position: {x: 290, y: 120, z: 0}
+    m_Position: {x: 220, y: 120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4444109254845285429}
-    m_Position: {x: 750, y: 120, z: 0}
+    m_Position: {x: 620, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3076053409528736067}
-    m_Position: {x: 1050, y: 120, z: 0}
+    m_Position: {x: 1150, y: -190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -430675668513571357}
-    m_Position: {x: 1300, y: 220, z: 0}
+    m_Position: {x: 220, y: -740, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8439761295108663200}
-    m_Position: {x: 750, y: 310, z: 0}
+    m_Position: {x: 390, y: 640, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 869438971115743940}
-    m_Position: {x: 750, y: 420, z: 0}
+    m_Position: {x: 940, y: 900, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -109380188807646248}
-    m_Position: {x: 160, y: 310, z: 0}
+    m_Position: {x: -160, y: 410, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2431229281057790064}
-    m_Position: {x: 380, y: 310, z: 0}
+    m_Position: {x: -120, y: -180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3589280748129209747}
-    m_Position: {x: 1050, y: 310, z: 0}
+    m_Position: {x: 340, y: 970, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5611062042033651057}
-    m_Position: {x: 1050, y: 420, z: 0}
+    m_Position: {x: -10, y: 730, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1554485505240900514}
-    m_Position: {x: 490, y: 10, z: 0}
+    m_Position: {x: 1390, y: 770, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1771441113054621471}
-    m_Position: {x: 750, y: 10, z: 0}
+    m_Position: {x: 1740, y: 680, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7222316645038437206}
-    m_Position: {x: 1050, y: 10, z: 0}
+    m_Position: {x: 1950, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5006189201152211931}
-    m_Position: {x: 1300, y: 10, z: 0}
+    m_Position: {x: 1980, y: 540, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7723179003291720461}
-    m_Position: {x: 1300, y: 310, z: 0}
+    m_Position: {x: 470, y: -300, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: -100, y: 30, z: 0}
-  m_EntryPosition: {x: -110, y: 120, z: 0}
-  m_ExitPosition: {x: -310, y: 120, z: 0}
+  m_AnyStatePosition: {x: -350, y: 30, z: 0}
+  m_EntryPosition: {x: -360, y: 120, z: 0}
+  m_ExitPosition: {x: -560, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 8587591652013322334}
 --- !u!91 &9100000
@@ -904,91 +904,91 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: onRail
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isRailVert
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: horizontalLean
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: onWall
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isGrounded
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: verticalVelocity
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: FrontFlip
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: BackFlip
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: leftWall
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: rightWall
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: dashLeft
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: dashRight
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: getHurt
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 1
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isHurtAnim
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
