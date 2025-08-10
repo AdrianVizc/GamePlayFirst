@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: FinishedBobertTexture
-  m_Shader: {fileID: -6465566751694194690, guid: 1d2c59dc56e978f4ab72d01f4fa54310,
+  m_Shader: {fileID: -6465566751694194690, guid: 540124f356d32674cb767bd663a3d715,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -38,6 +38,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 87beab9c51301bf41ba38796f89fc5f0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseTexture:
         m_Texture: {fileID: 2800000, guid: 87beab9c51301bf41ba38796f89fc5f0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -104,6 +108,8 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
+    - _CellShade: 0.42
+    - _Circle_Density: 9.41
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -113,24 +119,32 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _Falloff_threshold: 2.88
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _Lit_Threshold: 1.41
     - _Max: 1
+    - _MaxShade: 1.61
     - _Metallic: 0
     - _Min: 0.3
+    - _MinShade: 0.51
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _Rotation: 0
     - _Shades: 0.49
+    - _Shading_Multiplier: 0.1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
+    - _Softness: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _USE_SCREEN_SPACE: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
