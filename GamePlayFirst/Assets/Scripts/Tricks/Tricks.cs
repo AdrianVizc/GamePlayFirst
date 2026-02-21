@@ -93,7 +93,7 @@ public class Tricks : MonoBehaviour
         isWallRunning = wall.isWallRunning;
         //AnimatorStateInfo animatorState = animator.GetCurrentAnimatorStateInfo(0);
         //Debug.Log("Animation Time On Input: " + animatorState.normalizedTime + "buffer: " + (1 - percentageBuffer));
-        if (onRail || isWallRunning)
+        if (!PauseMenu.Instance.GetIsPaused() && (onRail || isWallRunning))
         {
             // Handles LT and RT (they aren't defined as keycodes so have to be dealt with differently)
             if (Math.Round(Input.GetAxisRaw("RightTrigger")) == 1)

@@ -28,6 +28,11 @@ public class PauseMenu : Menu
         isPaused = false;
     }
 
+    public bool GetIsPaused()
+    {
+        return isPaused;
+    }
+
     private void Update()
     {
         PauseGame();
