@@ -15,6 +15,7 @@ public class EndGameCanvas : MonoBehaviour
     [SerializeField] private float duration = 0.3f;
     [SerializeField] private float smallDelayBeforeTotalScore = 0.5f;
     [SerializeField] private float effectSpeed;
+    [SerializeField] private float exponentialFactor = 1.1f;
 
     private float currentDisplayScore = 0;
 
@@ -72,6 +73,10 @@ public class EndGameCanvas : MonoBehaviour
             currentDisplayScore += Time.unscaledDeltaTime + effectSpeed; // or whatever to get the speed you like
             currentDisplayScore = Mathf.Clamp(currentDisplayScore, 0f, totalScore);
             totalScoreText.text = currentDisplayScore.ToString("F0");
+
+            // v0.0.2 update to exponentially increase score each time
+            effectSpeed *= exponentialFactor;
+
             yield return null;
         }
 
